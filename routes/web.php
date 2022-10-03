@@ -11,12 +11,12 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      http://localhost/
  */
-
-use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\PostController;
-// use App\Http\Controllers\UserController;
 // use App\Http\Controllers\NewsController;
-// use App\Http\Controllers\TestController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\TestController;
 
 
 /*
@@ -36,9 +36,9 @@ Route::get(
     }
 );
 
-Route:: get('/news',        [NewsController::class, 'index']);
-Route:: get('/news/create', [NewsController::class, 'create']);
-Route:: get('/news/update', [NewsController::class, 'update']);
+Route:: get('/news',                [NewsController::class, 'index']);
+Route:: get('/news/create',         [NewsController::class, 'create']);
+Route:: get('/news/update/{id}',    [NewsController::class, 'update']);
 // Route:: get('/news/update', 'NewsController@update');
 
 Route::get('/khanh/{id?}/page={page}', function ($id, $page) {
@@ -68,3 +68,27 @@ Route:: get('/posts/delete/{id}', [PostController::class, 'delete']);
 Route:: get('/images/read', [FeaturedImagesController::class, 'read']);
 
 Route:: get('/role/show', [RoleController::class, 'show']);
+
+
+Route::get('/child', function () {
+    $users = [
+        ['name' => 'Phạm Nguyễn Phương Uyên'],
+        ['name' => 'Trần Nguyễn Lan Anh'],
+        ['name' => 'Trần Kim Ngân']
+    ];
+
+    return view('layouts.child',
+    [
+        'name' => 'Huỳnh Nhật Khánh',
+        'data'=> "<strong>Rivercrane Việt Nam</strong>",
+        'id'=> 5,
+        'old'=> 22,
+        'users' =>  $users
+    ]);
+});
+
+Route::get('/form', function () {
+    return view('layouts.form');
+});
+
+Route::get('/news/push', [NewsController::class, 'push']);

@@ -11,7 +11,23 @@ class NewsController extends Controller
     public function create(){
         return view('news.create');
     }
-    public function update(){
-        return view('news.update');
+    public function update($id){
+        return view('news.update', ['id' => $id]);
+    }
+    public function push(Request $request){
+        $request->validate(
+            [
+                'title'   => 'required',
+                'content' => 'required'
+            ],
+            [
+                'required' => ':attribute không được rỗng'
+            ],
+            [
+                'title'   => 'Tiêu đề',
+                'content' => 'Nội dung'
+            ]
+        );
+        return $request->input();
     }
 }

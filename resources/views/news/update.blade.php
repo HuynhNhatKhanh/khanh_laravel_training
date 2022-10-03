@@ -8,5 +8,6 @@
 </head>
 <body>
     <h1>Đây là trang update</h1>
+    <h2>ID: {{$id}}</h2>
 </body>
 </html>
