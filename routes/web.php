@@ -22,6 +22,7 @@ use App\Http\Controllers\DemoMailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeaturedImagesController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -100,8 +101,15 @@ Route::get('/news/push', [NewsController::class, 'push']);
 
 Route::get('/demo/sendmail', [DemoMailController::class, 'sendMail']);
 
-
-
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('verified');
+
+Route::get('/admin1/{age}', function () {
+    return view('admin');
+})->middleware('CheckAge');
+
+// Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('auth', 'CheckRole:Subcriber');
+Route::middleware('auth' ,'CheckRole:Subcriber')->group(function(){
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+});
