@@ -13,11 +13,15 @@
  */
 // use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\DemoMailController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FeaturedImagesController;
+use App\Http\Controllers\RoleController;
 
 
 /*
@@ -95,3 +99,9 @@ Route::get('/form', function () {
 Route::get('/news/push', [NewsController::class, 'push']);
 
 Route::get('/demo/sendmail', [DemoMailController::class, 'sendMail']);
+
+
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('verified');
