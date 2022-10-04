@@ -17,6 +17,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\DemoMailController;
 
 
 /*
@@ -92,3 +93,5 @@ Route::get('/form', function () {
 });
 
 Route::get('/news/push', [NewsController::class, 'push']);
+
+Route::get('/demo/sendmail', [DemoMailController::class, 'sendMail']);
