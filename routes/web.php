@@ -23,6 +23,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FeaturedImagesController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExampleController;
 
 
 /*
@@ -112,4 +113,19 @@ Route::get('/admin1/{age}', function () {
 // Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('auth', 'CheckRole:Subcriber');
 Route::middleware('auth' ,'CheckRole:Subcriber')->group(function(){
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+});
+
+// Route::prefix('user')->group(function () {
+//     Route::get('/', [UserController::class, 'index']);
+//     Route::post('/login', [UserController::class, 'login']);
+// });
+Route::get('/user', [UserController::class, 'index']);
+Route::post('/user/login', [UserController::class, 'login']);
+
+
+Route::get('/adminbackend', function(){
+    return view('layouts.admin');
+});
+Route::get('/adminbackend/dashboard', function(){
+    return view('admin.dashboard');
 });

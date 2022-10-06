@@ -11,9 +11,9 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>Form</h1>
-        @if ($errors->any())
+    <div class="container" >
+        <h1>Form Validate</h1>
+        {{-- @if ($errors->any())
             <div class="alert alert-danger alert-dismissible">
                 <ul>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -23,18 +23,34 @@
                 </ul>
             </div>
 
-        @endif
-        {!! Form::open(['url' => 'news/push', 'method' => 'GET']) !!}
-        <div class="form-group">
-            {!! Form::text('title', '', [
+        @endif --}}
+        {!! Form::open(['url' => 'user/login', 'method' => 'POST']) !!}
+
+        <div class="form-group p-1">
+            {!! Form::label('username', 'Username') !!}
+            {!! Form::text('username', '', [
                 'class' => 'form-control',
-                'placeholder' => ' Tiêu đề',
+                'id'=> 'username',
+                'placeholder' => 'Tên tài khoản',
             ]) !!}
-            @error('title')
+            @error('username')
                 <small class="form-text text-danger">{{ $message }}</small>
             @enderror
         </div>
-        <div class="form-group">
+
+        <div class="form-group p-1">
+            {!! Form::label('password', 'Password') !!}
+            {!! Form::password('password', [
+                'class' => 'form-control',
+                'id'=> 'password',
+                'placeholder' => 'Mật khẩu',
+            ]) !!}
+            @error('password')
+                <small class="form-text text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
+        {{-- <div class="form-group">
             {!! Form::textarea('content', '', [
                 'class' => 'form-control',
                 'placeholder' => ' Text',
@@ -42,17 +58,23 @@
             @error('content')
                 <small class="form-text text-danger">{{ $message }}</small>
             @enderror
-        </div>
-        <div class="form-group">
-            {!! Form::submit('Thêm mới', [
+        </div> --}}
+
+        <div class="form-group p-1">
+            {!! Form::submit('Đăng nhập', [
                 'class' => 'btn btn-success',
+                'id' => 'submid-form-login'
             ]) !!}
         </div>
+
         {!! Form::close() !!}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+
+    </script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-
 </html>
