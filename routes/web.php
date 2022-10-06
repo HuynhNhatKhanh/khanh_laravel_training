@@ -45,7 +45,7 @@ Route::get(
 
 Route:: get('/news',                [NewsController::class, 'index']);
 Route:: get('/news/create',         [NewsController::class, 'create']);
-Route:: get('/news/update/{id}',    [NewsController::class, 'update']);
+Route:: post('/news/update',         [NewsController::class, 'update']) ->name('news.update');
 // Route:: get('/news/update', 'NewsController@update');
 
 Route::get('/khanh/{id?}/page={page}', function ($id, $page) {
@@ -128,4 +128,13 @@ Route::get('/adminbackend', function(){
 });
 Route::get('/adminbackend/dashboard', function(){
     return view('admin.dashboard');
+});
+
+
+Route::get('/formajax', function () {
+    return view('news.price');
+});
+
+Route:: post('/news/update',        function () {
+    return view('news.update');
 });
