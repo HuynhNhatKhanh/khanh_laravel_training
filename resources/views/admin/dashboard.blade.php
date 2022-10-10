@@ -3,6 +3,9 @@
 @section('main')
 
 
+{{-- <div class="d-flex justify-content-center">
+    {!! $items->links() !!}
+</div> --}}
 <!-- List Content -->
 <form action="" method="post" class="table-responsive" id="form-table">
     <table class="table table-bordered table-hover text-nowrap btn-table mb-0">
@@ -28,30 +31,29 @@
             </tr>
         </thead>
         <tbody>
-
-            <tr>
-
-                <td class="text-center">1</td>
-                <td class="text-wrap" style="min-width: 60px">Sản phẩm A</td>
-                <td class="text-wrap" style="min-width: 60px">Chức năng sản phẩm A</td>
-                <td class="text-center">319,000 đ</td>
-                <td class="text-center">Đang bán</td>
-
-                {{-- <td class="text-center position-relative"><input type="number" name="chkOrdering[1]" value="1" class="chkOrdering form-control form-control-sm m-auto text-center" style="width: 65px" id="chkOrdering[1]" data-id="1" min="1"></td> --}}
-                {{-- <td class="text-center">
-                    <p class="mb-0 history-by"><i class="far fa-user"></i> admin</p>
-                    <p class="mb-0 history-time"><i class="far fa-clock"></i> 15/07/2020 10:36:48</p>
-                </td> --}}
-                <td class="text-center">
-                    <a href="#" class="rounded-circle btn btn-sm btn-info" title="Edit">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>
-
-                    <a href="" class="rounded-circle btn btn-sm btn-danger" title="Delete">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </td>
-            </tr>
+            @php
+                $page = 0;
+                if(isset($requestAll['page']) && $requestAll['page'] > 0){
+                    $page = ( $requestAll['page'] - 1 ) * 10;
+                }
+            @endphp
+            @foreach ($items as $key => $item)
+                <tr>
+                    <td class="text-center">{{ $page  + $key + 1}}</td>
+                    <td class="text-wrap" style="min-width: 60px">{{ $item['product_name'] }}</td>
+                    <td class="text-wrap" style="min-width: 60px">{{ $item['description'] }}</td>
+                    <td class="text-center">$ {{ $item['product_price'] }}</td>
+                    <td class="text-center">{{ ($item['is_sales'] == 0) ? 'Ngừng bán' : 'Còn hàng' }}</td>
+                    <td class="text-center">
+                        <a href="#" class="rounded-circle btn btn-sm btn-info" title="Edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <a href="" class="rounded-circle btn btn-sm btn-danger" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
             {{-- <tr>
                 <td class="text-center">
                     <div class="custom-control custom-checkbox">

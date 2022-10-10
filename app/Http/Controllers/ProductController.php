@@ -2,27 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\AddUserRequest;
+use App\Repositories\Product\ProductRepositoryInterface;
 
-class UserController extends Controller
+class ProductController extends Controller
 {
+
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index(Request $request)
     {
-        $items = User::all();
-        foreach ($items as $item) {
-            echo '<pre>';
-            print_r($item['name']);
-            echo '</pre>';
-        }
-
+        $items = $this->productRepository->getAllProduct();
+        // dd($this->productRepository->getAllProduct()->toArray());
+        // echo '<pre>';
+        // print_r($request);
+        // echo '</pre>';
+        // die();
+        $requestAll = $request->all();
+        // echo '<pre>';
+        // print_r($requestAll);
+        // echo '</pre>';
+        // die();
+        return view('admin.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -38,25 +47,23 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AddUserRequest $request)
+    public function store(Request $request)
     {
-
-
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id use for query
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-
+        dd($this->productRepository->getProduct($id)->toArray());
     }
 
     /**
@@ -91,12 +98,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-
-    public function login(AddUserRequest $request){
-        echo '<pre>';
-        print_r($request->all());
-        echo '</pre>';
     }
 }

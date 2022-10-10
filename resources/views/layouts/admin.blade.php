@@ -880,7 +880,14 @@
                         <a href="#" class="mr-1 btn btn-sm btn-secondary">Inactive <span class="badge badge-pill badge-light">8</span></a>
                     </div> --}}
                     <div class="mb-1">
-                        <select id="filter_group" name="filter_group" class="custom-select custom-select-sm mr-1" style="width: unset">
+                        <p>Tên sản phẩm</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 300px">
+                        </div>
+                    </div>
+                    <div class="mb-1 ">
+                        <p style="">Trạng thái</p>
+                        <select id="filter_group" name="filter_group" class="custom-select custom-select-sm mr-1" style="width: 150px">
                             <option value="default" selected="">- Trạng thái -</option>
                             <option value="1">Đang bán</option>
                             <option value="2">Tạm hết</option>
@@ -888,9 +895,25 @@
                         </select>
                     </div>
                     <div class="mb-1">
+                        <p>Giá bán từ</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 100px">
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <p>Giá bán đến</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 100px">
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-sm btn-success" id="btn-clear-search">Thêm mới</button>
+                    </div>
+                    <div class="mb-1 ">
                         <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 300px">
+                            <div class="input-group mr-auto">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-sm btn-danger" id="btn-clear-search">Clear</button>
                                     <button type="button" class="btn btn-sm btn-info" id="btn-search">Search</button>

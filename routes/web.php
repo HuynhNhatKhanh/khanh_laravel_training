@@ -12,18 +12,19 @@
  * @link      http://localhost/
  */
 // use App\Http\Controllers\NewsController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\TestController;
-use App\Http\Controllers\DemoMailController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\FeaturedImagesController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DemoMailController;
+use App\Http\Controllers\FeaturedImagesController;
 
 
 /*
@@ -106,9 +107,15 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('verified');
 
-Route::get('/admin1/{age}', function () {
-    return view('admin');
-})->middleware('CheckAge');
+// Route::get('/admin1/{age}', function () {
+//     return view('admin');
+// })->middleware('CheckAge');
+
+Route::middleware('CheckAge')->group(function(){
+    Route::get('/admin1/{age}', function(){
+        return view('admin');
+    });
+});
 
 // Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('auth', 'CheckRole:Subcriber');
 Route::middleware('auth' ,'CheckRole:Subcriber')->group(function(){
@@ -135,6 +142,10 @@ Route::get('/formajax', function () {
     return view('news.price');
 });
 
-Route:: post('/news/update',        function () {
+Route:: post('/news/update',         function () {
     return view('news.update');
 });
+
+
+Route:: get('/product', [ProductController::class, 'index']);
+Route:: get('/product/{id}', [ProductController::class, 'show']);

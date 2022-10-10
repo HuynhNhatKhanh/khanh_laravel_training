@@ -8,7 +8,8 @@ use App\Mail\DemoMail;
 
 class DemoMailController extends Controller
 {
-    public function sendMail() {
+    public function sendMail()
+    {
         $data = [
             'title' => 'Title Mail',
             'body' => 'This is the body of test email.'

@@ -14,15 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
-            $table->text('content');
-            $table->integer('price');
-            $table->unsignedBigInteger('product_cat_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('product_cat_id')->references('id')->on('products');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('product_id', 20)->unique()->primary();
+            $table->string('product_name', 255);
+            $table->string('product_image', 255)->nullable();
+            $table->decimal('product_price')->default(0);
+            $table->boolean('is_sales')->default(1)->comment('0: Dừng bán hoặc dừng sản xuất, 1: Có hàng bán');
+            $table->text('description')->nullable();
             $table->timestamps();
+            $table->index(['product_id']);
         });
     }
 
