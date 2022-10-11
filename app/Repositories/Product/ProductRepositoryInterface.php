@@ -4,6 +4,7 @@ namespace App\Repositories\Product;
 
 interface ProductRepositoryInterface
 {
-    public function getAllProduct();
+    public function getAllProduct($requestAll);
     public function getProduct($id);
+    public function delete($id);
 }

@@ -20,18 +20,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $items = $this->productRepository->getAllProduct();
-        // dd($this->productRepository->getAllProduct()->toArray());
-        // echo '<pre>';
-        // print_r($request);
-        // echo '</pre>';
-        // die();
         $requestAll = $request->all();
-        // echo '<pre>';
-        // print_r($requestAll);
-        // echo '</pre>';
-        // die();
-        return view('admin.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
+        $items = $this->productRepository->getAllProduct($requestAll);
+        return view('admin.pages.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -98,5 +89,17 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Delte the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $this->productRepository->delete($id);
+        return redirect()->route('product');
     }
 }

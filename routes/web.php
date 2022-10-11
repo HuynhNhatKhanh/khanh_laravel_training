@@ -147,5 +147,9 @@ Route:: post('/news/update',         function () {
 });
 
 
-Route:: get('/product', [ProductController::class, 'index']);
+Route:: prefix('/product')->group(function () {
+    Route:: get('/', [ProductController::class, 'index'])->name('product');
+    Route:: get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+});
+
 Route:: get('/product/{id}', [ProductController::class, 'show']);

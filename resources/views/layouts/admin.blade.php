@@ -857,126 +857,7 @@
     <!-- /.sidebar -->
   </aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <!-- Search & Filter -->
-        <div class="card card-info card-outline">
-            <div class="card-header">
-                <h6 class="card-title">Search & Filter</h6>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                        <i class="fas fa-minus"></i></button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row justify-content-between">
-                    {{-- <div class="mb-1">
-                        <a href="#" class="mr-1 btn btn-sm btn-info">All <span class="badge badge-pill badge-light">15</span></a>
-                        <a href="#" class="mr-1 btn btn-sm btn-secondary">Active <span class="badge badge-pill badge-light">7</span></a>
-                        <a href="#" class="mr-1 btn btn-sm btn-secondary">Inactive <span class="badge badge-pill badge-light">8</span></a>
-                    </div> --}}
-                    <div class="mb-1">
-                        <p>Tên sản phẩm</p>
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 300px">
-                        </div>
-                    </div>
-                    <div class="mb-1 ">
-                        <p style="">Trạng thái</p>
-                        <select id="filter_group" name="filter_group" class="custom-select custom-select-sm mr-1" style="width: 150px">
-                            <option value="default" selected="">- Trạng thái -</option>
-                            <option value="1">Đang bán</option>
-                            <option value="2">Tạm hết</option>
-                            <option value="3">Ngừng bán</option>
-                        </select>
-                    </div>
-                    <div class="mb-1">
-                        <p>Giá bán từ</p>
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 100px">
-                        </div>
-                    </div>
-                    <div class="mb-1">
-                        <p>Giá bán đến</p>
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" name="search_value" value="" style="min-width: 100px">
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-between">
-                    <div>
-                        <button type="button" class="btn btn-sm btn-success" id="btn-clear-search">Thêm mới</button>
-                    </div>
-                    <div class="mb-1 ">
-                        <form action="">
-                            <div class="input-group mr-auto">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-sm btn-danger" id="btn-clear-search">Clear</button>
-                                    <button type="button" class="btn btn-sm btn-info" id="btn-search">Search</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Danh sách sản phẩm</h1>
-          </div>
-          {{-- <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">Fixed Layout</li>
-            </ol>
-          </div> --}}
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <!-- Default box -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Title</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  {{-- <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                  </button> --}}
-                </div>
-              </div>
-              <div class="card-body">
-                @yield('main')
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                Footer
-              </div>
-              <!-- /.card-footer-->
-            </div>
-            <!-- /.card -->
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+@yield('main')
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
@@ -1005,6 +886,9 @@
 <script src="{{url('backend')}}/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{url('backend')}}/dist/js/demo.js"></script>
+
+<script src="{{url('backend')}}/js/myScript.js"></script>
+
 <script>
     $(function () {
       $('.select2').select2()
