@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateProductRequest;
 use App\Repositories\Product\ProductRepositoryInterface;
 
 class ProductController extends Controller
@@ -25,14 +26,24 @@ class ProductController extends Controller
         return view('admin.pages.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
+
+    /**
+     * Display a form of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CreateProductRequest $requestProduct, Request $request)
     {
-        //
+        dd($request->all());
+        // $requestAll = $request->all();
+        // $items = $this->productRepository->createProduct($requestAll);
+        // return view('admin.pages.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**

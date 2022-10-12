@@ -44,62 +44,10 @@ Route::get(
     }
 );
 
-Route:: get('/news',                [NewsController::class, 'index']);
-Route:: get('/news/create',         [NewsController::class, 'create']);
-Route:: post('/news/update',         [NewsController::class, 'update']) ->name('news.update');
-// Route:: get('/news/update', 'NewsController@update');
-
-Route::get('/khanh/{id?}/page={page}', function ($id, $page) {
-    return 'id:'.$id.'-page:'.$page;
-});
-Route::get('/khanh/profile', function () {
-    return route('profile');
-}) -> name('profile');
-Route::get('/khanh/{text}/{id}', function ($text, $id) {
-    return $id.'--'.$text;
-}) -> where(['id' => '[0-9]+', 'text' => '[A-Za-z0-9-_]+']);
-// Route::get('/test', function () {
-//     $product = Test::all();
-//     return $product;
-// });
-Route:: get('/test', [TestController::class, 'index']);
-Route:: get('/test/add', [TestController::class, 'add']);
-Route:: get('/test/update/{id}', [TestController::class, 'update']);
-Route:: get('/test/delete/{id}', [TestController::class, 'delete']);
-
-Route:: get('/posts', [PostController::class, 'index']);
-Route:: get('/posts/add', [PostController::class, 'add']);
-Route:: get('/posts/read', [PostController::class, 'read']);
-Route:: get('/posts/update/{id}', [PostController::class, 'update']);
-Route:: get('/posts/delete/{id}', [PostController::class, 'delete']);
-
-Route:: get('/images/read', [FeaturedImagesController::class, 'read']);
-
-Route:: get('/role/show', [RoleController::class, 'show']);
-
-
-Route::get('/child', function () {
-    $users = [
-        ['name' => 'Phạm Nguyễn Phương Uyên'],
-        ['name' => 'Trần Nguyễn Lan Anh'],
-        ['name' => 'Trần Kim Ngân']
-    ];
-
-    return view('layouts.child',
-    [
-        'name' => 'Huỳnh Nhật Khánh',
-        'data'=> "<strong>Rivercrane Việt Nam</strong>",
-        'id'=> 5,
-        'old'=> 22,
-        'users' =>  $users
-    ]);
-});
-
 Route::get('/form', function () {
     return view('layouts.form');
 });
 
-Route::get('/news/push', [NewsController::class, 'push']);
 
 Route::get('/demo/sendmail', [DemoMailController::class, 'sendMail']);
 
@@ -117,15 +65,10 @@ Route::middleware('CheckAge')->group(function(){
     });
 });
 
-// Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('auth', 'CheckRole:Subcriber');
 Route::middleware('auth' ,'CheckRole:Subcriber')->group(function(){
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 });
 
-// Route::prefix('user')->group(function () {
-//     Route::get('/', [UserController::class, 'index']);
-//     Route::post('/login', [UserController::class, 'login']);
-// });
 Route::get('/user', [UserController::class, 'index']);
 Route::post('/user/login', [UserController::class, 'login']);
 
@@ -136,7 +79,6 @@ Route::get('/adminbackend', function(){
 Route::get('/adminbackend/dashboard', function(){
     return view('admin.dashboard');
 });
-
 
 Route::get('/formajax', function () {
     return view('news.price');
@@ -150,6 +92,6 @@ Route:: post('/news/update',         function () {
 Route:: prefix('/product')->group(function () {
     Route:: get('/', [ProductController::class, 'index'])->name('product');
     Route:: get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+    Route:: post('/create', [ProductController::class, 'create'])->name('product.create');
 });
-
-Route:: get('/product/{id}', [ProductController::class, 'show']);
+//Route:: get('/product/{id}', [ProductController::class, 'show']);

@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="{{url('backend')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{url('backend')}}/dist/css/adminlte.min.css">
+    <!-- Custom css-->
+  <link rel="stylesheet" href="{{url('backend')}}/css/custom.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <!-- Site wrapper -->
@@ -858,6 +860,7 @@
   </aside>
 
 @yield('main')
+@include('admin.modal.product_modal')
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
@@ -886,9 +889,12 @@
 <script src="{{url('backend')}}/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{url('backend')}}/dist/js/demo.js"></script>
-
-<script src="{{url('backend')}}/js/myScript.js"></script>
-
+<!--SweetAlert2 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--Custom js -->
+<script src="{{asset("backend/js/myScript.js")}}"></script>
+<!--CkEditor -->
+<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 <script>
     $(function () {
       $('.select2').select2()

@@ -29,6 +29,7 @@ class ProductRepository implements ProductRepositoryInterface
             if( $status == 1)
             {
                 $query = $query->where('ordering', '>', 0);
+                $query = $query->where('is_sales', '=', 1);
             } else if( $status == 2)
             {
                 $query = $query->where('ordering', '=', 0);
@@ -58,7 +59,7 @@ class ProductRepository implements ProductRepositoryInterface
         }
 
 
-        return $query->paginate(10);
+        return $query->paginate(20);
     }
 
     public function getProduct($id)
@@ -69,5 +70,10 @@ class ProductRepository implements ProductRepositoryInterface
     public function delete($id)
     {
         return $this->product->where('product_id', $id)->delete();
+    }
+
+    public function createProduct($requestAll)
+    {
+        dd($requestAll);
     }
 }
