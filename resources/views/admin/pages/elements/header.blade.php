@@ -14,6 +14,13 @@
 @endphp
 
 <section class="content-header">
+
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+
     <div class="container-fluid">
         <!-- Search & Filter -->
         <div class="card card-info card-outline">

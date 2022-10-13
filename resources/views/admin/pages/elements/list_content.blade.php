@@ -48,11 +48,11 @@
                         {!! $xhtml !!}
 
                     <td class="text-center">
-                        <a href="#" class="rounded-circle btn btn-sm btn-info"
+                        <button type="button" value="{{$item['product_id']}}" class="rounded-circle btn btn-sm btn-info editbtn"
                             title="Chỉnh sửa">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <a href="product/delete/{{ $item['product_id'] }}" class="rounded-circle btn btn-sm btn-danger btn-delete"
+                        </button>
+                        <a href="product/delete/{{$item['product_id']}}" class="rounded-circle btn btn-sm btn-danger btn-delete"
                             title="Xoá">
                             <i class="fas fa-trash-alt"></i>
                         </a>

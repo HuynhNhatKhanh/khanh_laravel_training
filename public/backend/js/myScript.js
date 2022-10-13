@@ -43,5 +43,23 @@ $(document).ready(function() {
         $('.imgPreview').attr('src', 'backend/images/product/image_default.jpg');
         $('#file-chosen').text('Chưa chọn file');
     });
+
+    $(document).on('click','.editbtn', function () {
+        var prod_id = $(this).val();
+        $('#editModal').modal('show');
+        // if (response.product['0'].is_sales == 0)
+        $.ajax({
+            type: "GET",
+            url: "/product/edit/"+prod_id,
+            success: function (response) {
+                console.log(response.product['0']);
+                $('#edit_product_name').val(response.product['0'].product_name);
+                $('#edit_product_price').val(response.product['0'].product_price);
+                //$('#edit_product_status').val(response.product['0'].product_name);
+                $('#edit_product_description').val(response.product['0'].description);
+                $('#prod_id').val(response.product['0'].product_id);
+            }
+        });
+    });
 });
 
