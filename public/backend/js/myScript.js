@@ -55,7 +55,8 @@ $(document).ready(function() {
                 console.log(response.product['0']);
                 $('#edit_product_name').val(response.product['0'].product_name);
                 $('#edit_product_price').val(response.product['0'].product_price);
-                //$('#edit_product_status').val(response.product['0'].product_name);
+                $('#edit_product_ordering').val(response.product['0'].ordering);
+                $('#edit_product_status').val(response.product['0'].is_sales);
                 $('#edit_product_description').val(response.product['0'].description);
                 $('#prod_id').val(response.product['0'].product_id);
             }

@@ -83,4 +83,5 @@ Route::prefix('/product')->group(function () {
     Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/update', [ProductController::class, 'update'])->name('product.update');
 });
-//Route:: get('/product/{id}', [ProductController::class, 'show']);
+Route:: get('/file', [ProductController::class, 'file']);
+Route:: post('/upload', [ProductController::class, 'upload'])->name('upload');
