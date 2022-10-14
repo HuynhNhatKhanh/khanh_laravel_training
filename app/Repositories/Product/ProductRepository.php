@@ -44,7 +44,7 @@ class ProductRepository implements ProductRepositoryInterface
                 $query = $query->where('product_price', '<=', $requestAll['price_to']);
             }
         }
-
+        $query = $query->orderBy('updated_at', 'desc');
         return $query->paginate(20);
     }
 

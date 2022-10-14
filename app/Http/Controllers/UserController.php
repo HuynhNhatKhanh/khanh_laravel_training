@@ -94,9 +94,8 @@ class UserController extends Controller
     }
 
 
-    public function login(AddUserRequest $request){
-        echo '<pre>';
-        print_r($request->all());
-        echo '</pre>';
+    public function login(Request $request)
+    {
+        dd($request);
     }
 }

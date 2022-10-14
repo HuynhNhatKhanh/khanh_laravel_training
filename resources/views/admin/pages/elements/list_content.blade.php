@@ -23,7 +23,7 @@
                     <td class="text-wrap img_hover" style="min-width: 60px">
                         {{ $item['product_name'] }}
                         <div class="">
-                            <img src="{{url('backend')}}/images/product/{{$item['product_image']}}" alt="">
+                            <img src="{{url('storage/backend')}}/images/product/{{$item['product_image']}}" alt="">
                         </div>
                     </td>
                     <td class="text-wrap" style="min-width: 60px">{{ $item['description'] }}

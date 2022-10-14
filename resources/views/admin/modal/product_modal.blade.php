@@ -44,18 +44,24 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group row">
-                                <label for="product_image_detail" class="col-sm-3 col-form-label">Ordering</label>
+                                <label for="product_image_detail" class="col-sm-3 col-form-label">Số lượng</label>
                                 <div class="col-sm-9">
                                     <input type="number" class="form-control" id=""
                                         name="product_ordering_detail" required placeholder="Nhập số lượng sản phẩm" >
                                 </div>
+                                @error('product_ordering_detail')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group row">
-                                <input type="hidden" name="product_image_detail" value="asset('backend/images/product/image_default.jpg')">
+                                {{-- <input type="hidden" name="product_image_detail" value="asset('backend/images/product/image_default.jpg')"> --}}
                                 <div class="col-sm-12">
                                     <img class="imgPreview" style="width:100%"
-                                        src="{{ asset('backend/images/product/image_default.jpg') }}" alt="">
+                                        src="{{ asset('storage/backend/images/product/image_default.jpg') }}" alt="">
                                 </div>
+                                @error('product_image_detail')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -69,6 +75,9 @@
                                     <option value="1">Còn bán</option>
                                     <option value="0">Ngừng bán</option>
                                   </select>
+                                  @error('product_status_detail')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -78,7 +87,7 @@
                                 <div class="input-group">
                                     <div>
                                         <!-- actual upload which is hidden -->
-                                        <input type="file" id="actual-btn" hidden/>
+                                        <input type="file" name="product_image_detail" accept="image/*,.pdf" id="actual-btn" hidden/>
 
                                         <!-- our custom upload button -->
                                         <label class= "btn lable-upload-file" for="actual-btn">Upload</label>
@@ -129,9 +138,9 @@
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="edit_product_name"
                                         name="product_name_detail" required placeholder="Nhập tên sản phẩm" >
-                                    @error('product_name_detail')
+                                    {{-- @error('product_name_detail')
                                         <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
+                                    @enderror --}}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -139,9 +148,9 @@
                                 <div class="col-sm-9">
                                     <input type="number" class="form-control" id="edit_product_price"
                                         name="product_price_detail" required placeholder="Nhập giá bán" >
-                                    @error('product_price_detail')
+                                    {{-- @error('product_price_detail')
                                         <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
+                                    @enderror --}}
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -161,10 +170,9 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <input type="hidden" name="product_image_detail" value="asset('backend/images/product/image_default.jpg')">
                                 <div class="col-sm-12">
-                                    <img class="imgPreview" style="width:100%"
-                                        src="{{ asset('backend/images/product/image_default.jpg') }}" alt="">
+                                    <img class="imgPreview" id="edit_product_image" style="width:100%"
+                                        src="{{ asset('storage/backend/images/product/image_default.jpg') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -189,15 +197,15 @@
                                 <div class="input-group">
                                     <div>
                                         <!-- actual upload which is hidden -->
-                                        <input type="file" name="photo" id="actual-btn" hidden/>
+                                        <input type="file" name="photo" id="actual-btn-edit" hidden/>
 
                                         <!-- our custom upload button -->
                                         <label for="photo" class= "btn lable-upload-file" for="actual-btn">Upload</label>
 
-                                        <button type="button" class="btn btn-danger" id="btn-clear-file" style="margin-bottom: 5px;">Clear</button>
+                                        <button type="button" class="btn btn-danger" id="btn-clear-file-edit" style="margin-bottom: 5px;">Clear</button>
 
                                         <!-- name of file chosen -->
-                                        <span id="file-chosen">Chưa chọn file</span>
+                                        <span id="file-chosen-edit">Chưa chọn file</span>
                                     </div>
 
                                 </div>

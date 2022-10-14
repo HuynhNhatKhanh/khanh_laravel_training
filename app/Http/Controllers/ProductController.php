@@ -69,7 +69,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
         $product = new Product;
         $product->product_id = fake()->regexify('[A-Z][A-Z][A-Z][A-Z]');
@@ -82,7 +82,12 @@ class ProductController extends Controller
         } elseif ($request->all()['product_status_detail'] == '1') {
             $product->is_sales = 1;
         }
-         //$product->product_image = $request->all()['product_image_detail'];
+        if ($request->all()['product_image_detail']) {
+            $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
+            $fileNameImage .= $request->all()['product_image_detail']->getClientOriginalName();
+            $path = $request->file('product_image_detail')->storeAs('public/backend/images/product', $fileNameImage);
+            $product->product_image  =  $fileNameImage;
+        };
         $product->save();
         // $this->productRepository->store($request);
         return redirect()->back()->with('status', 'Thêm sản phẩm thành công');
@@ -171,9 +176,10 @@ class ProductController extends Controller
     {
         // dd($request);
         $data = $request->all();
-        $fileName = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_' . $request->product_image->getClientOriginalName();
-        $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileName);
-        $data['product_image'] = 'backend/images/product/' . $fileName;
+        $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
+        $fileNameImage .= $request->product_image->getClientOriginalName();
+        $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileNameImage);
+        $data['product_image'] = 'backend/images/product/' . $fileNameImage;
         dd($data['product_image']);
     }
 }
