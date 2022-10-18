@@ -41,7 +41,7 @@ class ProductController extends Controller
     {
         $requestAll = $request->all();
         $items = $this->productRepository->getAllProduct($requestAll);
-        return view('admin.pages.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
+        return view('admin.pages.product.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**

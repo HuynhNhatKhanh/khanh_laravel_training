@@ -5,7 +5,7 @@
     <div class="content-wrapper">
 
         <!-- Content Header (Page header) -->
-        @include('admin.pages.elements.header')
+        @include('admin.pages.user.elements.header')
 
         <!-- Main content -->
         <section class="content">
@@ -16,16 +16,16 @@
                         <!-- Default box -->
                         <div class="card">
                             <div class="card-header">
-                                @include('admin.elements.pagination')
+                                @include('admin.pages.user.elements.pagination')
                             </div>
                             <div class="card-body">
                                 <!-- List Content -->
-                                @include('admin.pages.elements.list_content')
+                                @include('admin.pages.user.elements.list_content')
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                @include('admin.elements.pagination')
+                                @include('admin.pages.user.elements.pagination')
                             </div>
                             <!-- /.card-footer-->
                         </div>

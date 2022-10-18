@@ -50,32 +50,46 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-       // Error messages
+        // Rules validate
+        $rules = [
+            'email'    => 'required|email|exists:users,email',
+            'password' => 'required|min:6'
+        ];
+        // Error messages
         $messages = [
             "email.required" => "Email không được để trống",
-            "email.email" => "Email không đúng định dạng",
-            "email.exists" => "Email không tồn tại",
+            "email.email"    => "Email không đúng định dạng",
+            "email.exists"   => "Email không tồn tại",
 
             "password.required" => "Mật khẩu không được để trống",
-            "password.min" => "Mật khẩu phải lớn hơn 6 ký tự",
+            "password.min"      => "Mật khẩu phải lớn hơn 6 ký tự",
         ];
-
         // Validate the form data
-        $validator = Validator::make($request->all(), ['email' => 'required|email|exists:users,email', 'password' => 'required|min:6'], $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         } else {
             // Attempt to log
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-                $request->session()->put('inforUser', $request->input());
+                $request->session()->put('userInfo', $request->input());
                 $this->user
                     ->where('email', $request->email)
-                    ->update(['last_login_at' => $this->now, 'last_login_ip' => \Request::ip()]);
+                    ->update([
+                        'last_login_at' => $this->now,
+                        'last_login_ip' => $request->ip()
+                    ]);
                 return redirect()->intended(route('product'));
             }
             // If unsuccessful -> redirect back
             return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['password' => 'Mật khẩu không chính xác.']);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        session()->forget('userInfo');
+        Auth::logout();
+        return redirect()->route('login');
     }
 }

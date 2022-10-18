@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\AddUserRequest;
+use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,13 +22,9 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $items = User::all();
-        foreach ($items as $item) {
-            echo '<pre>';
-            print_r($item['name']);
-            echo '</pre>';
-        }
-
+        $requestAll = $request->all();
+        $items = $this->userRepository->getAllUser($requestAll);
+        return view('admin.pages.user.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -43,8 +45,6 @@ class UserController extends Controller
      */
     public function store(AddUserRequest $request)
     {
-
-
     }
 
     /**
@@ -56,7 +56,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**

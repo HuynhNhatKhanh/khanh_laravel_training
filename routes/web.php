@@ -12,12 +12,13 @@
  * @link      http://localhost/
  */
 // use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DemoMailController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DemoMailController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,8 +55,8 @@ Route::middleware('auth', 'CheckRole:Subcriber')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 });
 
-Route::get('/user', [UserController::class, 'index']);
-Route::post('/user/login', [UserController::class, 'login']);
+// Route::get('/user', [UserController::class, 'index']);
+// Route::post('/user/login', [UserController::class, 'login']);
 
 Route::get('/adminbackend', function () {
     return view('layouts.admin');
@@ -71,6 +72,8 @@ Route::get('/formajax', function () {
 Route::post('/news/update', function () {
     return view('news.update');
 });
+Route::get('/file', [ProductController::class, 'file']);
+Route::post('/upload', [ProductController::class, 'upload'])->name('upload');
 
 //Page Auth
 Auth::routes(
@@ -83,18 +86,24 @@ Auth::routes(
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 // ->middleware('verified')
-Route::get('/logout', function () {
-    Auth::logout();
-    return redirect()->route('login');
-});
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-//Page product
-Route::prefix('/product')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('product');
-    Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
-    Route::post('/add', [ProductController::class, 'store'])->name('product.add');
-    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
-    Route::put('/update', [ProductController::class, 'update'])->name('product.update');
+// Admin
+Route::group(['middleware' => ['auth']], function () {
+    // Route Product
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('/', [ProductController::class, 'index'])->name('product');
+        Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+        Route::post('/add', [ProductController::class, 'store'])->name('product.add');
+        Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+        Route::put('/update', [ProductController::class, 'update'])->name('product.update');
+    });
+    // Route User
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', [UserController::class, 'index'])->name('user');
+        Route::get('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+        Route::post('/add', [UserController::class, 'store'])->name('user.add');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::put('/update', [UserController::class, 'update'])->name('user.update');
+    });
 });
-Route::get('/file', [ProductController::class, 'file']);
-Route::post('/upload', [ProductController::class, 'upload'])->name('upload');
