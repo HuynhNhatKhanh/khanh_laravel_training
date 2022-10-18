@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-        return view('welcome');
+    return view('welcome');
 });
 
 Route::get('/form', function () {
@@ -39,10 +39,6 @@ Route::get('/form', function () {
 });
 
 Route::get('/demo/sendmail', [DemoMailController::class, 'sendMail']);
-
-Auth::routes(['verify' => true]);
-
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('verified');
 
 // Route::get('/admin1/{age}', function () {
 //     return view('admin');
@@ -76,6 +72,23 @@ Route::post('/news/update', function () {
     return view('news.update');
 });
 
+//Page Auth
+Auth::routes(
+    [
+        'register' => false,
+        'verify' => false,
+        'reset' => false,
+    ]
+);
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+// ->middleware('verified')
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect()->route('login');
+});
+
+//Page product
 Route::prefix('/product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product');
     Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
@@ -83,5 +96,5 @@ Route::prefix('/product')->group(function () {
     Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/update', [ProductController::class, 'update'])->name('product.update');
 });
-Route:: get('/file', [ProductController::class, 'file']);
-Route:: post('/upload', [ProductController::class, 'upload'])->name('upload');
+Route::get('/file', [ProductController::class, 'file']);
+Route::post('/upload', [ProductController::class, 'upload'])->name('upload');
