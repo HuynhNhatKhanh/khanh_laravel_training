@@ -86,7 +86,7 @@ Auth::routes(
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 // ->middleware('verified')
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout']);
 
 // Admin
 Route::group(['middleware' => ['auth']], function () {
@@ -102,6 +102,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index'])->name('user');
         Route::get('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+        Route::post('/status', [UserController::class, 'status'])->name('user.status');
+        Route::post('/search', [UserController::class, 'search'])->name('user.search');
         Route::post('/add', [UserController::class, 'store'])->name('user.add');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
         Route::put('/update', [UserController::class, 'update'])->name('user.update');

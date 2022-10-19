@@ -67,6 +67,9 @@ $(document).ready(function() {
     $(document).on('click','.editbtn', function () {
         var prod_id = $(this).val();
         $('#editModal').modal('show');
+
+
+
         $.ajax({
             type: "GET",
             url: "/product/edit/"+prod_id,
@@ -84,5 +87,7 @@ $(document).ready(function() {
             }
         });
     });
+
+
 });
 

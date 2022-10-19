@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Khanh Training Laravel</title>
 
   <!-- Google Font: Source Sans Pro -->
@@ -18,6 +19,11 @@
   <link rel="stylesheet" href="{{url('backend')}}/dist/css/adminlte.min.css">
     <!-- Custom css-->
   <link rel="stylesheet" href="{{url('backend')}}/css/custom.css">
+
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link  href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <!-- Site wrapper -->
@@ -242,8 +248,11 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!--Custom js -->
 <script src="{{asset("backend/js/myScript.js")}}"></script>
+<script src="{{asset("backend/js/users.js")}}"></script>
 <!--CkEditor -->
 <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
     $(function () {
       $('.select2').select2()

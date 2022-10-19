@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Datatables;
 
 class UserController extends Controller
 {
@@ -24,7 +25,12 @@ class UserController extends Controller
     {
         $requestAll = $request->all();
         $items = $this->userRepository->getAllUser($requestAll);
-        return view('admin.pages.user.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
+
+        if ($request->ajax()) {
+            return response()->json(['status' => 200, 'users' => $items]);
+        }
+        return view('admin.pages.user.dashboard');
+        // return view('admin.pages.user.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -92,6 +98,40 @@ class UserController extends Controller
         //
     }
 
+    /**
+     * Delte the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $this->userRepository->delete($id);
+    }
+
+    /**
+     *
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function status(Request $request)
+    {
+        $requestAll = $request->all();
+        $this->userRepository->status($requestAll);
+    }
+
+    /**
+     *
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $requestAll = $request->all();
+        return $this->userRepository->search($requestAll);
+    }
 
     public function login(Request $request)
     {

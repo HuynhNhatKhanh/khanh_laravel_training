@@ -40,11 +40,11 @@
             </div>
             <div class="card-body">
                 <div class="row justify-content-between">
-                    <form action="" method="get" class="input-group justify-content-between">
+                    {{-- <form action="" method="get" class="input-group justify-content-between"> --}}
                     <div class="mb-1 col-3">
                         <p>Tên </p>
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" name="search" value="{{ $searchValue }}"
+                            <input type="text" class="form-control form-control-sm" id="name-search" name="nameSearch" value=""
                                 style="min-width: 300px">
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                         <p>Email</p>
                         <div class="input-group">
                             <input type="email" class="form-control form-control-sm" name="email"
-                                value="{{ $email }}" style="min-width: 100px">
+                            id="email-search" value="" style="min-width: 100px">
                         </div>
                     </div>
                     <div class="mb-1 col-2">
@@ -94,7 +94,7 @@
                             </div>
 
                     </div>
-                </form>
+                {{-- </form> --}}
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <form action="" method="post" class="table-responsive" id="form-table">
-    <table class="table table-bordered table-hover text-nowrap btn-table mb-0">
+    <table class="table table-bordered table-hover text-nowrap btn-table mb-0" id="users-table">
         <thead>
             <tr>
                 <th class="text-center">#</th>
@@ -10,8 +10,8 @@
                 <th class="text-center">Hành động</th>
             </tr>
         </thead>
-        <tbody>
-            @php
+        <tbody class="products-body">
+            {{-- @php
                 $page = 0;
                 if (isset($requestAll['page']) && $requestAll['page'] > 0) {
                     $page = ($requestAll['page'] - 1) * ($items->perPage());
@@ -47,8 +47,9 @@
                         </a>
                     </td>
                 </tr>
-            @endforeach
+            @endforeach --}}
 
         </tbody>
     </table>
 </form>
+
