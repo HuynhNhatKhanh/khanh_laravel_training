@@ -6,13 +6,16 @@ $(document).ready(function () {
         }
     });
 
+    // print list
     function showListUser(list){
         let xhtml = '';
         $('.products-body').empty();
+        let i = 0;
         list.forEach(function(element) {
+            i++;
             let group = (element.group_role).charAt(0).toUpperCase() + (element.group_role).slice(1);
             xhtml = '<tr>';
-            xhtml += '<td class="text-center">1</td>';
+            xhtml += '<td class="text-center">'+ i +'</td>';
             xhtml += '<td class="text-wrap img_hover" style="min-width: 60px">'+ element.name +'</td>';
             xhtml += '<td class="text-wrap" style="min-width: 60px">'+ element.email +'</td>';
             xhtml += '<td class="text-center"><span class="">'+ group +'</span></td>';
@@ -31,6 +34,7 @@ $(document).ready(function () {
         })
     }
 
+    // Get all user
     function getUser(){
         $.ajax({
             // type: "post",
@@ -44,6 +48,7 @@ $(document).ready(function () {
     };
     getUser();
 
+    // Get 1 user
     function getUserById(id){
         let user = null;
         $.ajax({
@@ -61,7 +66,7 @@ $(document).ready(function () {
         return user[0];
     }
 
-
+    //Delete user
     $('#users-table').on('click', '.btn-delete-user', function (e) {
         let id = $(this).data('id');
         let userData = getUserById(id);
@@ -101,6 +106,7 @@ $(document).ready(function () {
         })
     });
 
+    // Block/ Unblock user
     $('#users-table').on('click', '.btn-block-user', function (e) {
         let id = $(this).data('id');
         let status = $(this).data('status');
@@ -144,7 +150,8 @@ $(document).ready(function () {
         })
     });
 
-    $('#btn-search').click(function () {
+    // Search
+    function searchUser () {
         let name = $('#name-search').val();
         let email = $('#email-search').val();
         let role = $('#filter_role').val();
@@ -165,6 +172,23 @@ $(document).ready(function () {
                 }
             });
         };
+    }
+    $('#btn-search-user').click(function () {
+        searchUser();
+    });
+    $('#search-user').on('keydown', function(e) {
+        if (e.which == 13) {
+            searchUser();
+        }
+    });
+
+    // Clear search
+    $('#btn-clear-search-user').click(function () {
+        $('#name-search').val('');
+        $('#email-search').val('');
+        $('#filter_role').val('default');
+        $('#filter_status').val('default');
+        getUser();
     });
 
 

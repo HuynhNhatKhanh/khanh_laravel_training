@@ -216,6 +216,7 @@
 
 @yield('main')
 @include('admin.modal.product_modal')
+@include('admin.modal.user_modal')
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">

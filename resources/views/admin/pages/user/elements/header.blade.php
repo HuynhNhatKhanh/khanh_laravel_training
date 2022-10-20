@@ -29,7 +29,7 @@
 
     <div class="container-fluid">
         <!-- Search & Filter -->
-        <div class="card card-info card-outline">
+        <div class="card card-info card-outline" id="search-user">
             <div class="card-header">
                 <h6 class="card-title">Search & Filter</h6>
                 <div class="card-tools">
@@ -86,10 +86,10 @@
 
                             <div class="input-group mr-auto">
                                 <div class="input-group-append">
-                                    <a href="{{ route('user') }}" type="button" class="btn btn-sm btn-danger"
-                                        id="btn-clear-search">Clear</a>
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        id="btn-clear-search-user">Clear</button>
                                     <button type="submit" class="btn btn-sm btn-info"
-                                        id="btn-search">Search</button>
+                                        id="btn-search-user">Search</button>
                                 </div>
                             </div>
 
