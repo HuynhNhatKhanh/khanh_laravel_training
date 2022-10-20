@@ -83,9 +83,9 @@ class UserRepository implements UserRepositoryInterface
     //     return $this->product->where('product_id', $id)->get();
     // }
 
-    public function delete($id)
+    public function delete($requestAll)
     {
-        return $this->user->where('id', $id)->delete();
+        return $this->user->where('id', $requestAll['id'])->delete();
     }
 
     public function status($requestAll)
@@ -99,6 +99,11 @@ class UserRepository implements UserRepositoryInterface
         return $this->user->where("name", "LIKE", '%' . $requestAll['name'] . '%')
                             ->where("email", "LIKE", '%' . $requestAll['email'] . '%')
                             ->paginate(20);
+    }
+
+    public function getUser($requestAll)
+    {
+        return $this->user->where('id', $requestAll['id'])->get();
     }
     // public function store($request)
     // {

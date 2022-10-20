@@ -104,9 +104,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $this->userRepository->delete($id);
+        $requestAll = $request->all();
+        $this->userRepository->delete($requestAll);
     }
 
     /**
@@ -133,8 +134,10 @@ class UserController extends Controller
         return $this->userRepository->search($requestAll);
     }
 
-    public function login(Request $request)
+    public function getUser(Request $request)
     {
-        dd($request);
+        $requestAll = $request->all();
+        // return $requestAll;
+        return $this->userRepository->getUser($requestAll);
     }
 }

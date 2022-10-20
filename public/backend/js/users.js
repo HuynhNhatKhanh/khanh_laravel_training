@@ -31,7 +31,7 @@ $(document).ready(function () {
         })
     }
 
-    (function getUser(){
+    function getUser(){
         $.ajax({
             // type: "post",
             url: "user",
@@ -41,12 +41,32 @@ $(document).ready(function () {
                 showListUser(response.users.data)
             }
         });
-    })();
-    // getUser();
+    };
+    getUser();
+
+    function getUserById(id){
+        let user = null;
+        $.ajax({
+            type: "post",
+            url: "user/getdata",
+            data: {
+                id: id
+            },
+            //dataType: "json",
+            success: function (response) {
+                user = response;
+                //console.log(user);
+            }
+        });
+        console.log(user);
+        // return user;
+    }
 
 
     $('#users-table').on('click', '.btn-delete-user', function (e) {
         let id = $(this).data('id');
+        //getUserById(id);
+        //console.log(userData);
         e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
@@ -59,13 +79,13 @@ $(document).ready(function () {
           }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: 'user/delete/'+id,
-                    type: "get",
+                    url: 'user/delete',
+                    type: "post",
                     // type: "delete",
                     // async: false,
-                    // data: {
-                    //     id: id,
-                    // },
+                    data: {
+                        id: id,
+                    },
                     success: function (response) {
                         Swal.fire({
                             position: 'center-center',
