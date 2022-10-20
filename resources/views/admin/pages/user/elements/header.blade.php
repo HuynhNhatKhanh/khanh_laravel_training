@@ -58,7 +58,7 @@
                     <div class="mb-1 col-2">
                         <p style="">Nhóm</p>
                         <select id="filter_role" name="filter_role" class="custom-select custom-select-sm mr-1"
-                            style="width: 170px">
+                            style="min-width: 100px">
                             @foreach ($optionsRole as $key => $val)
                                 <option value="{{ $key }}" @selected($key == $filterRole)>
                                     {{ $val }}
@@ -69,7 +69,7 @@
                     <div class="mb-1 col-2">
                         <p style="">Trạng thái</p>
                         <select id="filter_status" name="filter_status" class="custom-select custom-select-sm mr-1"
-                            style="width: 170px">
+                            style="min-width: 100px">
                             @foreach ($optionsStatus as $key => $val)
                                 <option value="{{ $key }}" @selected($key == $filterStatus)>
                                     {{ $val }}

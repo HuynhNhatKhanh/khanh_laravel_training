@@ -49,28 +49,27 @@ $(document).ready(function () {
         $.ajax({
             type: "post",
             url: "user/getdata",
+            async: false,
             data: {
                 id: id
             },
             //dataType: "json",
             success: function (response) {
                 user = response;
-                //console.log(user);
             }
         });
-        console.log(user);
-        // return user;
+        return user[0];
     }
 
 
     $('#users-table').on('click', '.btn-delete-user', function (e) {
         let id = $(this).data('id');
-        //getUserById(id);
-        //console.log(userData);
+        let userData = getUserById(id);
+        // console.log(userData.name);
         e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
-            text: "Bạn có muốn xoá người dùng không?",
+            text: "Bạn có muốn xoá "+ userData.name +" không?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -90,7 +89,7 @@ $(document).ready(function () {
                         Swal.fire({
                             position: 'center-center',
                             icon: 'success',
-                            title: 'Xoá người dùng thành công',
+                            title: "Xoá "+ userData.name +" thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
@@ -133,7 +132,7 @@ $(document).ready(function () {
                         Swal.fire({
                             position: 'center-center',
                             icon: 'success',
-                            title: "Đã "+ nameStatus +"người dùng thành công",
+                            title: "Đã "+ nameStatus +" người dùng thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
@@ -148,13 +147,17 @@ $(document).ready(function () {
     $('#btn-search').click(function () {
         let name = $('#name-search').val();
         let email = $('#email-search').val();
-        if(name != '' || email != '') {
+        let role = $('#filter_role').val();
+        let status = $('#filter_status').val();
+        if(name != '' || email != '' || role != 'default'|| status != 'default') {
             $.ajax({
                 type: "post",
                 url: "user/search",
                 data: {
                     name: name,
-                    email: email
+                    email: email,
+                    role: role,
+                    status: status,
                 },
                 //dataType: "dataType",
                 success: function (response) {

@@ -47,35 +47,6 @@ class UserRepository implements UserRepositoryInterface
         // }
         //$query = $query->orderBy('updated_at', 'desc');
         return $query->paginate(20);
-        // return Datatables::of($data)
-        //         ->addIndexColumn()
-        //         ->addColumn(
-        //             'action',
-        //             function ($data) {
-        //                 $btn = '<button type="button" value="" class="rounded-circle btn btn-sm btn-info editbtn"
-        //                 title="Chỉnh sửa">
-        //                     <i class="fas fa-pencil-alt"></i>
-        //                     </button>';
-        //                 $btn .= '<a href="}" class="rounded-circle btn btn-sm btn-danger btn-delete"
-        //                     title="Xoá">
-        //                     <i class="fas fa-trash-alt"></i>
-        //                 </a>';
-        //                 $btn .= '<a href="" class="rounded-circle btn btn-sm btn-dark"
-        //                     title="Khoá thành viên">
-        //                     <i class="fas fa-user-times"></i>
-        //                 </a>';
-        //                 return $btn;
-        //             }
-        //         )
-        //         ->editColumn(
-        //             'is_active',
-        //             function ($data) {
-        //                 $data->is_active === 1 ? $status = 'Đang hoạt động' : $status = 'Tạm khóa';
-        //                 return $status;
-        //             }
-        //         )
-        //         ->rawColumns(['action'])
-        //         ->make(true);
     }
 
     // public function getProduct($id)
@@ -96,9 +67,16 @@ class UserRepository implements UserRepositoryInterface
 
     public function search($requestAll)
     {
-        return $this->user->where("name", "LIKE", '%' . $requestAll['name'] . '%')
-                            ->where("email", "LIKE", '%' . $requestAll['email'] . '%')
-                            ->paginate(20);
+        $querysearch = $this->user;
+        $querysearch =$querysearch->where("name", "LIKE", '%' . $requestAll['name'] . '%')
+                                ->where("email", "LIKE", '%' . $requestAll['email'] . '%');
+        if (isset($requestAll['role']) && $requestAll['role'] != 'default') {
+            $querysearch->where("group_role", '=', $requestAll['role']);
+        }
+        if (isset($requestAll['status']) && $requestAll['status'] != 'default') {
+            $querysearch->where("is_active", '=', $requestAll['status']);
+        }
+        return $querysearch->paginate(20);
     }
 
     public function getUser($requestAll)
