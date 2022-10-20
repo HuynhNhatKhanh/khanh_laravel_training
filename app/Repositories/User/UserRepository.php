@@ -90,8 +90,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function status($requestAll)
     {
-        $requestAll['is_active'] = ($requestAll['is_active'] === 1) ? 0 : 1;
-        return $this->user->where('id', $id)->update($requestAll);
+        $requestAll['status'] = ($requestAll['status'] == 1) ? 0 : 1;
+        return $this->user->where('id', $requestAll['id'])->update(['is_active' => $requestAll['status']]);
     }
 
     public function search($requestAll)

@@ -112,7 +112,7 @@ $(document).ready(function () {
         e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
-            text: "Bạn có "+ nameStatus +" xoá người dùng không?",
+            text: "Bạn có "+ nameStatus +" người dùng không?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -133,7 +133,7 @@ $(document).ready(function () {
                         Swal.fire({
                             position: 'center-center',
                             icon: 'success',
-                            title: 'Xoá người dùng thành công',
+                            title: "Đã "+ nameStatus +"người dùng thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
