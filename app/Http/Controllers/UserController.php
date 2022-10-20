@@ -49,8 +49,10 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AddUserRequest $request)
+    public function store(Request $request)
     {
+        $requestAll = $request->all();
+        return $this->userRepository->store($requestAll);
     }
 
     /**
@@ -70,9 +72,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $requestAll = $request->all();
+        return $this->userRepository->edit($id, $requestAll);
     }
 
     /**

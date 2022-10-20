@@ -13,7 +13,9 @@ $(document).ready(function () {
         let i = 0;
         list.forEach(function(element) {
             i++;
-            let group = (element.group_role).charAt(0).toUpperCase() + (element.group_role).slice(1);
+            //let group = (element.group_role).charAt(0).toUpperCase() + (element.group_role).slice(1);
+            let group = '';
+            group = (element.group_role);
             xhtml = '<tr>';
             xhtml += '<td class="text-center">'+ i +'</td>';
             xhtml += '<td class="text-wrap img_hover" style="min-width: 60px">'+ element.name +'</td>';
@@ -26,7 +28,7 @@ $(document).ready(function () {
             }
 
             xhtml += '<td class="text-center" >';
-            xhtml += '<button type="button" value="'+ element.id +'" class="rounded-circle btn btn-sm btn-info editbtn-user" title="Chỉnh sửa"><i class="fas fa-pencil-alt"></i></button>';
+            xhtml += '<button type="button" value="'+ element.id +'" class="rounded-circle btn btn-sm btn-info editbtn-user" title="Chỉnh sửa" data-id="'+ element.id +'"><i class="fas fa-pencil-alt"></i></button>';
             xhtml += '<button type="button" class="rounded-circle btn btn-sm btn-danger btn-delete-user"title="Xoá" data-id="'+ element.id +'" ><i class="fas fa-trash-alt"></i> </button>'
             xhtml += '<button class="rounded-circle btn btn-sm btn-dark btn-block-user" title="Khoá/Mở thành viên" data-id="'+ element.id +'" data-status="'+element.is_active+'"><i class="fas fa-user-times"></i></button> </td>'
             xhtml += '</tr>';
@@ -42,6 +44,7 @@ $(document).ready(function () {
             // data: "data",
             // dataType: "json",
             success: function (response) {
+                //console.log(response);
                 showListUser(response.users.data)
             }
         });
@@ -63,18 +66,18 @@ $(document).ready(function () {
                 user = response;
             }
         });
-        return user[0];
+        return user;
     }
 
     //Delete user
     $('#users-table').on('click', '.btn-delete-user', function (e) {
         let id = $(this).data('id');
         let userData = getUserById(id);
-        // console.log(userData.name);
+        //console.log(userData.is_delete);
         e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
-            text: "Bạn có muốn xoá "+ userData.name +" không?",
+            text: "Bạn có muốn xoá thành viên "+ userData.name +" không?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -89,12 +92,13 @@ $(document).ready(function () {
                     // async: false,
                     data: {
                         id: id,
+                        delete: userData.is_delete,
                     },
                     success: function (response) {
                         Swal.fire({
                             position: 'center-center',
                             icon: 'success',
-                            title: "Xoá "+ userData.name +" thành công",
+                            title: "Xoá thành viên "+ userData.name +" thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
@@ -117,7 +121,7 @@ $(document).ready(function () {
         e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
-            text: "Bạn có "+ nameStatus +" người dùng không?",
+            text: "Bạn có muốn "+ nameStatus +" người dùng không?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -191,5 +195,135 @@ $(document).ready(function () {
         getUser();
     });
 
+    //Show button submit
+    function showButtonSubmit(idButton) {
+        let button = '';
+        $('#show-button-submit').empty();
+        button = '<button id="'+ idButton +'"  class="btn btn-danger">Lưu</button>';
+        $('#show-button-submit').append(button);
+    }
 
-});
+    //Add user
+    $('#addNewUser').click(function () {
+        // $('#addUserButton').val("add-user");
+        $('#user-id').val('');
+        $('#addUserForm').trigger("reset");
+        $('#popupUserTitle').html("Thêm User");
+        $('#popupUser').modal('show');
+
+        showButtonSubmit('addUserButton');
+    });
+
+    $('#addUserButton').click(function (e) {
+        e.preventDefault();
+        let name = $('#addUserName').val();
+        let email = $('#addUserEmail').val();
+        let password = $('#addUserPassword').val();
+        let passwordConfirm = $('#addUserPasswordConfirm').val();
+        let role = $('#addUserRole').val();
+        let status = $('#addUserStatus').val();
+        // $(this).html('Sending..');
+
+        $.ajax({
+          data: {
+            name: name,
+            email: email,
+            password: password,
+            group_role: role,
+            is_active: status,
+          },
+          url: "user/add",
+          type: "post",
+          dataType: 'json',
+          success: function (response) {
+            //console.log(response);
+            //   $('#addUserForm').trigger("reset");
+            $('#popupUser').modal('hide');
+            //   table.draw();
+            Swal.fire({
+                position: 'center-center',
+                icon: 'success',
+                title: "Thêm người dùng thành công",
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                    getUser();
+                });
+
+          },
+            //   error: function (data) {
+            //       console.log('Error:', data);
+            //       $('#saveBtn').html('Save Changes');
+            //   }
+        });
+    });
+
+    $('#users-table').on('click', '.editbtn-user', function (e) {
+        let id = $(this).data('id');
+
+        showButtonSubmit('editUserButton');
+
+        $.ajax({
+            type: "post",
+            url: "user/getdata",
+            data:  {
+                id: id,
+            },
+            // dataType: "dataType",
+            success: function (response) {
+                // console.log(response);
+                $('#addUserButton').attr('id', 'editUserButton');
+
+                $('#addUserName').val(response.name);
+                $('#addUserEmail').val(response.email);
+                // $('#addUserPassword').val(response.password);
+                // $('#addUserPasswordConfirm').val(response.password);
+                $('#addUserRole').val(response.group_role);
+                $('#addUserStatus').val(response.is_active);
+
+                $('#popupUserTitle').html("Chỉnh sửa User");
+                $('#addUserButton').val("edit-user");
+                $('#user-id').val(response.id);
+                $('#popupUser').modal('show');
+            }
+        });
+    });
+
+    $('#addUserForm').on('click','#editUserButton', function (e) {
+        e.preventDefault();
+
+        let id = $('#user-id').val();
+        let name = $('#addUserName').val();
+        let email = $('#addUserEmail').val();
+        let password = $('#addUserPassword').val();
+        let passwordConfirm = $('#addUserPasswordConfirm').val();
+        let role = $('#addUserRole').val();
+        let status = $('#addUserStatus').val();
+        $.ajax({
+            type: "put",
+            url: "user/edit/"+id,
+            data:  {
+                name: name,
+                email: email,
+                password: password,
+                group_role: role,
+                is_active: status,
+            },
+            // dataType: "dataType",
+            success: function (response) {
+
+                $('#popupUser').modal('hide');
+                Swal.fire({
+                    position: 'center-center',
+                    icon: 'success',
+                    title: "Cập nhật dùng thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                        getUser();
+                    });
+            }
+        });
+    });
+
+ });

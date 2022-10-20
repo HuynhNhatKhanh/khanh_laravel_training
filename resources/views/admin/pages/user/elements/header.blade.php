@@ -80,7 +80,7 @@
                 </div>
                 <div class="row justify-content-between">
                     <div>
-                        <button type="button" class="btn btn-sm btn-success" id="" data-toggle="modal" data-target="#FormProductModal">Thêm mới</button>
+                        <button type="button" class="btn btn-sm btn-success" id="addNewUser" data-toggle="modal" >Thêm mới</button>
                     </div>
                     <div class="mb-1 ">
 

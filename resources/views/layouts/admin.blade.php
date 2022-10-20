@@ -12,7 +12,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{url('backend')}}/plugins/fontawesome-free/css/all.min.css">
     <!-- Select2 -->
-    <link rel="stylesheet" href="{{url('backend')}}plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{url('backend')}}/plugins/select2/css/select2.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{url('backend')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
@@ -238,7 +238,7 @@
 <!-- Bootstrap 4 -->
 <script src="{{url('backend')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
-<script src="{{url('backend')}}plugins/select2/js/select2.full.min.js"></script>
+<script src="{{url('backend')}}/plugins/select2/js/select2.full.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="{{url('backend')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
