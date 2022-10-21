@@ -28,8 +28,8 @@ class AddUserRequest extends FormRequest
             'email' => 'required|max:255|email:rfc,dns|unique:users',
             'password' => 'required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'required|min:5|same:password',
-            'group_role' => 'required|in:1,0',
-            // 'is_active' => 'required|in:admin,',
+            'group_role' => 'required|in:admin,reviewer, editor',
+            'is_active' => 'required|in:"1","0"',
         ];
     }
 
@@ -48,8 +48,8 @@ class AddUserRequest extends FormRequest
             "group_role.required" => "Vui lòng chọn nhóm",
             "group_role.in" => "Vui lòng chọn nhóm khác mặc định",
 
-            // "is_active.required" => "Vui lòng chọn trạng thái",
-            // "is_active.in" => "Vui lòng chọn trạng thái khác mặc định",
+            "is_active.required" => "Vui lòng chọn trạng thái",
+            "is_active.in" => "Vui lòng chọn trạng thái khác mặc định",
 
             "email.required" => "Email không được để trống",
             "email.email" => "Email không đúng định dạng",

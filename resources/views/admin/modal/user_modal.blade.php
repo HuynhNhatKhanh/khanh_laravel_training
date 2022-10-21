@@ -79,6 +79,7 @@
                                     <option value="0">Tạm khoá</option>
                                     <option value="1">Đang hoạt động</option>
                                 </select>
+                                <span id="is_active-err" class="error text-danger d-none"></span>
                             </div>
                          </div>
                          <div class="modal-footer">
