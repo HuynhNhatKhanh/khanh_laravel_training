@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddUserRequest extends FormRequest
+class EditUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,12 @@ class AddUserRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->request->get('id') ? ',' . $this->request->get('id') : '';
         return [
             'name' => 'required|min:5',
-            'email' => 'required|max:255|email:rfc,dns|unique:users',
-            'password' => 'required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
-            'password_confirm' => 'required|min:5|same:password',
+            'email' => 'required|max:255|email:rfc,dns|unique:users,email' . $id,
+            'password' => 'sometimes|required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+            'password_confirm' => 'sometimes|required|min:5|same:password',
             'group_role' => 'required',
         ];
     }
@@ -49,7 +50,8 @@ class AddUserRequest extends FormRequest
             "email.required" => "Email không được để trống",
             "email.email" => "Email không đúng định dạng",
             "email.exists" => "Email không tồn tại",
-            "email.unique" => "Email đã được đăng ký",
+            "email.unique" => "Email này đã được đăng ký",
+
             "email.max" => "Email quá dài",
 
             "password.required" => "Mật khẩu không được để trống",

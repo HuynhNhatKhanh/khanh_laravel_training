@@ -50,7 +50,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function getProduct($id)
     {
-        return $this->product->where('product_id', $id)->get();
+        return $this->product->where('product_id', $id)->first();
     }
 
     public function delete($id)

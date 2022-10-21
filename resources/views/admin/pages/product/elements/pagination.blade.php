@@ -3,13 +3,10 @@
     $perPage = $items->perPage();
     $currentPage = $items->currentPage();
     $count = $items->count();
-
 @endphp
 
 <div class=" d-flex row align-items-center ">
-    <div class="col-4">
-
-    </div>
+    <div class="col-4"></div>
     <div class="col-4" style="margin-bottom: -15px;">
         <div >
             @foreach ($items as $item)

@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Product Controller
+ *
+ * PHP version 8
+ *
+ * @category  Controllers
+ * @package   App
+ * @author    Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @license   https://opensource.org/licenses/MIT MIT License
+ * @link      http://localhost/
+ */
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddUserRequest;
@@ -9,6 +20,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Datatables;
 
+/**
+ * UserController class
+ *
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @author Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ */
 class UserController extends Controller
 {
     public function __construct(UserRepositoryInterface $userRepository)
@@ -25,12 +42,20 @@ class UserController extends Controller
     {
         $requestAll = $request->all();
         $items = $this->userRepository->getAllUser($requestAll);
-
+        // $pagination = view('admin.pages.user.elements.pagination', ['items' => $items])->render();
+        // // if ($request->ajax()) {
+        //     return response()->json(
+        //         [
+        //             'users' => $items,
+        //             'pagination' => $pagination
+        //         ]
+        //     );
+        // // };
+        // return view('admin.pages.user.dashboard');
         if ($request->ajax()) {
             return response()->json(['status' => 200, 'users' => $items]);
         }
         return view('admin.pages.user.dashboard');
-        // return view('admin.pages.user.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -49,7 +74,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddUserRequest $request)
     {
         $requestAll = $request->all();
         return $this->userRepository->store($requestAll);

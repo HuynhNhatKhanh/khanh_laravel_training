@@ -57,10 +57,6 @@ class ProductController extends Controller
      */
     public function create(CreateProductRequest $requestProduct, Request $request)
     {
-        dd($request->all());
-        // $requestAll = $request->all();
-        // $items = $this->productRepository->createProduct($requestAll);
-        // return view('admin.pages.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -113,7 +109,7 @@ class ProductController extends Controller
     public function edit($id)
     {
 
-        $productEdit = Product::where('product_id', $id)->get();
+        $productEdit = $this->productRepository->getProduct($id);
         return response()
             ->json(['status' => 200, 'product' => $productEdit]);
     }

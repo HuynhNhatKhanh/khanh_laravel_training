@@ -28,6 +28,17 @@ class UserRepository implements UserRepositoryInterface
 
     public function edit($id, $requestAll)
     {
+        // name: name,
+        // email: email,
+        // password: password,
+        // password_confirm: passwordConfirm,
+        // group_role: role,
+        // is_active: status,
+
+        unset($requestAll['password_confirm']);
+        // $dataUpdate = [
+        //     'name' => $requestAll['name'];
+        // ]
         return $this->user::where('id', $id)->update($requestAll);
     }
 

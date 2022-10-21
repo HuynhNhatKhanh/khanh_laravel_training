@@ -52,8 +52,7 @@
                             title="Chỉnh sửa">
                             <i class="fas fa-pencil-alt"></i>
                         </button>
-                        <a href="product/delete/{{$item['product_id']}}" class="rounded-circle btn btn-sm btn-danger btn-delete"
-                            title="Xoá">
+                        <a href="product/delete/{{$item['product_id']}}" class="rounded-circle btn btn-sm btn-danger btn-delete" title="Xoá">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

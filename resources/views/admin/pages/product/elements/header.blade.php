@@ -75,16 +75,14 @@
                         {{-- @include('admin.pages.elements.form') --}}
                     </div>
                     <div class="mb-1 ">
-
-                            <div class="input-group mr-auto">
-                                <div class="input-group-append">
-                                    <a href="{{ route('product') }}" type="button" class="btn btn-sm btn-danger"
-                                        id="btn-clear-search">Clear</a>
-                                    <button type="submit" class="btn btn-sm btn-info"
-                                        id="btn-search">Search</button>
-                                </div>
+                        <div class="input-group mr-auto">
+                            <div class="input-group-append">
+                                <a href="{{ route('product') }}" type="button" class="btn btn-sm btn-danger"
+                                    id="btn-clear-search">Clear</a>
+                                <button type="submit" class="btn btn-sm btn-info"
+                                    id="btn-search">Search</button>
                             </div>
-
+                        </div>
                     </div>
                 </form>
                 </div>

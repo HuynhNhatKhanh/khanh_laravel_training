@@ -22,7 +22,7 @@
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="text" class="form-control " name="addUserName" id="addUserName"
                                      placeholder="Nhập họ tên">
-                                 {{-- <span id="name-err" class="error text-danger d-none"></span> --}}
+                                 <span id="name-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group">
@@ -30,7 +30,7 @@
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="email" class="form-control " name="addUserEmail" id="addUserEmail"
                                      placeholder="Nhập email">
-                                 {{-- <span id="email-err" class="error text-danger d-none"></span> --}}
+                                 <span id="email-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group">
@@ -38,7 +38,7 @@
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="password" class="form-control " name="addUserPassword"
                                      id="addUserPassword" placeholder="Mật khẩu">
-                                 {{-- <span id="password-err" class="error text-danger d-none"></span> --}}
+                                 <span id="password-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group">
@@ -46,7 +46,7 @@
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="password" class="form-control " name="addUserPassword"
                                      id="addUserPasswordConfirm" placeholder="Xác nhận mật khẩu">
-                                 {{-- <span id="password_confirmation-err" class="error text-danger d-none"></span> --}}
+                                 <span id="password_confirma-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group">

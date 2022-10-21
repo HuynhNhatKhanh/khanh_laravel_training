@@ -39,12 +39,10 @@ $(document).ready(function () {
     // Get all user
     function getUser(){
         $.ajax({
-            // type: "post",
+            type: "get",
             url: "user",
-            // data: "data",
-            // dataType: "json",
+            async: false,
             success: function (response) {
-                //console.log(response);
                 showListUser(response.users.data)
             }
         });
@@ -73,7 +71,6 @@ $(document).ready(function () {
     $('#users-table').on('click', '.btn-delete-user', function (e) {
         let id = $(this).data('id');
         let userData = getUserById(id);
-        //console.log(userData.is_delete);
         e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
@@ -88,8 +85,6 @@ $(document).ready(function () {
                 $.ajax({
                     url: 'user/delete',
                     type: "post",
-                    // type: "delete",
-                    // async: false,
                     data: {
                         id: id,
                         delete: userData.is_delete,
@@ -132,8 +127,6 @@ $(document).ready(function () {
                 $.ajax({
                     url: 'user/status',
                     type: "post",
-                    // type: "delete",
-                    // async: false,
                     data: {
                         id: id,
                         status: status,
@@ -170,7 +163,6 @@ $(document).ready(function () {
                     role: role,
                     status: status,
                 },
-                //dataType: "dataType",
                 success: function (response) {
                     showListUser(response.data);
                 }
@@ -203,18 +195,19 @@ $(document).ready(function () {
         $('#show-button-submit').append(button);
     }
 
-    //Add user
+    //Click button Thêm mới
     $('#addNewUser').click(function () {
-        // $('#addUserButton').val("add-user");
-        $('#user-id').val('');
+        // $('#user-id').val('');
         $('#addUserForm').trigger("reset");
         $('#popupUserTitle').html("Thêm User");
         $('#popupUser').modal('show');
 
         showButtonSubmit('addUserButton');
+        clearErrorsMessage();
     });
 
-    $('#addUserButton').click(function (e) {
+    //Click button Lưu
+    $('#addUserForm').on('click','#addUserButton',function (e) {
         e.preventDefault();
         let name = $('#addUserName').val();
         let email = $('#addUserEmail').val();
@@ -222,73 +215,77 @@ $(document).ready(function () {
         let passwordConfirm = $('#addUserPasswordConfirm').val();
         let role = $('#addUserRole').val();
         let status = $('#addUserStatus').val();
-        // $(this).html('Sending..');
-
         $.ajax({
-          data: {
-            name: name,
-            email: email,
-            password: password,
-            group_role: role,
-            is_active: status,
-          },
-          url: "user/add",
-          type: "post",
-          dataType: 'json',
-          success: function (response) {
-            //console.log(response);
-            //   $('#addUserForm').trigger("reset");
-            $('#popupUser').modal('hide');
-            //   table.draw();
-            Swal.fire({
-                position: 'center-center',
-                icon: 'success',
-                title: "Thêm người dùng thành công",
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                    getUser();
-                });
+            data: {
+                name: name,
+                email: email,
+                password: password,
+                password_confirm: passwordConfirm,
+                group_role: role,
+                is_active: status,
+            },
+            url: "user/add",
+            type: "post",
+            dataType: 'json',
+            success: function (response) {
+                $('#popupUser').modal('hide');
+                Swal.fire({
+                    position: 'center-center',
+                    icon: 'success',
+                    title: "Thêm người dùng thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                        getUser();
+                    });
 
-          },
-            //   error: function (data) {
-            //       console.log('Error:', data);
-            //       $('#saveBtn').html('Save Changes');
-            //   }
+            },
+            error: function (responseError) {
+                $.each(responseError.responseJSON.errors, function (name, message) {
+                    $("#" + name + '-err').html(message[0]);
+                    $("#" + name + '-err').removeClass('d-none');
+                });
+            },
+            beforeSend: function () {
+                clearErrorsMessage();
+            },
         });
     });
 
-    $('#users-table').on('click', '.editbtn-user', function (e) {
+    function clearErrorsMessage() {
+        $("#name-err").empty();
+        $("#email-err").empty();
+        $("#password-err").empty();
+        $("#password_confirm-err").empty();
+        $("#status-err").empty();
+        $("#group_role-err").empty();
+    }
+
+    // Click button edit user
+    $('#users-table').on('click', '.editbtn-user', function () {
         let id = $(this).data('id');
-
         showButtonSubmit('editUserButton');
-
+        clearErrorsMessage();
         $.ajax({
             type: "post",
             url: "user/getdata",
             data:  {
                 id: id,
             },
-            // dataType: "dataType",
             success: function (response) {
-                // console.log(response);
-                $('#addUserButton').attr('id', 'editUserButton');
-
                 $('#addUserName').val(response.name);
                 $('#addUserEmail').val(response.email);
-                // $('#addUserPassword').val(response.password);
-                // $('#addUserPasswordConfirm').val(response.password);
                 $('#addUserRole').val(response.group_role);
                 $('#addUserStatus').val(response.is_active);
 
                 $('#popupUserTitle').html("Chỉnh sửa User");
-                $('#addUserButton').val("edit-user");
                 $('#user-id').val(response.id);
                 $('#popupUser').modal('show');
             }
         });
     });
 
+    // Click button Lưu trong modal edit
     $('#addUserForm').on('click','#editUserButton', function (e) {
         e.preventDefault();
 
@@ -306,23 +303,33 @@ $(document).ready(function () {
                 name: name,
                 email: email,
                 password: password,
+                password_confirm: passwordConfirm,
                 group_role: role,
                 is_active: status,
             },
-            // dataType: "dataType",
             success: function (response) {
-
                 $('#popupUser').modal('hide');
                 Swal.fire({
                     position: 'center-center',
                     icon: 'success',
-                    title: "Cập nhật dùng thành công",
+                    title: "Cập nhật người dùng thành công",
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
                         getUser();
                     });
-            }
+            },
+            error: function (responseError) {
+                $.each(responseError.responseJSON.errors, function (name, message) {
+                    console.log(name);
+                    console.log(message);
+                    $("#" + name + '-err').html(message[0]);
+                    $("#" + name + '-err').removeClass('d-none');
+                });
+            },
+            beforeSend: function () {
+                clearErrorsMessage();
+            },
         });
     });
 

@@ -68,21 +68,18 @@ $(document).ready(function() {
         var prod_id = $(this).val();
         $('#editModal').modal('show');
 
-
-
         $.ajax({
             type: "GET",
             url: "/product/edit/"+prod_id,
             success: function (response) {
-                console.log(response.product['0']);
-                var prod_img = 'storage/backend/images/product/'+response.product['0'].product_image;
-                $('#edit_product_name').val(response.product['0'].product_name);
-                $('#edit_product_price').val(response.product['0'].product_price);
+                var prod_img = 'storage/backend/images/product/'+response.product.product_image;
+                $('#edit_product_name').val(response.product.product_name);
+                $('#edit_product_price').val(response.product.product_price);
                 $('#edit_product_image').attr('src', prod_img);
-                $('#edit_product_ordering').val(response.product['0'].ordering);
-                $('#edit_product_status').val(response.product['0'].is_sales);
-                $('#edit_product_description').val(response.product['0'].description);
-                $('#prod_id').val(response.product['0'].product_id);
+                $('#edit_product_ordering').val(response.product.ordering);
+                $('#edit_product_status').val(response.product.is_sales);
+                $('#edit_product_description').val(response.product.description);
+                $('#prod_id').val(response.product.product_id);
 
             }
         });
