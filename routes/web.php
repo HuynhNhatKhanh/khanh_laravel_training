@@ -35,46 +35,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/form', function () {
-    return view('layouts.form');
-});
-
-Route::get('/demo/sendmail', [DemoMailController::class, 'sendMail']);
-
-// Route::get('/admin1/{age}', function () {
-//     return view('admin');
-// })->middleware('CheckAge');
-
-Route::middleware('CheckAge')->group(function () {
-    Route::get('/admin1/{age}', function () {
-        return view('admin');
-    });
-});
-
-Route::middleware('auth', 'CheckRole:Subcriber')->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-});
-
-// Route::get('/user', [UserController::class, 'index']);
-// Route::post('/user/login', [UserController::class, 'login']);
-
-Route::get('/adminbackend', function () {
-    return view('layouts.admin');
-});
-Route::get('/adminbackend/dashboard', function () {
-    return view('admin.dashboard');
-});
-
-Route::get('/formajax', function () {
-    return view('news.price');
-});
-
-Route::post('/news/update', function () {
-    return view('news.update');
-});
-Route::get('/file', [ProductController::class, 'file']);
-Route::post('/upload', [ProductController::class, 'upload'])->name('upload');
-
 //Page Auth
 Auth::routes(
     [
@@ -83,10 +43,10 @@ Auth::routes(
         'reset' => false,
     ]
 );
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 // ->middleware('verified')
 Route::get('/logout', [LoginController::class, 'logout']);
+Route::post('user/login', [LoginController::class, 'login']);
 
 // Admin
 Route::group(['middleware' => ['auth']], function () {

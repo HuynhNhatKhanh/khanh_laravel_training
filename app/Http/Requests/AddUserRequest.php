@@ -28,7 +28,7 @@ class AddUserRequest extends FormRequest
             'email' => 'required|max:255|email:rfc,dns|unique:users',
             'password' => 'required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'required|min:5|same:password',
-            'group_role' => 'required|in:admin,reviewer, editor',
+            'group_role' => 'required|in:admin,reviewer,editor',
             'is_active' => 'required|in:"1","0"',
         ];
     }
@@ -63,7 +63,7 @@ class AddUserRequest extends FormRequest
 
             "password_confirm.required" => "Xác nhận mật khẩu",
             "password_confirm.min" => "Mật khẩu phải lớn hơn 5 ký tự",
-            "password_confirm.same" => "Mật khẩu và xác nhận mật khẩu không chính xác",
+            "password_confirm.same" => "Xác nhận mật khẩu không trùng khớp",
 
         ];
     }

@@ -6,6 +6,55 @@ $(document).ready(function () {
         }
     });
 
+    //Login
+    $('#form-login').submit( function(e) {
+        e.preventDefault();
+        let formInput = $(this).serialize();
+
+        axios.post('user/login', formInput)
+          .then(function (response) {
+            if (response.data.status == true) {
+                window.location.href = 'product';
+            }
+            if (response.data.status == false) {
+                $("#password-error").html(response.data.message);
+                $("#password-error").removeClass('d-none');
+            }
+          })
+          .catch(function (error) {
+            let arrError = error.response.data.errors;
+            $.each(arrError, function (name, message){
+                $("#" + name + '-error').html(message[0]);
+                $("#" + name + '-error').removeClass('d-none');
+            });
+
+        });
+
+        // $.ajax({
+        //     type: 'post',
+        //     url: "user/login",
+        //     data: formInput.serialize(),
+        //     beforeSend: function () {
+        //         clearErrorsMessageLogin();
+        //     },
+        //     success: function (response) {
+        //         if (response.status == true) {
+        //             window.location.href = 'product';
+        //         }
+        //         if (response.status == false) {
+        //             $("#password-error").html(response.message);
+        //             $("#password-error").removeClass('d-none');
+        //         }
+        //     },
+        //     error: function (responseError) {
+        //         $.each(responseError.responseJSON.errors, function (name, message) {
+        //             $("#" + name + '-error').html(message[0]);
+        //             $("#" + name + '-error').removeClass('d-none');
+        //         });
+        //     },
+        // });
+    });
+
     // print list
     function showListUser(list){
         let xhtml = '';
@@ -172,7 +221,7 @@ $(document).ready(function () {
     $('#btn-search-user').click(function () {
         searchUser();
     });
-    $('#search-user').on('keydown', function(e) {
+    $('#search-user').on('keyup', function(e) {
         if (e.which == 13) {
             searchUser();
         }
@@ -228,19 +277,21 @@ $(document).ready(function () {
             type: "post",
             dataType: 'json',
             success: function (response) {
-                $('#popupUser').modal('hide');
-                Swal.fire({
-                    position: 'center-center',
-                    icon: 'success',
-                    title: "Thêm người dùng thành công",
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                        getUser();
-                    });
-
+                if(response.status == true) {
+                    $('#popupUser').modal('hide');
+                    Swal.fire({
+                        position: 'center-center',
+                        icon: 'success',
+                        title: "Thêm người dùng thành công",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                            getUser();
+                        });
+                }
             },
             error: function (responseError) {
+                console.log(responseError);
                 $.each(responseError.responseJSON.errors, function (name, message) {
                     $("#" + name + '-err').html(message[0]);
                     $("#" + name + '-err').removeClass('d-none');
@@ -257,8 +308,13 @@ $(document).ready(function () {
         $("#email-err").empty();
         $("#password-err").empty();
         $("#password_confirm-err").empty();
-        $("#status-err").empty();
+        $("#is_active-err").empty();
         $("#group_role-err").empty();
+    }
+
+    function clearErrorsMessageLogin() {
+        $("#email-error").empty();
+        $("#password-error").empty();
     }
 
     // Click button edit user
@@ -308,16 +364,20 @@ $(document).ready(function () {
                 is_active: status,
             },
             success: function (response) {
-                $('#popupUser').modal('hide');
-                Swal.fire({
-                    position: 'center-center',
-                    icon: 'success',
-                    title: "Cập nhật người dùng thành công",
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                        getUser();
-                    });
+                console.log(response);
+                if(response.status == true) {
+                    $('#popupUser').modal('hide');
+                    Swal.fire({
+                        position: 'center-center',
+                        icon: 'success',
+                        title: "Cập nhật người dùng thành công",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                            getUser();
+                        });
+                }
+
             },
             error: function (responseError) {
                 $.each(responseError.responseJSON.errors, function (name, message) {

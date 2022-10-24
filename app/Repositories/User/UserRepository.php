@@ -23,23 +23,26 @@ class UserRepository implements UserRepositoryInterface
 
     public function store($requestAll)
     {
-        return $this->user::create($requestAll);
+        $dataCreate = [
+            'name' => $requestAll['name'],
+            'email' => $requestAll['email'],
+            'password' => $requestAll['password'],
+            'group_role' => $requestAll['group_role'],
+            'is_active' => $requestAll['is_active'],
+        ];
+        return $this->user::create($dataCreate);
     }
 
     public function edit($id, $requestAll)
     {
-        // name: name,
-        // email: email,
-        // password: password,
-        // password_confirm: passwordConfirm,
-        // group_role: role,
-        // is_active: status,
-
-        unset($requestAll['password_confirm']);
-        // $dataUpdate = [
-        //     'name' => $requestAll['name'];
-        // ]
-        return $this->user::where('id', $id)->update($requestAll);
+        $dataUpdate = [
+            'name' => $requestAll['name'],
+            'email' => $requestAll['email'],
+            'password' => $requestAll['password'],
+            'group_role' => $requestAll['group_role'],
+            'is_active' => $requestAll['is_active'],
+        ];
+        return $this->user::where('id', $id)->update($dataUpdate);
     }
 
     public function delete($requestAll)

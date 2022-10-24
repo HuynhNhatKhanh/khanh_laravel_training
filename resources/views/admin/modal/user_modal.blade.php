@@ -46,7 +46,7 @@
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="password" class="form-control " name="addUserPassword"
                                      id="addUserPasswordConfirm" placeholder="Xác nhận mật khẩu">
-                                 <span id="password_confirma-err" class="error text-danger d-none"></span>
+                                 <span id="password_confirm-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group">

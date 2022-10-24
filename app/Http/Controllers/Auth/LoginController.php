@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
+use session;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AddUserRequest;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use session;
 
 class LoginController extends Controller
 {
@@ -48,42 +50,22 @@ class LoginController extends Controller
         $this->now = date_format(Carbon::now('Asia/Ho_Chi_Minh'), 'Y/m/d:H-i-s');
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        // Rules validate
-        $rules = [
-            'email'    => 'required|email|exists:users,email',
-            'password' => 'required|min:6'
-        ];
-        // Error messages
-        $messages = [
-            "email.required" => "Email không được để trống",
-            "email.email"    => "Email không đúng định dạng",
-            "email.exists"   => "Email không tồn tại",
-
-            "password.required" => "Mật khẩu không được để trống",
-            "password.min"      => "Mật khẩu phải lớn hơn 6 ký tự",
-        ];
-        // Validate the form data
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        // Attempt to log
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+            $request->session()->put('userInfo', $request->input());
+            $this->user->where('email', $request->email)
+                        ->update([
+                            'last_login_at' => $this->now,
+                            'last_login_ip' => $request->ip(),
+                        ]);
+            return $this->successResponse('', $message = 'Kiểm tra đăng nhập chính xác');
+            // return redirect()->intended(route('user'));
         } else {
-            // Attempt to log
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-                $request->session()->put('userInfo', $request->input());
-                $this->user
-                    ->where('email', $request->email)
-                    ->update([
-                        'last_login_at' => $this->now,
-                        'last_login_ip' => $request->ip()
-                    ]);
-                return redirect()->intended(route('product'));
-            }
-            // If unsuccessful -> redirect back
-            return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['password' => 'Mật khẩu không chính xác.']);
+            return $this->errorResponse($message = 'Mật khẩu không chính xác');
         }
+        // return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['password' => 'Mật khẩu không chính xác.']);
     }
 
     public function logout(Request $request)

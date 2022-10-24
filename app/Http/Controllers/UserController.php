@@ -13,12 +13,13 @@
  */
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddUserRequest;
-use App\Models\User;
-use App\Repositories\User\UserRepositoryInterface;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Datatables;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\AddUserRequest;
+use App\Repositories\User\UserRepositoryInterface;
 
 /**
  * UserController class
@@ -76,8 +77,13 @@ class UserController extends Controller
      */
     public function store(AddUserRequest $request)
     {
-        $requestAll = $request->all();
-        return $this->userRepository->store($requestAll);
+        try {
+            $requestAll = $request->all();
+            $this->userRepository->store($requestAll);
+            return $this->successResponse('', $message = 'Thêm user thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Lỗi');
+        }
     }
 
     /**
@@ -99,8 +105,14 @@ class UserController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $requestAll = $request->all();
-        return $this->userRepository->edit($id, $requestAll);
+        try {
+            $requestAll = $request->all();
+            $this->userRepository->edit($id, $requestAll);
+            return $this->successResponse('', $message = 'Chỉnh sửa user thành công');
+        } catch (\Exception $e) {
+            Log::info($e);
+            return $this->errorResponse($message = 'Lỗi');
+        }
     }
 
     /**
