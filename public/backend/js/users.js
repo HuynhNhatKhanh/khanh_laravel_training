@@ -12,7 +12,7 @@ $(document).ready(function () {
         e.preventDefault();
         let formInput = $(this).serialize();
 
-        axios.post('user/login', formInput)
+        axios.post('user/checkLogin', formInput)
             .then(function (response) {
                 if (response.data.status == true) {
                     window.location.href = 'product';
@@ -219,6 +219,9 @@ $(document).ready(function () {
     $('#users-table').on('click', '.btn-block-user', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
+
+        console.log(getUserById1)
+
         let status = getUserById(id).is_active;
         let nameStatus = 'Mở khoá';
         if (status === 1){

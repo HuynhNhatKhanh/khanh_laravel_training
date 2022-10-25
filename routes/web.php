@@ -31,25 +31,18 @@ use App\Http\Controllers\Auth\LoginController;
 |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Use Route of Auth
+Auth::routes();
 
-//Page Auth
-Auth::routes(
-    [
-        'register' => false,
-        'verify' => false,
-        'reset' => false,
-    ]
-);
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-// ->middleware('verified')
-Route::get('/logout', [LoginController::class, 'logout']);
-Route::post('user/login', [LoginController::class, 'login']);
+// Check Login
+Route::post('user/checkLogin', [LoginController::class, 'login']);
 
-// Admin
+// Admin middleware auth
 Route::group(['middleware' => ['auth']], function () {
+    //Route Home
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    // Route Logout
+    Route::get('/logout', [LoginController::class, 'logout']);
     // Route Product
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('product');
