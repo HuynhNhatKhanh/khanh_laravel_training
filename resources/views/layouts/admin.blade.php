@@ -2,28 +2,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <title>Khanh Training Laravel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>Khanh Training Laravel</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{url('backend')}}/plugins/fontawesome-free/css/all.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{url('backend')}}/plugins/fontawesome-free/css/all.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{url('backend')}}/plugins/select2/css/select2.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="{{url('backend')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{url('backend')}}/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{url('backend')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{url('backend')}}/dist/css/adminlte.min.css">
     <!-- Custom css-->
-  <link rel="stylesheet" href="{{url('backend')}}/css/custom.css">
+    <link rel="stylesheet" href="{{url('backend')}}/css/custom.css">
+    <!--datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
 
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link  href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <!-- Site wrapper -->
@@ -233,31 +233,34 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="{{url('backend')}}/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="{{url('backend')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Select2 -->
-<script src="{{url('backend')}}/plugins/select2/js/select2.full.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="{{url('backend')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="{{url('backend')}}/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{url('backend')}}/dist/js/demo.js"></script>
-<!--SweetAlert2 -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!--Custom js -->
-<script src="{{asset("backend/js/myScript.js")}}"></script>
-<script src="{{asset("backend/js/users.js")}}"></script>
-<!--CkEditor -->
-<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
-
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script>
-    $(function () {
-      $('.select2').select2()
-    });
-</script>
+    <!-- jQuery -->
+    <script src="{{url('backend')}}/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{{url('backend')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="{{url('backend')}}/plugins/select2/js/select2.full.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="{{url('backend')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="{{url('backend')}}/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{url('backend')}}/dist/js/demo.js"></script>
+    <!--SweetAlert2 -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--Custom js -->
+    <script src="{{asset("backend/js/myScript.js")}}"></script>
+    <script src="{{asset("backend/js/users.js")}}"></script>
+    <!--CkEditor -->
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <!--datatables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <!--Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>
 </body>
 </html>

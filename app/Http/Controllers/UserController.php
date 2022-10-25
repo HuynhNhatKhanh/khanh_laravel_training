@@ -42,7 +42,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $requestAll = $request->all();
-        $items = $this->userRepository->getAllUser($requestAll);
+        // $items = $this->userRepository->getAllUser($requestAll);
+        if ($request->ajax()) {
+            return $this->userRepository->getAllUser($requestAll);
+        }
         // $pagination = view('admin.pages.user.elements.pagination', ['items' => $items])->render();
         // // if ($request->ajax()) {
         //     return response()->json(
@@ -53,9 +56,10 @@ class UserController extends Controller
         //     );
         // // };
         // return view('admin.pages.user.dashboard');
-        if ($request->ajax()) {
-            return response()->json(['status' => 200, 'users' => $items]);
-        }
+
+        // if ($request->ajax()) {
+        //     return response()->json(['status' => 200, 'users' => $items]);
+        // }
         return view('admin.pages.user.dashboard');
     }
 
@@ -146,8 +150,13 @@ class UserController extends Controller
      */
     public function delete(Request $request)
     {
-        $requestAll = $request->all();
-        $this->userRepository->delete($requestAll);
+        try {
+            $requestAll = $request->all();
+            $data =  $this->userRepository->delete($requestAll);
+            return $this->successResponse($data, $message = 'Xoá người dùng thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
     }
 
     /**
@@ -158,8 +167,13 @@ class UserController extends Controller
      */
     public function status(Request $request)
     {
-        $requestAll = $request->all();
-        $this->userRepository->status($requestAll);
+        try {
+            $requestAll = $request->all();
+            $data = $this->userRepository->status($requestAll);
+            return $this->successResponse($data, $message = 'Thay đổi trạng thái User thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
     }
 
     /**

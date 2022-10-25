@@ -5,6 +5,7 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    const dataSearch = { load: 'index' };
 
     //Login
     $('#form-login').submit( function(e) {
@@ -12,47 +13,24 @@ $(document).ready(function () {
         let formInput = $(this).serialize();
 
         axios.post('user/login', formInput)
-          .then(function (response) {
-            if (response.data.status == true) {
-                window.location.href = 'product';
-            }
-            if (response.data.status == false) {
-                $("#password-error").html(response.data.message);
-                $("#password-error").removeClass('d-none');
-            }
-          })
-          .catch(function (error) {
-            let arrError = error.response.data.errors;
-            $.each(arrError, function (name, message){
-                $("#" + name + '-error').html(message[0]);
-                $("#" + name + '-error').removeClass('d-none');
-            });
-
+            .then(function (response) {
+                if (response.data.status == true) {
+                    window.location.href = 'product';
+                }
+                if (response.data.status == false) {
+                    $("#password-error").html(response.data.message);
+                    $("#password-error").removeClass('d-none');
+                }
+            })
+            .catch(function (error) {
+                $("#email-error").empty();
+                $("#password-error").empty();
+                let arrError = error.response.data.errors;
+                $.each(arrError, function (name, message){
+                    $("#" + name + '-error').html(message[0]);
+                    $("#" + name + '-error').removeClass('d-none');
+            })
         });
-
-        // $.ajax({
-        //     type: 'post',
-        //     url: "user/login",
-        //     data: formInput.serialize(),
-        //     beforeSend: function () {
-        //         clearErrorsMessageLogin();
-        //     },
-        //     success: function (response) {
-        //         if (response.status == true) {
-        //             window.location.href = 'product';
-        //         }
-        //         if (response.status == false) {
-        //             $("#password-error").html(response.message);
-        //             $("#password-error").removeClass('d-none');
-        //         }
-        //     },
-        //     error: function (responseError) {
-        //         $.each(responseError.responseJSON.errors, function (name, message) {
-        //             $("#" + name + '-error').html(message[0]);
-        //             $("#" + name + '-error').removeClass('d-none');
-        //         });
-        //     },
-        // });
     });
 
     // print list
@@ -85,20 +63,86 @@ $(document).ready(function () {
         })
     }
 
+    // Get data user
+    // function getDataUser() {
+    //     $.ajax({
+    //         type: "get",
+    //         url: "url",
+    //         // success: function (response) {
+
+    //         // }
+    //     });
+    // }
+
     // Get all user
     function getUser(){
-        $.ajax({
-            type: "get",
-            url: "user",
-            async: false,
-            success: function (response) {
-                showListUser(response.users.data)
-            }
+
+        $('#users-table').DataTable({
+            createdRow: function (row, data) {
+                if (data['is_active'] == 'Đang hoạt động') {
+                    $('td', row).eq(4).addClass('text-success');
+                } else {
+                    $('td', row).eq(4).addClass('text-danger');
+                }
+            },
+            ajax: {
+                url: 'user',
+                type: "GET",
+                data: dataSearch,
+            },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center' },
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+                { data: 'group_role', name: 'group_role', className: 'text-center' },
+                { data: 'is_active', name: 'is_active', className: 'text-center' },
+                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
+            ],
+            language: {
+                processing: "Đang tải dữ liệu, chờ tí",
+                lengthMenu: "Điều chỉnh số lượng bản ghi trên 1 trang ~ _MENU_ ",
+                info: "Hiển thị từ _START_ ~ _END_ trong tổng số _TOTAL_ user",
+                infoEmpty: "Không có dữ liệu",
+                emptyTable: "Không có dữ liệu",
+                paginate: {
+                    first: "Trang đầu",
+                    previous: "Trang trước",
+                    next: "Trang sau",
+                    last: "Trang cuối"
+                },
+            },
+            ordering:  false,
+            searching: false,
+            paging: false,
+            info: false,
+            destroy: true,
         });
     };
+    // $.ajax({
+    //     type: "get",
+    //     url: "user",
+    //     async: false,
+    //     success: function (response) {
+    //         console.log(response);
+    //         // showListUser(response.users.data)
+    //     }
+    // });
     getUser();
 
     // Get 1 user
+    async function getUserById1(id){
+        user = null;
+        await axios.post('user/getdata', {
+                id: id
+            })
+            .then(function (response) {
+                user = response;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            return user;
+        }
     function getUserById(id){
         let user = null;
         $.ajax({
@@ -118,12 +162,12 @@ $(document).ready(function () {
 
     //Delete user
     $('#users-table').on('click', '.btn-delete-user', function (e) {
+        e.preventDefault();
         let id = $(this).data('id');
         let userData = getUserById(id);
-        e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
-            text: "Bạn có muốn xoá thành viên "+ userData.name +" không?",
+            text: "Bạn có muốn xoá thành viên [ "+ userData.name +" ] không?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -131,38 +175,55 @@ $(document).ready(function () {
             confirmButtonText: 'OK!'
           }).then((result) => {
             if (result.isConfirmed) {
-                $.ajax({
-                    url: 'user/delete',
-                    type: "post",
-                    data: {
-                        id: id,
-                        delete: userData.is_delete,
-                    },
-                    success: function (response) {
+                axios.post('user/delete',{
+                    id: id,
+                    delete: userData.is_delete,
+                })
+                .then(function (response) {
+                    if(response.data.data === 1) {
                         Swal.fire({
                             position: 'center-center',
                             icon: 'success',
-                            title: "Xoá thành viên "+ userData.name +" thành công",
+                            title: "Xoá thành viên [ "+ userData.name +" ] thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
                                 getUser();
                             });
+                    } else {
+                        Swal.fire({
+                            title: 'Lỗi!',
+                            text: "Hành động không thành công?",
+                            icon: 'warning',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'OK!'
+                        }).then(() => {
+                            getUser();
+                        });
                     }
-                });
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        // text: "Hành động không thành công?",
+                        icon: 'warning',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'OK!'
+                    })
+                })
             }
         })
     });
 
     // Block/ Unblock user
     $('#users-table').on('click', '.btn-block-user', function (e) {
+        e.preventDefault();
         let id = $(this).data('id');
-        let status = $(this).data('status');
+        let status = getUserById(id).is_active;
         let nameStatus = 'Mở khoá';
         if (status === 1){
             nameStatus = 'Khoá';
         }
-        e.preventDefault();
         Swal.fire({
             title: 'Nhắc nhở!',
             text: "Bạn có muốn "+ nameStatus +" người dùng không?",
@@ -173,25 +234,60 @@ $(document).ready(function () {
             confirmButtonText: 'OK!'
           }).then((result) => {
             if (result.isConfirmed) {
-                $.ajax({
-                    url: 'user/status',
-                    type: "post",
-                    data: {
+                axios.post('user/status',{
                         id: id,
                         status: status,
-                    },
-                    success: function (response) {
+                })
+                .then(function (response) {
+                    if(response.data.data === 1) {
                         Swal.fire({
                             position: 'center-center',
                             icon: 'success',
-                            title: "Đã "+ nameStatus +" người dùng thành công",
+                            title: nameStatus +" người dùng thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
                                 getUser();
-                            });
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Lỗi!',
+                            text: "Hành động không thành công?",
+                            icon: 'warning',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'OK!'
+                        })
                     }
-                });
+                })
+                .catch(function (error) {
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        // text: "Hành động không thành công?",
+                        icon: 'warning',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'OK!'
+                    })
+                })
+
+                // $.ajax({
+                //     url: 'user/status',
+                //     type: "post",
+                //     data: {
+                //         id: id,
+                //         status: status,
+                //     },
+                //     success: function (response) {
+                //         Swal.fire({
+                //             position: 'center-center',
+                //             icon: 'success',
+                //             title: "Đã "+ nameStatus +" người dùng thành công",
+                //             showConfirmButton: false,
+                //             timer: 1000
+                //         }).then(() => {
+                //                 getUser();
+                //             });
+                //     }
+                // });
             }
         })
     });
@@ -203,22 +299,36 @@ $(document).ready(function () {
         let role = $('#filter_role').val();
         let status = $('#filter_status').val();
         if(name != '' || email != '' || role != 'default'|| status != 'default') {
-            $.ajax({
-                type: "post",
-                url: "user/search",
-                data: {
-                    name: name,
-                    email: email,
-                    role: role,
-                    status: status,
-                },
-                success: function (response) {
-                    showListUser(response.data);
-                }
-            });
-        };
+            dataSearch = {
+                name: name,
+                email: email,
+                role: role,
+                status: status,
+                load: 'search'
+            };
+            getUser();
+            // $.ajax({
+            //     type: "post",
+            //     url: "user/search",
+            //     data: {
+            //         name: name,
+            //         email: email,
+            //         role: role,
+            //         status: status,
+            //     },
+            //     success: function (response) {
+            //         showListUser(response.data);
+            //     }
+            // });
+        } else {
+            Swal.fire(
+                'Do you forget somethings?',
+                'Vui lòng nhập ít nhất một thông tin để tìm kiếm!',
+                'warning'
+            )
+        }
     }
-    $('#btn-search-user').click(function () {
+    $('#btn-search-user').click(function (e) {
         searchUser();
     });
     $('#search-user').on('keyup', function(e) {
@@ -312,10 +422,6 @@ $(document).ready(function () {
         $("#group_role-err").empty();
     }
 
-    function clearErrorsMessageLogin() {
-        $("#email-error").empty();
-        $("#password-error").empty();
-    }
 
     // Click button edit user
     $('#users-table').on('click', '.editbtn-user', function () {

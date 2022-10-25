@@ -85,6 +85,7 @@ $(document).ready(function() {
         });
     });
 
+    $('[data-widget="pushmenu"]').PushMenu("collapse");
 
 });
 
