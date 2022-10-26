@@ -13,10 +13,11 @@
  */
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateProductRequest;
 use App\Models\Product;
-use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\CreateProductRequest;
+use App\Repositories\Product\ProductRepositoryInterface;
 
 /**
  * ProductController class
@@ -39,9 +40,18 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $requestAll = $request->all();
-        $items = $this->productRepository->getAllProduct($requestAll);
-        return view('admin.pages.product.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
+        try {
+            if ($request->ajax()) {
+                return $this->productRepository->getAllProduct($request);
+            }
+            return view('admin.pages.product.dashboard');
+        } catch (\Exception $e) {
+            Log::error($e);
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
+        // $requestAll = $request->all();
+        // $items = $this->productRepository->getAllProduct($requestAll);
+        // return view('admin.pages.product.dashboard', ['items' => $items, 'requestAll' => $requestAll]);
     }
 
     /**
@@ -89,16 +99,6 @@ class ProductController extends Controller
         return redirect()->back()->with('status', 'Thêm sản phẩm thành công');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        dd($this->productRepository->getProduct($id)->toArray());
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -141,26 +141,20 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
      * Delte the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $this->productRepository->delete($id);
-        return redirect()->route('product');
+        try {
+            $id = $request->id;
+            $data = $this->productRepository->delete($id);
+            return $this->successResponse($data, $message = 'Xoá người dùng thành công');
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
     }
 
     public function file()

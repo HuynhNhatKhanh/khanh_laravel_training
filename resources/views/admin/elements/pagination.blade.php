@@ -1,4 +1,4 @@
-
+{{--
 @php
     $perPage = $items->perPage();
     $currentPage = $items->currentPage();
@@ -23,4 +23,4 @@
     </div>
 </div>
 
-
+ --}}

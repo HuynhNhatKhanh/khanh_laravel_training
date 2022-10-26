@@ -1,5 +1,5 @@
 
-@php
+{{-- @php
     $perPage = $items->perPage();
     $currentPage = $items->currentPage();
     $count = $items->count();
@@ -18,6 +18,6 @@
     <div class=" col-4 " style="text-align:end">
         <small >Hiển thị từ {{ $perPage * ($currentPage - 1) + 1 }} ~ {{ $perPage * ($currentPage - 1) + $count}} trong tổng <strong >{{  $items->total() }}</strong> sản phẩm</small>
     </div>
-</div>
+</div> --}}
 
 

@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\DemoMailController;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -46,7 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route Product
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('product');
-        Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+        Route::post('/delete', [ProductController::class, 'delete'])->name('product.delete');
         Route::post('/add', [ProductController::class, 'store'])->name('product.add');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
         Route::put('/update', [ProductController::class, 'update'])->name('product.update');
