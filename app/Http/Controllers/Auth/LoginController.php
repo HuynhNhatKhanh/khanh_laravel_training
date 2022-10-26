@@ -19,6 +19,7 @@ class LoginController extends Controller
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
+        $this->middleware('guest')->except('logout');
     }
 
     public function login(LoginRequest $request)
@@ -31,7 +32,7 @@ class LoginController extends Controller
                 return $this->errorResponse($message = 'Mật khẩu không chính xác');
             }
         } catch (\Exception $e) {
-            return $this->errorResponse(__, 500);
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
         }
     }
 

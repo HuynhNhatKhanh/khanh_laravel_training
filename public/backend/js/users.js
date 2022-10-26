@@ -8,30 +8,34 @@ $(document).ready(function () {
         }
     });
     var dataSearch = { load: 'index' };
-    getUser();
 
     //Login
-    $('#form-login').submit( function(e) {
+    $('#form-login').click( function(e) {
         e.preventDefault();
-        let formInput = $(this).serialize();
-
-        axios.post('user/checkLogin', formInput)
-            .then(function (response) {
-                if (response.data.status == true) {
-                    window.location.href = 'product';
-                }
-                if (response.data.status == false) {
-                    $("#password-error").html(response.data.message);
-                    $("#password-error").removeClass('d-none');
-                }
-            })
-            .catch(function (error) {
+        let email = $('#email').val();
+        let password = $('#password').val();
+        axios.post('user/checkLogin', {
+            email: email,
+            password: password
+        })
+        .then(function (response) {
+            console.log(response);
+            if (response.data.status == true) {
+                window.location.href = 'product';
+            }
+            if (response.data.status == false) {
                 $("#email-error").empty();
-                $("#password-error").empty();
-                let arrError = error.response.data.errors;
-                $.each(arrError, function (name, message){
-                    $("#" + name + '-error').html(message[0]);
-                    $("#" + name + '-error').removeClass('d-none');
+                $("#password-error").html(response.data.message);
+                $("#password-error").removeClass('d-none');
+            }
+        })
+        .catch(function (error) {
+            $("#email-error").empty();
+            $("#password-error").empty();
+            let arrError = error.response.data.errors;
+            $.each(arrError, function (name, message){
+                $("#" + name + '-error').html(message[0]);
+                $("#" + name + '-error').removeClass('d-none');
             })
         });
     });
@@ -91,7 +95,7 @@ $(document).ready(function () {
             destroy: true,
         });
     };
-
+    getUser();
     // Get 1 user
     // async function getUserById1(id){
     //     var user = null;

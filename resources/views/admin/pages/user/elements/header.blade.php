@@ -7,14 +7,14 @@
     $optionsStatus = [
         'default' => '- Trạng thái -',
         '0' => 'Tạm khoá',
-        '1' => 'Đang hoạt động'
+        '1' => 'Đang hoạt động',
     ];
 
-    $optionsRole= [
+    $optionsRole = [
         'default' => '- Nhóm-',
         'admin' => 'Admin',
         'reviewer' => 'Reviewer',
-        'editor' => 'Editor'
+        'editor' => 'Editor',
     ];
 
 @endphp
@@ -31,7 +31,7 @@
         <!-- Search & Filter -->
         <div class="card card-info card-outline" id="search-user">
             <div class="card-header">
-                <h6 class="card-title">Search & Filter</h6>
+                <h1 class="card-title">Danh sách người dùng</h1>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
                         title="Collapse">
@@ -44,15 +44,15 @@
                     <div class="mb-1 col-3">
                         <p>Tên </p>
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" id="name-search" name="nameSearch" value=""
-                                style="min-width: 300px">
+                            <input type="text" class="form-control form-control-sm" id="name-search"
+                                name="nameSearch" value="" style="min-width: 300px">
                         </div>
                     </div>
                     <div class="mb-1 col-3">
                         <p>Email</p>
                         <div class="input-group">
-                            <input type="email" class="form-control form-control-sm" name="email"
-                            id="email-search" value="" style="min-width: 100px">
+                            <input type="email" class="form-control form-control-sm" name="email" id="email-search"
+                                value="" style="min-width: 100px">
                         </div>
                     </div>
                     <div class="mb-1 col-2">
@@ -78,30 +78,24 @@
                         </select>
                     </div>
                 </div>
-                <div class="row justify-content-between">
+                <div class="row justify-content-between p-2">
                     <div>
-                        <button type="button" class="btn btn-sm btn-success" id="addNewUser" data-toggle="modal" >Thêm mới</button>
+                        <button type="button" class="btn btn-sm btn-success" id="addNewUser" data-toggle="modal">Thêm
+                            mới</button>
                     </div>
                     <div class="mb-1 ">
 
-                            <div class="input-group mr-auto">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-sm btn-danger"
-                                        id="btn-clear-search-user">Clear</button>
-                                    <button type="submit" class="btn btn-sm btn-info"
-                                        id="btn-search-user">Search</button>
-                                </div>
+                        <div class="input-group mr-auto">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-danger"
+                                    id="btn-clear-search-user">Clear</button>
+                                <button type="submit" class="btn btn-sm btn-info" id="btn-search-user">Search</button>
                             </div>
+                        </div>
 
                     </div>
-                {{-- </form> --}}
+                    {{-- </form> --}}
                 </div>
-            </div>
-        </div>
-
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Users</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->

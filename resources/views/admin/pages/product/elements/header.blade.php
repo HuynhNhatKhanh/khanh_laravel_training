@@ -25,7 +25,7 @@
         <!-- Search & Filter -->
         <div class="card card-info card-outline">
             <div class="card-header">
-                <h6 class="card-title">Search & Filter</h6>
+                <h1 class="card-title">Danh sách sản phẩm</h1>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
                         title="Collapse">
@@ -86,12 +86,6 @@
                     </div>
                 </form>
                 </div>
-            </div>
-        </div>
-
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Danh sách sản phẩm</h1>
             </div>
         </div>
     </div><!-- /.container-fluid -->
