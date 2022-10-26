@@ -59,7 +59,7 @@ class AddUserRequest extends FormRequest
 
             "password.required" => "Mật khẩu không được để trống",
             "password.min" => "Mật khẩu phải lớn hơn 5 ký tự",
-            "password.regex" => "Mật khẩu không bảo mật",
+            "password.regex" => "Phải bao gồm chữ thường, in hoa, số và kí tự đặc biệt",
 
             "password_confirm.required" => "Xác nhận mật khẩu",
             "password_confirm.min" => "Mật khẩu phải lớn hơn 5 ký tự",

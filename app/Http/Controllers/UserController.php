@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\AddUserRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Repositories\User\UserRepositoryInterface;
 
 /**
@@ -75,15 +76,14 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function edit($id, EditUserRequest $request)
     {
         try {
             $requestAll = $request->all();
             $this->userRepository->edit($id, $requestAll);
             return $this->successResponse('', $message = 'Chỉnh sửa user thành công');
         } catch (\Exception $e) {
-            Log::info($e);
-            return $this->errorResponse($message = 'Lỗi');
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
         }
     }
 

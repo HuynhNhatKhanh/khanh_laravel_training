@@ -1,3 +1,5 @@
+// const { default: axios } = require("axios");
+
 $(document).ready(function () {
     var base_url = window.location.origin;
     $.ajaxSetup({
@@ -6,6 +8,7 @@ $(document).ready(function () {
         }
     });
     var dataSearch = { load: 'index' };
+    getUser();
 
     //Login
     $('#form-login').submit( function(e) {
@@ -88,16 +91,6 @@ $(document).ready(function () {
             destroy: true,
         });
     };
-    // $.ajax({
-    //     type: "get",
-    //     url: "user",
-    //     async: false,
-    //     success: function (response) {
-    //         console.log(response);
-    //         // showListUser(response.users.data)
-    //     }
-    // });
-    getUser();
 
     // Get 1 user
     // async function getUserById1(id){
@@ -306,15 +299,14 @@ $(document).ready(function () {
     //Click button Thêm mới
     $('#addNewUser').click(function () {
         // $('#user-id').val('');
+        clearErrorsMessage();
+        showButtonSubmit('addUserButton');
         $('#addUserForm').trigger("reset");
         $('#popupUserTitle').html("Thêm User");
         $('#popupUser').modal('show');
-
-        showButtonSubmit('addUserButton');
-        clearErrorsMessage();
     });
 
-    //Click button Lưu
+    //Click button Lưu trong modal add
     $('#addUserForm').on('click','#addUserButton',function (e) {
         e.preventDefault();
         let name = $('#addUserName').val();
@@ -323,73 +315,77 @@ $(document).ready(function () {
         let passwordConfirm = $('#addUserPasswordConfirm').val();
         let role = $('#addUserRole').val();
         let status = $('#addUserStatus').val();
-        $.ajax({
-            data: {
-                name: name,
-                email: email,
-                password: password,
-                password_confirm: passwordConfirm,
-                group_role: role,
-                is_active: status,
-            },
-            url: "user/add",
-            type: "post",
-            dataType: 'json',
-            success: function (response) {
-                if(response.status == true) {
-                    $('#popupUser').modal('hide');
-                    Swal.fire({
-                        // position: 'center-center',
-                        icon: 'success',
-                        title: "Thêm người dùng thành công",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                            getUser();
-                        });
-                }
-            },
-            error: function (responseError) {
-                console.log(responseError);
-                $.each(responseError.responseJSON.errors, function (name, message) {
-                    $("#" + name + '-err').html(message[0]);
-                    $("#" + name + '-err').removeClass('d-none');
+
+        axios.post( "user/add",{
+            name: name,
+            email: email,
+            password: password,
+            password_confirm: passwordConfirm,
+            group_role: role,
+            is_active: status,
+        })
+        .then(function (response) {
+            if(response.data.status == true) {
+                $('#popupUser').modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: "Thêm người dùng thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                        getUser();
                 });
-            },
-            beforeSend: function () {
-                clearErrorsMessage();
-            },
+            }
+            else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Đã xảy ra lỗi!',
+                })
+            }
+        })
+        .catch(function (error) {
+            clearErrorsMessage();
+            $.each(error.response.data.errors, function (name, message) {
+                $("#" + name + '-err').html(message[0]);
+                $("#" + name + '-err').removeClass('d-none');
+            });
         });
     });
 
     // Click button edit user
-    $('#users-table').on('click', '.editbtn-user', function () {
+    $('#users-table').on('click', '.editbtn-user', function (e) {
+        e.preventDefault();
         let id = $(this).data('id');
         showButtonSubmit('editUserButton');
         clearErrorsMessage();
-        $.ajax({
-            type: "post",
-            url: "user/getdata",
-            data:  {
-                id: id,
-            },
-            success: function (response) {
-                $('#addUserName').val(response.name);
-                $('#addUserEmail').val(response.email);
-                $('#addUserRole').val(response.group_role);
-                $('#addUserStatus').val(response.is_active);
+        $('#addUserPassword').val('');
+        $('#addUserPasswordConfirm').val('');
 
-                $('#popupUserTitle').html("Chỉnh sửa User");
-                $('#user-id').val(response.id);
-                $('#popupUser').modal('show');
-            }
+        axios.post( "user/getdata", {
+            id: id,
+        })
+        .then(function (response) {
+            $('#addUserName').val(response.data.name);
+            $('#addUserEmail').val(response.data.email);
+            $('#addUserRole').val(response.data.group_role);
+            $('#addUserStatus').val(response.data.is_active);
+            $('#user-id').val(response.data.id);
+            $('#popupUserTitle').html("Chỉnh sửa User");
+            $('#popupUser').modal('show');
+        })
+        .catch(function (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Đã xảy ra lỗi!',
+            })
         });
     });
 
     // Click button Lưu trong modal edit
     $('#addUserForm').on('click','#editUserButton', function (e) {
         e.preventDefault();
-
         let id = $('#user-id').val();
         let name = $('#addUserName').val();
         let email = $('#addUserEmail').val();
@@ -397,44 +393,40 @@ $(document).ready(function () {
         let passwordConfirm = $('#addUserPasswordConfirm').val();
         let role = $('#addUserRole').val();
         let status = $('#addUserStatus').val();
-        $.ajax({
-            type: "put",
-            url: "user/edit/"+id,
-            data:  {
-                name: name,
-                email: email,
-                password: password,
-                password_confirm: passwordConfirm,
-                group_role: role,
-                is_active: status,
-            },
-            success: function (response) {
-                console.log(response);
-                if(response.status == true) {
-                    $('#popupUser').modal('hide');
-                    Swal.fire({
-                        // position: 'center-center',
-                        icon: 'success',
-                        title: "Cập nhật người dùng thành công",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                            getUser();
-                        });
-                }
 
-            },
-            error: function (responseError) {
-                $.each(responseError.responseJSON.errors, function (name, message) {
-                    console.log(name);
-                    console.log(message);
-                    $("#" + name + '-err').html(message[0]);
-                    $("#" + name + '-err').removeClass('d-none');
+        axios.put( "user/edit/"+id,{
+            name: name,
+            email: email,
+            password: password,
+            password_confirm: passwordConfirm,
+            group_role: role,
+            is_active: status,
+        })
+        .then(function (response) {
+            if(response.data.status == true) {
+                $('#popupUser').modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: "Cập nhật người dùng thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    getUser();
                 });
-            },
-            beforeSend: function () {
-                clearErrorsMessage();
-            },
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Đã xảy ra lỗi!',
+                })
+            }
+        })
+        .catch(function (error) {
+            clearErrorsMessage();
+            $.each(error.response.data.errors, function (name, message) {
+                $("#" + name + '-err').html(message[0]);
+                $("#" + name + '-err').removeClass('d-none');
+            });
         });
     });
 
@@ -447,7 +439,6 @@ $(document).ready(function () {
         $("#is_active-err").empty();
         $("#group_role-err").empty();
     }
-
 
     // Print list old, use append html
     function showListUser(list){

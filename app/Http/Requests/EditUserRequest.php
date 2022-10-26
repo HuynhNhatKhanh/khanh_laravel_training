@@ -23,13 +23,13 @@ class EditUserRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->request->get('id') ? ',' . $this->request->get('id') : '';
         return [
             'name' => 'required|min:5',
-            'email' => 'required|max:255|email:rfc,dns|unique:users,email' . $id,
+            'email' => 'required|max:255|email:rfc,dns|unique:users,email,'. $this->id,
             'password' => 'sometimes|required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'sometimes|required|min:5|same:password',
-            'group_role' => 'required',
+            'group_role' => 'required|in:admin,reviewer,editor',
+            'is_active' => 'required|in:"1","0"',
         ];
     }
 
@@ -46,6 +46,10 @@ class EditUserRequest extends FormRequest
             "name.min" => "Tên phải lớn hơn 5 ký tự",
 
             "group_role.required" => "Vui lòng chọn nhóm",
+            "group_role.in" => "Vui lòng chọn nhóm khác mặc định",
+
+            "is_active.required" => "Vui lòng chọn trạng thái",
+            "is_active.in" => "Vui lòng chọn trạng thái khác mặc định",
 
             "email.required" => "Email không được để trống",
             "email.email" => "Email không đúng định dạng",
@@ -56,7 +60,7 @@ class EditUserRequest extends FormRequest
 
             "password.required" => "Mật khẩu không được để trống",
             "password.min" => "Mật khẩu phải lớn hơn 5 ký tự",
-            "password.regex" => "Mật khẩu không bảo mật",
+            "password.regex" => "Phải bao gồm chữ thường, in hoa, số và kí tự đặc biệt",
 
             "password_confirm.required" => "Xác nhận mật khẩu",
             "password_confirm.min" => "Mật khẩu phải lớn hơn 5 ký tự",
