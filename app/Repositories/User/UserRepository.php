@@ -16,7 +16,7 @@ class UserRepository implements UserRepositoryInterface
         $this->now = date_format(Carbon::now('Asia/Ho_Chi_Minh'), 'Y/m/d:H-i-s');
     }
 
-    public function getAllUser($requestAll)
+    public function getAllUser($request)
     {
         $query = $this->user;
 
@@ -26,13 +26,13 @@ class UserRepository implements UserRepositoryInterface
             $results = $query;
         }
         if ($request->load == 'search') {
-            $query = $query->where("name", "LIKE", '%' . $requestAll['name'] . '%')
-                            ->where("email", "LIKE", '%' . $requestAll['email'] . '%');
-            if (isset($requestAll['role']) && $requestAll['role'] != 'default') {
-                $query->where("group_role", '=', $requestAll['role']);
+            $query = $query->where("name", "LIKE", '%' . $request['name'] . '%')
+                            ->where("email", "LIKE", '%' . $request['email'] . '%');
+            if (isset($request['role']) && $request['role'] != 'default') {
+                $query->where("group_role", '=', $request['role']);
             }
-            if (isset($requestAll['status']) && $requestAll['status'] != 'default') {
-                $query->where("is_active", '=', $requestAll['status']);
+            if (isset($request['status']) && $request['status'] != 'default') {
+                $query->where("is_active", '=', $request['status']);
             }
             $results = $query;
         }

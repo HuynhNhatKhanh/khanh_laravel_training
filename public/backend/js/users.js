@@ -5,7 +5,7 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    const dataSearch = { load: 'index' };
+    var dataSearch = { load: 'index' };
 
     //Login
     $('#form-login').submit( function(e) {
@@ -32,36 +32,6 @@ $(document).ready(function () {
             })
         });
     });
-
-    // print list
-    function showListUser(list){
-        let xhtml = '';
-        $('.products-body').empty();
-        let i = 0;
-        list.forEach(function(element) {
-            i++;
-            //let group = (element.group_role).charAt(0).toUpperCase() + (element.group_role).slice(1);
-            let group = '';
-            group = (element.group_role);
-            xhtml = '<tr>';
-            xhtml += '<td class="text-center">'+ i +'</td>';
-            xhtml += '<td class="text-wrap img_hover" style="min-width: 60px">'+ element.name +'</td>';
-            xhtml += '<td class="text-wrap" style="min-width: 60px">'+ element.email +'</td>';
-            xhtml += '<td class="text-center"><span class="">'+ group +'</span></td>';
-            if (element.is_active === 0){
-                xhtml += '<td class="text-center"><span class="text-danger">Tạm khoá</span></td>';
-            } else if (element.is_active === 1){
-                xhtml += '<td class="text-center"><span class="text-success">Đang hoạt động</span></td>';
-            }
-
-            xhtml += '<td class="text-center" >';
-            xhtml += '<button type="button" value="'+ element.id +'" class="rounded-circle btn btn-sm btn-info editbtn-user" title="Chỉnh sửa" data-id="'+ element.id +'"><i class="fas fa-pencil-alt"></i></button>';
-            xhtml += '<button type="button" class="rounded-circle btn btn-sm btn-danger btn-delete-user"title="Xoá" data-id="'+ element.id +'" ><i class="fas fa-trash-alt"></i> </button>'
-            xhtml += '<button class="rounded-circle btn btn-sm btn-dark btn-block-user" title="Khoá/Mở thành viên" data-id="'+ element.id +'" data-status="'+element.is_active+'"><i class="fas fa-user-times"></i></button> </td>'
-            xhtml += '</tr>';
-            $('.products-body').append(xhtml);
-        })
-    }
 
     // Get data user
     // function getDataUser() {
@@ -130,19 +100,19 @@ $(document).ready(function () {
     getUser();
 
     // Get 1 user
-    async function getUserById1(id){
-        user = null;
-        await axios.post('user/getdata', {
-                id: id
-            })
-            .then(function (response) {
-                user = response;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-            return user;
-        }
+    // async function getUserById1(id){
+    //     var user = null;
+    //     await axios.post('user/getdata', {
+    //             id: id
+    //         })
+    //         .then(function (response) {
+    //             user = response;
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    //         return Promise.resolve(user);
+    //     }
     function getUserById(id){
         let user = null;
         $.ajax({
@@ -182,7 +152,7 @@ $(document).ready(function () {
                 .then(function (response) {
                     if(response.data.data === 1) {
                         Swal.fire({
-                            position: 'center-center',
+                            // position: 'center-center',
                             icon: 'success',
                             title: "Xoá thành viên [ "+ userData.name +" ] thành công",
                             showConfirmButton: false,
@@ -220,7 +190,13 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).data('id');
 
-        console.log(getUserById1)
+        // var userData = null;
+        // getUserById1(id).then((res) => {
+        //     console.log(res.data); // Success!
+        //     userData = res.data;
+
+        // })
+        // console.log(userData);
 
         let status = getUserById(id).is_active;
         let nameStatus = 'Mở khoá';
@@ -230,7 +206,7 @@ $(document).ready(function () {
         Swal.fire({
             title: 'Nhắc nhở!',
             text: "Bạn có muốn "+ nameStatus +" người dùng không?",
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -244,7 +220,6 @@ $(document).ready(function () {
                 .then(function (response) {
                     if(response.data.data === 1) {
                         Swal.fire({
-                            position: 'center-center',
                             icon: 'success',
                             title: nameStatus +" người dùng thành công",
                             showConfirmButton: false,
@@ -271,26 +246,6 @@ $(document).ready(function () {
                         confirmButtonText: 'OK!'
                     })
                 })
-
-                // $.ajax({
-                //     url: 'user/status',
-                //     type: "post",
-                //     data: {
-                //         id: id,
-                //         status: status,
-                //     },
-                //     success: function (response) {
-                //         Swal.fire({
-                //             position: 'center-center',
-                //             icon: 'success',
-                //             title: "Đã "+ nameStatus +" người dùng thành công",
-                //             showConfirmButton: false,
-                //             timer: 1000
-                //         }).then(() => {
-                //                 getUser();
-                //             });
-                //     }
-                // });
             }
         })
     });
@@ -310,38 +265,29 @@ $(document).ready(function () {
                 load: 'search'
             };
             getUser();
-            // $.ajax({
-            //     type: "post",
-            //     url: "user/search",
-            //     data: {
-            //         name: name,
-            //         email: email,
-            //         role: role,
-            //         status: status,
-            //     },
-            //     success: function (response) {
-            //         showListUser(response.data);
-            //     }
-            // });
         } else {
             Swal.fire(
-                'Do you forget somethings?',
-                'Vui lòng nhập ít nhất một thông tin để tìm kiếm!',
+                'Hình như bạn đã quên gì đó?',
+                'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
                 'warning'
             )
         }
     }
     $('#btn-search-user').click(function (e) {
+        e.preventDefault();
         searchUser();
     });
     $('#search-user').on('keyup', function(e) {
+        e.preventDefault();
         if (e.which == 13) {
             searchUser();
         }
     });
 
     // Clear search
-    $('#btn-clear-search-user').click(function () {
+    $('#btn-clear-search-user').click(function (e) {
+        e.preventDefault();
+        dataSearch = { load: 'index' };
         $('#name-search').val('');
         $('#email-search').val('');
         $('#filter_role').val('default');
@@ -393,7 +339,7 @@ $(document).ready(function () {
                 if(response.status == true) {
                     $('#popupUser').modal('hide');
                     Swal.fire({
-                        position: 'center-center',
+                        // position: 'center-center',
                         icon: 'success',
                         title: "Thêm người dùng thành công",
                         showConfirmButton: false,
@@ -415,16 +361,6 @@ $(document).ready(function () {
             },
         });
     });
-
-    function clearErrorsMessage() {
-        $("#name-err").empty();
-        $("#email-err").empty();
-        $("#password-err").empty();
-        $("#password_confirm-err").empty();
-        $("#is_active-err").empty();
-        $("#group_role-err").empty();
-    }
-
 
     // Click button edit user
     $('#users-table').on('click', '.editbtn-user', function () {
@@ -477,7 +413,7 @@ $(document).ready(function () {
                 if(response.status == true) {
                     $('#popupUser').modal('hide');
                     Swal.fire({
-                        position: 'center-center',
+                        // position: 'center-center',
                         icon: 'success',
                         title: "Cập nhật người dùng thành công",
                         showConfirmButton: false,
@@ -502,4 +438,44 @@ $(document).ready(function () {
         });
     });
 
+    // Xoá thông báo lỗi modal user
+    function clearErrorsMessage() {
+        $("#name-err").empty();
+        $("#email-err").empty();
+        $("#password-err").empty();
+        $("#password_confirm-err").empty();
+        $("#is_active-err").empty();
+        $("#group_role-err").empty();
+    }
+
+
+    // Print list old, use append html
+    function showListUser(list){
+        let xhtml = '';
+        $('.products-body').empty();
+        let i = 0;
+        list.forEach(function(element) {
+            i++;
+            //let group = (element.group_role).charAt(0).toUpperCase() + (element.group_role).slice(1);
+            let group = '';
+            group = (element.group_role);
+            xhtml = '<tr>';
+            xhtml += '<td class="text-center">'+ i +'</td>';
+            xhtml += '<td class="text-wrap img_hover" style="min-width: 60px">'+ element.name +'</td>';
+            xhtml += '<td class="text-wrap" style="min-width: 60px">'+ element.email +'</td>';
+            xhtml += '<td class="text-center"><span class="">'+ group +'</span></td>';
+            if (element.is_active === 0){
+                xhtml += '<td class="text-center"><span class="text-danger">Tạm khoá</span></td>';
+            } else if (element.is_active === 1){
+                xhtml += '<td class="text-center"><span class="text-success">Đang hoạt động</span></td>';
+            }
+
+            xhtml += '<td class="text-center" >';
+            xhtml += '<button type="button" value="'+ element.id +'" class="rounded-circle btn btn-sm btn-info editbtn-user" title="Chỉnh sửa" data-id="'+ element.id +'"><i class="fas fa-pencil-alt"></i></button>';
+            xhtml += '<button type="button" class="rounded-circle btn btn-sm btn-danger btn-delete-user"title="Xoá" data-id="'+ element.id +'" ><i class="fas fa-trash-alt"></i> </button>'
+            xhtml += '<button class="rounded-circle btn btn-sm btn-dark btn-block-user" title="Khoá/Mở thành viên" data-id="'+ element.id +'" data-status="'+element.is_active+'"><i class="fas fa-user-times"></i></button> </td>'
+            xhtml += '</tr>';
+            $('.products-body').append(xhtml);
+        })
+    }
  });

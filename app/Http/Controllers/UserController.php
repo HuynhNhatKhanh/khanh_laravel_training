@@ -41,36 +41,14 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $requestAll = $request->all();
-        // $items = $this->userRepository->getAllUser($requestAll);
-        if ($request->ajax()) {
-            return $this->userRepository->getAllUser($requestAll);
+        try {
+            if ($request->ajax()) {
+                return $this->userRepository->getAllUser($request);
+            }
+            return view('admin.pages.user.dashboard');
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
         }
-        // $pagination = view('admin.pages.user.elements.pagination', ['items' => $items])->render();
-        // // if ($request->ajax()) {
-        //     return response()->json(
-        //         [
-        //             'users' => $items,
-        //             'pagination' => $pagination
-        //         ]
-        //     );
-        // // };
-        // return view('admin.pages.user.dashboard');
-
-        // if ($request->ajax()) {
-        //     return response()->json(['status' => 200, 'users' => $items]);
-        // }
-        return view('admin.pages.user.dashboard');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -91,20 +69,10 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id use for query
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function edit($id, Request $request)
@@ -120,32 +88,9 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * Delte the specified resource from storage.
-     *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function delete(Request $request)
@@ -160,9 +105,9 @@ class UserController extends Controller
     }
 
     /**
+     * Update status user.
      *
-     *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function status(Request $request)
@@ -176,22 +121,19 @@ class UserController extends Controller
         }
     }
 
-    /**
+     /**
+     * Get data 1 user.
      *
-     *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function search(Request $request)
-    {
-        $requestAll = $request->all();
-        return $this->userRepository->search($requestAll);
-    }
-
     public function getUser(Request $request)
     {
-        $requestAll = $request->all();
-        // return $requestAll;
-        return $this->userRepository->getUser($requestAll);
+        try {
+            $requestAll = $request->all();
+            return $this->userRepository->getUser($requestAll);
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
     }
 }
