@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Product;
 
+use Storage;
 use App\Models\Product;
 use Yajra\DataTables\DataTables;
 
@@ -91,6 +92,44 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function store($request)
     {
-        // return this->product->save
+        $product_id = $request->product_name[0].fake()->regexify('[A-Z][A-Z][A-Z][A-Z]');
+        $dataCreate = [
+            'product_id' => $product_id,
+            'product_name' => $request->product_name,
+            'product_price' => $request->product_price,
+            'description' => $request->description,
+            'is_sales' => $request->is_sales,
+        ];
+        if (isset($request->product_image) && ($request->product_image) != 'image_default.jpg') {
+            $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
+            $fileNameImage .= $request->product_image->getClientOriginalName();
+            $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileNameImage);
+            $dataCreate['product_image']  =  $fileNameImage;
+        };
+        return $this->product->create($dataCreate);
+    }
+
+    public function edit($id, $request)
+    {
+        // $oldImage = $this->product->find($id)->pluck('product_image')->first();
+        $delete = $this->product->find($id);
+        $dataUpdate = [
+            'product_id' => $id,
+            'product_name' => $request->product_name,
+            'product_price' => $request->product_price,
+            'description' => $request->description,
+            'is_sales' => $request->is_sales,
+        ];
+        if (isset($request->product_image) && ($request->product_image) != 'image_default.jpg') {
+            // $oldImage = 'storage/backend/images/product/'.$request->product_image;
+            $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
+            $fileNameImage .= $request->product_image->getClientOriginalName();
+            $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileNameImage);
+            $dataUpdate['product_image']  =  $fileNameImage;
+            // Storage::delete($oldImage);
+            Storage::disk('public')->delete('/backend/images/product'.$delete->product_image);
+            // \Storage::disk('public')->delete('backend/images/product'.$oldImage);
+        };
+        return $this->product->where('product_id', $id)->update($dataUpdate);
     }
 }

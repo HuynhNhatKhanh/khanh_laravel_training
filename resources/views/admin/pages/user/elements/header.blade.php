@@ -80,8 +80,7 @@
                 </div>
                 <div class="row justify-content-between p-2">
                     <div>
-                        <button type="button" class="btn btn-sm btn-success" id="addNewUser" data-toggle="modal">Thêm
-                            mới</button>
+                        <button type="button" class="btn btn-sm btn-success" id="addNewUser" data-toggle="modal">Thêm mới</button>
                     </div>
                     <div class="mb-1 ">
 

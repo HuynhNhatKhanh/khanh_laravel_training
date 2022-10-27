@@ -28,6 +28,14 @@ class Product extends Model
 
     protected $primaryKey = 'product_id';
 
+    protected $fillable = [
+        'product_id',
+        'product_name',
+        'product_image',
+        'product_price',
+        'is_sales',
+        'description',
+    ];
      /**
      * Indicates if the model's ID is auto-incrementing.
      *

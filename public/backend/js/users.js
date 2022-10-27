@@ -267,7 +267,7 @@ $(document).ready(function () {
                 'Hình như bạn đã quên gì đó?',
                 'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
                 'warning'
-            )
+            );
         }
     }
     $('#btn-search-user').click(function (e) {

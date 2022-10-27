@@ -2,6 +2,7 @@
 
 $(document).ready(function () {
     var base_url = window.location.origin;
+    $('[data-widget="pushmenu"]').PushMenu("collapse");
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -161,7 +162,7 @@ $(document).ready(function () {
                 'Hình như bạn đã quên gì đó?',
                 'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
                 'warning'
-            )
+            );
         }
     }
     $('#btn-search-product').click(function (e) {
@@ -194,91 +195,194 @@ $(document).ready(function () {
     //     $('#show-button-submit').append(button);
     // }
 
-    // //Click button Thêm mới
-    // $('#addNewUser').click(function () {
-    //     // $('#user-id').val('');
-    //     clearErrorsMessage();
-    //     showButtonSubmit('addUserButton');
-    //     $('#addUserForm').trigger("reset");
-    //     $('#popupUserTitle').html("Thêm User");
-    //     $('#popupUser').modal('show');
-    // });
+    //Click button Thêm mới
+    $('#addNewProduct').click(function () {
+        $('#product-id').val('');
+        clearErrorsMessage();
+        // showButtonSubmit('addProductButton');
+        $("#imgPreview").attr("src", defaultImage);
+        $('#file-info').text('Chưa chọn file');
+        $('#addProductForm').trigger("reset");
+        $('#popupProductTitle').html("Thêm Sản Phẩm");
+        $('#popupProduct').modal('show');
+    });
 
-    // //Click button Lưu trong modal add
-    // $('#addUserForm').on('click','#addUserButton',function (e) {
-    //     e.preventDefault();
-    //     let name = $('#addUserName').val();
-    //     let email = $('#addUserEmail').val();
-    //     let password = $('#addUserPassword').val();
-    //     let passwordConfirm = $('#addUserPasswordConfirm').val();
-    //     let role = $('#addUserRole').val();
-    //     let status = $('#addUserStatus').val();
+    //Click add image product
+    $("#addProductImage").change(function () {
+        let file = this.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function (event) {
+                $("#imgPreview")
+                  .attr("src", event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        $('#file-info').text($(this).val().split('\\').pop());
+        $("#product_image-err").empty();
+    });
 
-    //     axios.post( "user/add",{
-    //         name: name,
-    //         email: email,
-    //         password: password,
-    //         password_confirm: passwordConfirm,
-    //         group_role: role,
-    //         is_active: status,
-    //     })
-    //     .then(function (response) {
-    //         if(response.data.status == true) {
-    //             $('#popupUser').modal('hide');
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: "Thêm người dùng thành công",
-    //                 showConfirmButton: false,
-    //                 timer: 1500
-    //             }).then(() => {
-    //                     getUser();
-    //             });
-    //         }
-    //         else {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 text: 'Đã xảy ra lỗi!',
-    //             })
-    //         }
-    //     })
-    //     .catch(function (error) {
-    //         clearErrorsMessage();
-    //         $.each(error.response.data.errors, function (name, message) {
-    //             $("#" + name + '-err').html(message[0]);
-    //             $("#" + name + '-err').removeClass('d-none');
-    //         });
-    //     });
-    // });
+    // Click xoá ảnh
+    var defaultImage = $("#imgPreview").attr("src");
+    $('#removeImage').click(function () {
+        // $('#removeImage').hide();
+        $("#imgPreview").attr("src", defaultImage);
+        $("#addProductImage").val("");
+        // $('.file-msg').text('Hoặc kéo thả ảnh vào đây');
+        // $('.fake-btn').text('Chọn ảnh');
+        $('#file-info').text('Chưa chọn file');
+        $("#product_image-err").empty();
+      });
 
-    // // Click button edit user
-    // $('#users-table').on('click', '.editbtn-user', function (e) {
-    //     e.preventDefault();
-    //     let id = $(this).data('id');
-    //     showButtonSubmit('editUserButton');
-    //     clearErrorsMessage();
-    //     $('#addUserPassword').val('');
-    //     $('#addUserPasswordConfirm').val('');
+    // Click button edit user
+    $('#products-table').on('click', '.editbtn-product', function (e) {
+        e.preventDefault();
+        let id = $(this).data('id');
+        clearErrorsMessage();
 
-    //     axios.post( "user/getdata", {
-    //         id: id,
+        axios.post( "product/getdata", {
+            id: id,
+        })
+        .then(function (response) {
+            // console.log(response);
+            if (response.data.product_image != null) {
+                $('#file-info').text(response.data.product_image);
+                $("#imgPreview").attr("src", base_url + '/storage/backend/images/product/' + response.data.product_image)
+            } else {
+                $("#imgPreview").attr("src", defaultImage);
+                $('#file-info').text('Chưa chọn file');
+            }
+            $('#addProductName').val(response.data.product_name);
+            $('#addProductPrice').val(response.data.product_price);
+            $('#addProductDescription').val(response.data.description);
+            $('#addProductStatus').val(response.data.is_sales);
+            $('#product-id').val(response.data.product_id);
+            $('#popupProductTitle').html("Chỉnh sửa Sản Phẩm");
+            $('#popupProduct').modal('show');
+        })
+        .catch(function (error) {
+            console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Đã xảy ra lỗi!',
+            })
+        });
+    });
+
+
+    // Click button Lưu trong modal add
+    $('#addProductForm').on('click','#addProductButton',function (e) {
+
+        if ($('#product-id').val() == '' || $('#product-id').val() == null ) {
+            e.preventDefault();
+            var formData = new FormData();
+            formData.append('product_image', $('#addProductImage')[0].files[0] );
+            formData.append('product_name', $('#addProductName').val() );
+            formData.append('product_price', $('#addProductPrice').val() );
+            formData.append('description', $('#addProductDescription').val() );
+            formData.append('is_sales', $('#addProductStatus').val());
+            // console.log(formData);
+            axios.post( "product/add",formData,{
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then(function (response) {
+                console.log(response);
+                if(response.data.status == true) {
+                    $('#popupProduct').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Thêm sản phẩm thành công",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                            getProduct();
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Đã xảy ra lỗi!',
+                    })
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                clearErrorsMessage();
+                $.each(error.response.data.errors, function (name, message) {
+                    $("#" + name + '-err').html(message[0]);
+                    $("#" + name + '-err').removeClass('d-none');
+                });
+            });
+        }
+        else {
+            e.preventDefault();
+            // console($('#imgPreview').attr('src'));
+            let id = $('#product-id').val();
+            // var form = $('#addProductForm')[0];
+            var formData = new FormData();
+            formData.append('product_image', $('#addProductImage')[0].files[0] );
+            formData.append('product_name', $('#addProductName').val() );
+            formData.append('product_price', $('#addProductPrice').val() );
+            formData.append('description', $('#addProductDescription').val() );
+            formData.append('is_sales', $('#addProductStatus').val());
+            // formData.append('product_id', $('#product-id').val());
+            // console.log(formData);
+            axios.post( "product/edit/"+id,formData,{
+                headers: { "Content-Type": "multipart/form-data" },
+                // contentType: false,
+                // processData: false,
+            })
+            .then(function (response) {
+                console.log(response);
+                if(response.data.status == true) {
+                    $('#popupProduct').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Chỉnh sửa sản phẩm thành công",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                            getProduct();
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Đã xảy ra lỗi!',
+                    })
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                clearErrorsMessage();
+                $.each(error.response.data.errors, function (name, message) {
+                    $("#" + name + '-err').html(message[0]);
+                    $("#" + name + '-err').removeClass('d-none');
+                });
+            });
+        }
+    });
+
+    // if($('#product-id').val() != '' && $('#product-id').val() != null) {
+    //     $('#addProductForm').on('click','#addProductButton',function (e) {
+    //         console.log('hi');
     //     })
-    //     .then(function (response) {
-    //         $('#addUserName').val(response.data.name);
-    //         $('#addUserEmail').val(response.data.email);
-    //         $('#addUserRole').val(response.data.group_role);
-    //         $('#addUserStatus').val(response.data.is_active);
-    //         $('#user-id').val(response.data.id);
-    //         $('#popupUserTitle').html("Chỉnh sửa User");
-    //         $('#popupUser').modal('show');
-    //     })
-    //     .catch(function (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             text: 'Đã xảy ra lỗi!',
-    //         })
-    //     });
+    // }
+
+
+
+    // $('#addUserForm').on('click','#addProductButton', function (e) {
+    //     // e.preventDefault();
+    //     // console.log('hi');
+    //     if( $('#product-id').val() != ''){
+    //         console.log('hi');
+    //     } else {
+    //          //Click button Lưu trong modal add
+
+    //     }
     // });
 
     // // Click button Lưu trong modal edit
@@ -328,43 +432,13 @@ $(document).ready(function () {
     //     });
     // });
 
-    // // Xoá thông báo lỗi modal user
-    // function clearErrorsMessage() {
-    //     $("#name-err").empty();
-    //     $("#email-err").empty();
-    //     $("#password-err").empty();
-    //     $("#password_confirm-err").empty();
-    //     $("#is_active-err").empty();
-    //     $("#group_role-err").empty();
-    // }
+    // Xoá thông báo lỗi modal user
+    function clearErrorsMessage() {
+        $("#product_name-err").empty();
+        $("#product_price-err").empty();
+        $("#is_sales-err").empty();
+        $("#product_image-err").empty();
+    }
 
-    // // Print list old, use append html
-    // function showListUser(list){
-    //     let xhtml = '';
-    //     $('.products-body').empty();
-    //     let i = 0;
-    //     list.forEach(function(element) {
-    //         i++;
-    //         //let group = (element.group_role).charAt(0).toUpperCase() + (element.group_role).slice(1);
-    //         let group = '';
-    //         group = (element.group_role);
-    //         xhtml = '<tr>';
-    //         xhtml += '<td class="text-center">'+ i +'</td>';
-    //         xhtml += '<td class="text-wrap img_hover" style="min-width: 60px">'+ element.name +'</td>';
-    //         xhtml += '<td class="text-wrap" style="min-width: 60px">'+ element.email +'</td>';
-    //         xhtml += '<td class="text-center"><span class="">'+ group +'</span></td>';
-    //         if (element.is_active === 0){
-    //             xhtml += '<td class="text-center"><span class="text-danger">Tạm khoá</span></td>';
-    //         } else if (element.is_active === 1){
-    //             xhtml += '<td class="text-center"><span class="text-success">Đang hoạt động</span></td>';
-    //         }
 
-    //         xhtml += '<td class="text-center" >';
-    //         xhtml += '<button type="button" value="'+ element.id +'" class="rounded-circle btn btn-sm btn-info editbtn-user" title="Chỉnh sửa" data-id="'+ element.id +'"><i class="fas fa-pencil-alt"></i></button>';
-    //         xhtml += '<button type="button" class="rounded-circle btn btn-sm btn-danger btn-delete-user"title="Xoá" data-id="'+ element.id +'" ><i class="fas fa-trash-alt"></i> </button>'
-    //         xhtml += '<button class="rounded-circle btn btn-sm btn-dark btn-block-user" title="Khoá/Mở thành viên" data-id="'+ element.id +'" data-status="'+element.is_active+'"><i class="fas fa-user-times"></i></button> </td>'
-    //         xhtml += '</tr>';
-    //         $('.products-body').append(xhtml);
-    //     })
-    // }
  });

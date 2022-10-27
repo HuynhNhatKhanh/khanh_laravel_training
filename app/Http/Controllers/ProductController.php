@@ -16,7 +16,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\AddProductRequest;
 use App\Repositories\Product\ProductRepositoryInterface;
 
 /**
@@ -55,48 +55,41 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a form of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(CreateProductRequest $requestProduct, Request $request)
-    {
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateProductRequest $request)
+    public function store(AddProductRequest $request)
     {
-        $product = new Product;
-        $product->product_id = fake()->regexify('[A-Z][A-Z][A-Z][A-Z]');
-        $product->product_name = $request->input('product_name_detail');
-        $product->product_price = $request->input('product_price_detail');
-        $product->description = $request->all()['product_description_detail'];
-        $product->ordering = $request->all()['product_ordering_detail'];
-        if ($request->all()['product_status_detail'] == '0') {
-            $product->is_sales = 0;
-        } elseif ($request->all()['product_status_detail'] == '1') {
-            $product->is_sales = 1;
+        try {
+            // return $this->successResponse($request->hasFile('product_image'));
+            $this->productRepository->store($request);
+            return $this->successResponse('', $message = 'Thêm sản phẩm thành công');
+        } catch (\Exception $e) {
+            Log::error($e);
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
         }
-        if ($request->all()['product_image_detail']) {
-            $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
-            $fileNameImage .= $request->all()['product_image_detail']->getClientOriginalName();
-            $path = $request->file('product_image_detail')->storeAs('public/backend/images/product', $fileNameImage);
-            $product->product_image  =  $fileNameImage;
-        };
-        $product->save();
-        // $this->productRepository->store($request);
-        return redirect()->back()->with('status', 'Thêm sản phẩm thành công');
+        // $product = new Product;
+        // $product->product_id = fake()->regexify('[A-Z][A-Z][A-Z][A-Z]');
+        // $product->product_name = $request->input('product_name_detail');
+        // $product->product_price = $request->input('product_price_detail');
+        // $product->description = $request->all()['product_description_detail'];
+        // $product->ordering = $request->all()['product_ordering_detail'];
+        // if ($request->all()['product_status_detail'] == '0') {
+        //     $product->is_sales = 0;
+        // } elseif ($request->all()['product_status_detail'] == '1') {
+        //     $product->is_sales = 1;
+        // }
+        // if ($request->all()['product_image_detail']) {
+        //     $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
+        //     $fileNameImage .= $request->all()['product_image_detail']->getClientOriginalName();
+        //     $path = $request->file('product_image_detail')->storeAs('public/backend/images/product', $fileNameImage);
+        //     $product->product_image  =  $fileNameImage;
+        // };
+        // $product->save();
+        // // $this->productRepository->store($request);
+        // return redirect()->back()->with('status', 'Thêm sản phẩm thành công');
     }
 
 
@@ -106,12 +99,22 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, AddProductRequest $request)
     {
+        // $data = $request->all();
+        // return $this->successResponse($data, $message = 'Chỉnh sửa sản phẩm thành công');
 
-        $productEdit = $this->productRepository->getProduct($id);
-        return response()
-            ->json(['status' => 200, 'product' => $productEdit]);
+        try {
+            // return $this->successResponse($request->hasFile('product_image'));
+            $this->productRepository->edit($id, $request);
+            return $this->successResponse('', $message = 'Chỉnh sửa sản phẩm thành công');
+        } catch (\Exception $e) {
+            Log::error($e);
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
+        // $productEdit = $this->productRepository->getProduct($id);
+        // return response()
+        //     ->json(['status' => 200, 'product' => $productEdit]);
     }
 
     /**

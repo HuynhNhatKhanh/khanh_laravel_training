@@ -68,10 +68,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-between">
+                <div class="row justify-content-between p-2">
                     <div>
-                        <button type="button" class="btn btn-sm btn-success" id="" data-toggle="modal" data-target="#FormProductModal">Thêm
-                            mới</button>
+                        {{-- <button type="button" class="btn btn-sm btn-success" id="" data-toggle="modal" data-target="#FormProductModal">Thêm
+                            mới</button> --}}
+                        <button type="button" class="btn btn-sm btn-success" id="addNewProduct" data-toggle="modal">Thêm mới</button>
                         {{-- @include('admin.pages.elements.form') --}}
                     </div>
                     <div class="mb-1 ">
