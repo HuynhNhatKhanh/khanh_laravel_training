@@ -172,4 +172,21 @@ class ProductController extends Controller
         $data['product_image'] = 'backend/images/product/' . $fileNameImage;
         dd($data['product_image']);
     }
+
+     /**
+     * Get data 1 product.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getProduct(Request $request)
+    {
+        try {
+            // $requestAll = $request->all();
+            // return $request;
+            return $this->productRepository->getProduct($request);
+        } catch (\Exception $e) {
+            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+        }
+    }
 }

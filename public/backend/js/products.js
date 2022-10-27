@@ -70,32 +70,32 @@ $(document).ready(function () {
     //         });
     //         return Promise.resolve(user);
     //     }
-    // function getUserById(id){
-    //     let user = null;
-    //     $.ajax({
-    //         type: "post",
-    //         url: "user/getdata",
-    //         async: false,
-    //         data: {
-    //             id: id
-    //         },
-    //         //dataType: "json",
-    //         success: function (response) {
-    //             user = response;
-    //         }
-    //     });
-    //     return user;
-    // }
+    function getProductById(id){
+        let product = null;
+        $.ajax({
+            type: "post",
+            url: "product/getdata",
+            async: false,
+            data: {
+                id: id
+            },
+            //dataType: "json",
+            success: function (response) {
+                product = response;
+            }
+        });
+        return product;
+    }
 
     //Delete user
     $('#products-table').on('click', '.btn-delete-product', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
-        // let userData = getUserById(id);
+        let productData = getProductById(id);
+        console.log(productData);
         Swal.fire({
             title: 'Nhắc nhở!',
-            // text: "Bạn có muốn xoá thành viên [ "+ userData.name +" ] không?",
-            text: "Bạn có muốn xoá sản phẩm không?",
+            text: "Bạn có muốn xoá sản phẩm [ "+ productData.product_name +" ] không?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -105,18 +105,15 @@ $(document).ready(function () {
             if (result.isConfirmed) {
                 axios.post('product/delete',{
                     id: id,
-                    // delete: userData.is_delete,
                 })
                 .then(function (response) {
                     console.log(response);
                     if(response.data.data === 1) {
                         Swal.fire({
-                            // position: 'center-center',
                             icon: 'success',
-                            // title: "Xoá thành viên [ "+ userData.name +" ] thành công",
-                            title: "Xoá thành viên thành công",
+                            title: "Xoá sản phẩm [ "+ productData.product_name +" ] thành công",
                             showConfirmButton: false,
-                            timer: 1000
+                            timer: 1500
                         }).then(() => {
                             getProduct();
                         });
@@ -135,7 +132,6 @@ $(document).ready(function () {
                 .catch(function (error) {
                     Swal.fire({
                         title: 'Lỗi!',
-                        // text: "Hành động không thành công?",
                         icon: 'warning',
                         confirmButtonColor: '#d33',
                         confirmButtonText: 'OK!'

@@ -88,9 +88,9 @@ class ProductRepository implements ProductRepositoryInterface
         // return $query->paginate(20);
     }
 
-    public function getProduct($id)
+    public function getProduct($request)
     {
-        return $this->product->where('product_id', $id)->first();
+        return $this->product->where('product_id', $request->id)->first();
     }
 
     public function delete($id)
