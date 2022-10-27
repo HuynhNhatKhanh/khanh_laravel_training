@@ -92,7 +92,6 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).data('id');
         let productData = getProductById(id);
-        console.log(productData);
         Swal.fire({
             title: 'Nhắc nhở!',
             text: "Bạn có muốn xoá sản phẩm [ "+ productData.product_name +" ] không?",
@@ -141,115 +140,51 @@ $(document).ready(function () {
         })
     });
 
-    // // Block/ Unblock user
-    // $('#users-table').on('click', '.btn-block-user', function (e) {
-    //     e.preventDefault();
-    //     let id = $(this).data('id');
+    // Search Product
+    function searchProduct () {
+        let name = $('#product-name-search').val();
+        let status = $('#product-filte-status').val();
+        let priceFrom = $('#price-from-search').val();
+        let priceTo = $('#price-to-search').val();
 
-    //     // var userData = null;
-    //     // getUserById1(id).then((res) => {
-    //     //     console.log(res.data); // Success!
-    //     //     userData = res.data;
+        if(name != '' || status != 'default'|| priceFrom != '' || priceTo != '') {
+            dataSearch = {
+                name: name,
+                status: status,
+                priceFrom: priceFrom,
+                priceTo: priceTo,
+                load: 'search'
+            };
+            getProduct();
+        } else {
+            Swal.fire(
+                'Hình như bạn đã quên gì đó?',
+                'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
+                'warning'
+            )
+        }
+    }
+    $('#btn-search-product').click(function (e) {
+        e.preventDefault();
+        searchProduct();
+    });
+    $('#search-product').on('keyup', function(e) {
+        e.preventDefault();
+        if (e.which == 13) {
+            searchProduct();
+        }
+    });
 
-    //     // })
-    //     // console.log(userData);
-
-    //     let status = getUserById(id).is_active;
-    //     let nameStatus = 'Mở khoá';
-    //     if (status === 1){
-    //         nameStatus = 'Khoá';
-    //     }
-    //     Swal.fire({
-    //         title: 'Nhắc nhở!',
-    //         text: "Bạn có muốn "+ nameStatus +" người dùng không?",
-    //         icon: 'question',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'OK!'
-    //       }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             axios.post('user/status',{
-    //                     id: id,
-    //                     status: status,
-    //             })
-    //             .then(function (response) {
-    //                 if(response.data.data === 1) {
-    //                     Swal.fire({
-    //                         icon: 'success',
-    //                         title: nameStatus +" người dùng thành công",
-    //                         showConfirmButton: false,
-    //                         timer: 1000
-    //                     }).then(() => {
-    //                             getUser();
-    //                     });
-    //                 } else {
-    //                     Swal.fire({
-    //                         title: 'Lỗi!',
-    //                         text: "Hành động không thành công?",
-    //                         icon: 'warning',
-    //                         confirmButtonColor: '#d33',
-    //                         confirmButtonText: 'OK!'
-    //                     })
-    //                 }
-    //             })
-    //             .catch(function (error) {
-    //                 Swal.fire({
-    //                     title: 'Lỗi!',
-    //                     // text: "Hành động không thành công?",
-    //                     icon: 'warning',
-    //                     confirmButtonColor: '#d33',
-    //                     confirmButtonText: 'OK!'
-    //                 })
-    //             })
-    //         }
-    //     })
-    // });
-
-    // // Search
-    // function searchUser () {
-    //     let name = $('#name-search').val();
-    //     let email = $('#email-search').val();
-    //     let role = $('#filter_role').val();
-    //     let status = $('#filter_status').val();
-    //     if(name != '' || email != '' || role != 'default'|| status != 'default') {
-    //         dataSearch = {
-    //             name: name,
-    //             email: email,
-    //             role: role,
-    //             status: status,
-    //             load: 'search'
-    //         };
-    //         getUser();
-    //     } else {
-    //         Swal.fire(
-    //             'Hình như bạn đã quên gì đó?',
-    //             'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
-    //             'warning'
-    //         )
-    //     }
-    // }
-    // $('#btn-search-user').click(function (e) {
-    //     e.preventDefault();
-    //     searchUser();
-    // });
-    // $('#search-user').on('keyup', function(e) {
-    //     e.preventDefault();
-    //     if (e.which == 13) {
-    //         searchUser();
-    //     }
-    // });
-
-    // // Clear search
-    // $('#btn-clear-search-user').click(function (e) {
-    //     e.preventDefault();
-    //     dataSearch = { load: 'index' };
-    //     $('#name-search').val('');
-    //     $('#email-search').val('');
-    //     $('#filter_role').val('default');
-    //     $('#filter_status').val('default');
-    //     getUser();
-    // });
+    // Clear search
+    $('#btn-clear-search-product').click(function (e) {
+        e.preventDefault();
+        dataSearch = { load: 'index' };
+        $('#product-name-search').val('');
+        $('#price-from-search').val('');
+        $('#price-to-search').val('');
+        $('#product-filte-status').val('default');
+        getProduct();
+    });
 
     // //Show button submit
     // function showButtonSubmit(idButton) {

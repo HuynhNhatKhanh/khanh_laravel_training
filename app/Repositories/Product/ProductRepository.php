@@ -20,6 +20,27 @@ class ProductRepository implements ProductRepositoryInterface
             $query = $query->orderBy('updated_at', 'desc')->get();
             $results = $query;
         }
+        if ($request->load == 'search') {
+            if (isset($request->name)) {
+                $query = $query->where("product_name", "LIKE", '%' . $request->name . '%');
+            }
+            if (isset($request->status) && $request->status != 'default') {
+                $query->where("is_sales", '=', $request['status']);
+            }
+            if (isset($request->priceFrom) || isset($request->priceTo)) {
+                if (empty($request->priceFrom)) {
+                    $query = $query->where('product_price', '>=', 0);
+                    $query = $query->where('product_price', '<=', $request->priceTo);
+                } elseif (empty($request->priceTo)) {
+                    $query = $query->where('product_price', '>=', $request->priceFrom);
+                } else {
+                    $query = $query->where('product_price', '>=', $request->priceFrom);
+                    $query = $query->where('product_price', '<=', $request->priceTo);
+                }
+            }
+            $query = $query->orderBy('updated_at', 'desc')->get();
+            $results = $query;
+        }
         return Datatables::of($results)
                 ->addIndexColumn()
                 ->addColumn(
@@ -56,36 +77,6 @@ class ProductRepository implements ProductRepositoryInterface
                 )
                 ->rawColumns(['action', 'product_name'])
                 ->make(true);
-        // $search = @$requestAll['search'];
-        // if (isset($search)) {
-        //     $query = $query->where("product_name", "LIKE", '%' . $search . '%');
-        // }
-        // if (isset($requestAll['filter_status']) && $requestAll['filter_status'] != 'default') {
-        //     $status = (int) ($requestAll['filter_status']);
-        //     if ($status == 1) {
-        //         $query = $query->where('ordering', '>', 0);
-        //         $query = $query->where('is_sales', '=', 1);
-        //     } elseif ($status == 2) {
-        //         $query = $query->where('ordering', '=', 0);
-        //         $query = $query->where('is_sales', '=', 1);
-        //     } elseif ($status == 3) {
-        //         $query = $query->where('ordering', '=', 0);
-        //         $query = $query->where('is_sales', '=', 0);
-        //     }
-        // }
-        // if (isset($requestAll['price_from']) || isset($requestAll['price_to'])) {
-        //     if (empty($requestAll['price_from'])) {
-        //         $query = $query->where('product_price', '>=', 0);
-        //         $query = $query->where('product_price', '<=', $requestAll['price_to']);
-        //     } elseif (empty($requestAll['price_to'])) {
-        //         $query = $query->where('product_price', '>=', $requestAll['price_from']);
-        //     } else {
-        //         $query = $query->where('product_price', '>=', $requestAll['price_from']);
-        //         $query = $query->where('product_price', '<=', $requestAll['price_to']);
-        //     }
-        // }
-        // $query = $query->orderBy('updated_at', 'desc');
-        // return $query->paginate(20);
     }
 
     public function getProduct($request)

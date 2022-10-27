@@ -26,14 +26,19 @@ class UserRepository implements UserRepositoryInterface
             $results = $query;
         }
         if ($request->load == 'search') {
-            $query = $query->where("name", "LIKE", '%' . $request['name'] . '%')
-                            ->where("email", "LIKE", '%' . $request['email'] . '%');
-            if (isset($request['role']) && $request['role'] != 'default') {
-                $query->where("group_role", '=', $request['role']);
+            if (isset($request->name)) {
+                $query = $query->where("name", "LIKE", '%' . $request->name . '%');
             }
-            if (isset($request['status']) && $request['status'] != 'default') {
-                $query->where("is_active", '=', $request['status']);
+            if (isset($request->email)) {
+                $query = $query->where("email", "LIKE", '%' . $request->email . '%');
             }
+            if (isset($request->role) && $request->role != 'default') {
+                $query->where("group_role", '=', $request->role);
+            }
+            if (isset($request->status) && $request->status != 'default') {
+                $query->where("is_active", '=', $request->status);
+            }
+            $query = $query->orderBy('id', 'desc')->get();
             $results = $query;
         }
 
