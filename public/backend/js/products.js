@@ -9,9 +9,12 @@ $(document).ready(function () {
         }
     });
     var dataSearch = { load: 'index' };
-
+    $.fn.DataTable.ext.pager.numbers_length = 10;
     // Get all product
+    // var $dataTable;
     function getProduct(){
+        var $dataTable = $('#products-table');
+
         $('#products-table').DataTable({
             createdRow: function (row, data, dataIndex) {
                 if (data['is_sales'] == 'Đang bán') {
@@ -19,6 +22,34 @@ $(document).ready(function () {
                 } else {
                     $('td', row).eq(4).addClass('text-danger');
 
+                }
+            },
+            drawCallback: function () {
+                var page_min = 1;
+                var $api = this.api();
+                var pages = $api.page.info().pages;
+                var rows = $api.data().length;
+
+                // Tailor the settings based on the row count
+                if (rows <= page_min) {
+                    // Not enough rows for really any features, hide filter/pagination/length
+                    $dataTable
+                        .next('.dataTables_info').css('display', 'none')
+                        .next('.dataTables_paginate').css('display', 'none');
+
+                    $dataTable
+                        .prev('.dataTables_filter').css('display', 'none')
+                        .prev('.dataTables_length').css('display', 'none')
+                } else if (pages === 1) {
+                    // With this current length setting, not more than 1 page, hide pagination
+                    $dataTable
+                        .next('.dataTables_info').css('display', 'none')
+                        .next('.dataTables_paginate').css('display', 'none');
+                } else {
+                    // SHow everything
+                    $dataTable
+                        .next('.dataTables_info').css('display', 'block')
+                        .next('.dataTables_paginate').css('display', 'block');
                 }
             },
             ajax: {
@@ -36,27 +67,43 @@ $(document).ready(function () {
             ],
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
-                lengthMenu: "Điều chỉnh số lượng bản ghi trên 1 trang ~ _MENU_ ",
+                lengthMenu: "Điều chỉnh số lượng _MENU_ ",
                 info: "Hiển thị từ _START_ ~ _END_ trong tổng số _TOTAL_ user",
                 infoEmpty: "Không có dữ liệu",
                 emptyTable: "Không có dữ liệu",
                 paginate: {
-                    first: "Trang đầu",
-                    previous: "Trang trước",
-                    next: "Trang sau",
-                    last: "Trang cuối"
+                    first: "<<",
+                    previous: "<",
+                    next: ">",
+                    last: ">>"
                 },
             },
             ordering:  false,
             searching: false,
-            paging: false,
-            info: false,
+            serverSide: true,
+            // lengthChange: false,
+            // pagingType: "full_numbers",
             destroy: true,
-            // "processing": true,
-            // "serverSide": true,
+            // ajax: "...",
+            dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
+            // "bDestroy": true
+            // processing: true,
+
         });
+        // $('div.bottom').attr("width","500");
     };
     getProduct();
+
+
+
+    // var dataTable = $('#products-table').DataTable({
+    //     retrieve: true,
+    // });
+    // $('#rowsPerPage').on('change', function() {
+    //     let row = $("#rowsPerPage").val()
+    //     dataTable.page.len(row).draw();
+    // });
+
     // Get 1 user
     // async function getUserById1(id){
     //     var user = null;
@@ -71,6 +118,7 @@ $(document).ready(function () {
     //         });
     //         return Promise.resolve(user);
     //     }
+
     function getProductById(id){
         let product = null;
         $.ajax({
@@ -80,12 +128,15 @@ $(document).ready(function () {
             data: {
                 id: id
             },
+            //dataType: "json",
             success: function (response) {
                 product = response;
             }
         });
         return product;
     }
+
+
 
     //Delete user
     $('#products-table').on('click', '.btn-delete-product', function (e) {
@@ -106,7 +157,6 @@ $(document).ready(function () {
                     id: id,
                 })
                 .then(function (response) {
-                    console.log(response);
                     if(response.data.data === 1) {
                         Swal.fire({
                             icon: 'success',
@@ -186,10 +236,19 @@ $(document).ready(function () {
         getProduct();
     });
 
+    // //Show button submit
+    // function showButtonSubmit(idButton) {
+    //     let button = '';
+    //     $('#show-button-submit').empty();
+    //     button = '<button id="'+ idButton +'"  class="btn btn-danger">Lưu</button>';
+    //     $('#show-button-submit').append(button);
+    // }
+
     //Click button Thêm mới
     $('#addNewProduct').click(function () {
         $('#product-id').val('');
         clearErrorsMessage();
+        // showButtonSubmit('addProductButton');
         $("#imgPreview").attr("src", defaultImage);
         $('#file-info').text('Chưa chọn file');
         $('#addProductForm').trigger("reset");
@@ -215,8 +274,11 @@ $(document).ready(function () {
     // Click xoá ảnh
     var defaultImage = $("#imgPreview").attr("src");
     $('#removeImage').click(function () {
+        // $('#removeImage').hide();
         $("#imgPreview").attr("src", defaultImage);
         $("#addProductImage").val("");
+        // $('.file-msg').text('Hoặc kéo thả ảnh vào đây');
+        // $('.fake-btn').text('Chọn ảnh');
         $('#file-info').text('Chưa chọn file');
         $("#product_image-err").empty();
       });
@@ -245,6 +307,7 @@ $(document).ready(function () {
             $('#product-id').val(response.data.product_id);
             $('#popupProductTitle').html("Chỉnh sửa Sản Phẩm");
             $('#popupProduct').modal('show');
+            // getProduct();
         })
         .catch(function (error) {
             Swal.fire({
@@ -254,6 +317,7 @@ $(document).ready(function () {
             })
         });
     });
+
 
     // Click button Lưu trong modal add
     $('#addProductForm').on('click','#addProductButton',function (e) {
@@ -290,7 +354,6 @@ $(document).ready(function () {
                 }
             })
             .catch(function (error) {
-                console.log(error);
                 clearErrorsMessage();
                 $.each(error.response.data.errors, function (name, message) {
                     $("#" + name + '-err').html(message[0]);
@@ -307,9 +370,11 @@ $(document).ready(function () {
             formData.append('product_price', $('#addProductPrice').val() );
             formData.append('description', $('#addProductDescription').val() );
             formData.append('is_sales', $('#addProductStatus').val());
-            // formData.append('product_id', $('#product-id').val());
+
             axios.post( "product/edit/"+id,formData,{
                 headers: { "Content-Type": "multipart/form-data" },
+                // contentType: false,
+                // processData: false,
             })
             .then(function (response) {
                 if(response.data.status == true) {
@@ -332,7 +397,6 @@ $(document).ready(function () {
                 }
             })
             .catch(function (error) {
-                console.log(error);
                 clearErrorsMessage();
                 $.each(error.response.data.errors, function (name, message) {
                     $("#" + name + '-err').html(message[0]);
@@ -348,5 +412,7 @@ $(document).ready(function () {
         $("#product_price-err").empty();
         $("#is_sales-err").empty();
         $("#product_image-err").empty();
-    };
+    }
+
+
  });

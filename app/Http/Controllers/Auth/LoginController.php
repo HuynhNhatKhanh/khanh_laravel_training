@@ -27,12 +27,12 @@ class LoginController extends Controller
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
                 $this->userRepository->login($request);
-                return $this->successResponse('', $message = 'Kiểm tra đăng nhập chính xác');
+                return $this->successResponse('', __('MESSAGE_CHECK_LOGIN_SUCCESS'));
             } else {
-                return $this->errorResponse($message = 'Mật khẩu không chính xác');
+                return $this->errorResponse(__('MESSAGE_CHECK_LOGIN_ERROR'));
             }
         } catch (\Exception $e) {
-            return $this->errorResponse($message = 'Đã xảy ra lỗi', 500);
+            return $this->errorResponse('Đã xảy ra lỗi', 500);
         }
     }
 

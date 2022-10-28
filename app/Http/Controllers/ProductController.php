@@ -47,7 +47,7 @@ class ProductController extends Controller
             return view('admin.pages.product.dashboard');
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
         // $requestAll = $request->all();
         // $items = $this->productRepository->getAllProduct($requestAll);
@@ -64,10 +64,10 @@ class ProductController extends Controller
     {
         try {
             $this->productRepository->store($request);
-            return $this->successResponse('', 'Thêm sản phẩm thành công');
+            return $this->successResponse('', __('MESSAGE_ADD_PRODUCT_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 
@@ -82,10 +82,10 @@ class ProductController extends Controller
     {
         try {
             $data = $this->productRepository->edit($id, $request);
-            return $this->successResponse($data, 'Chỉnh sửa sản phẩm thành công');
+            return $this->successResponse($data, __('MESSAGE_UPDATE_PRODUCT_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 
@@ -100,25 +100,10 @@ class ProductController extends Controller
         try {
             $id = $request->id;
             $data = $this->productRepository->delete($id);
-            return $this->successResponse($data, 'Xoá người dùng thành công');
+            return $this->successResponse($data, __('MESSAGE_DELETE_PRODUCT_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
-    }
-
-    public function file()
-    {
-        return view('admin.pages.test_upload_file');
-    }
-
-    public function upload(Request $request)
-    {
-        $data = $request->all();
-        $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
-        $fileNameImage .= $request->product_image->getClientOriginalName();
-        $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileNameImage);
-        $data['product_image'] = 'backend/images/product/' . $fileNameImage;
-        dd($data['product_image']);
     }
 
      /**
@@ -132,7 +117,7 @@ class ProductController extends Controller
         try {
             return $this->productRepository->getProduct($request);
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 }

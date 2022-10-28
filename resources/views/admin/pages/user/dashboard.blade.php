@@ -15,19 +15,10 @@
                     <div class="col-12">
                         <!-- Default box -->
                         <div class="card">
-                            <div class="card-header">
-                                @include('admin.pages.user.elements.pagination')
-                            </div>
-                            <div class="card-body">
+                            <div class="card-body py-0">
                                 <!-- List Content -->
                                 @include('admin.pages.user.elements.list_content')
                             </div>
-                            <!-- /.card-body -->
-
-                            <div class="card-footer">
-                                @include('admin.pages.user.elements.pagination')
-                            </div>
-                            <!-- /.card-footer-->
                         </div>
                         <!-- /.card -->
                     </div>

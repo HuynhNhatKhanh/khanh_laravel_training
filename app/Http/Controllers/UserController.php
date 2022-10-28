@@ -48,7 +48,7 @@ class UserController extends Controller
             }
             return view('admin.pages.user.dashboard');
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 
@@ -63,9 +63,9 @@ class UserController extends Controller
         try {
             $requestAll = $request->all();
             $this->userRepository->store($requestAll);
-            return $this->successResponse('', 'Thêm user thành công');
+            return $this->successResponse('', __('MESSAGE_ADD_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse('Lỗi');
+            return $this->errorResponse(__('MESSAGE_ERROR'));
         }
     }
 
@@ -81,9 +81,9 @@ class UserController extends Controller
         try {
             $requestAll = $request->all();
             $this->userRepository->edit($id, $requestAll);
-            return $this->successResponse('', 'Chỉnh sửa user thành công');
+            return $this->successResponse('', __('MESSAGE_UPDATE_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 
@@ -98,9 +98,9 @@ class UserController extends Controller
         try {
             $requestAll = $request->all();
             $data =  $this->userRepository->delete($requestAll);
-            return $this->successResponse($data, 'Xoá người dùng thành công');
+            return $this->successResponse($data, __('MESSAGE_DELETE_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 
@@ -115,9 +115,9 @@ class UserController extends Controller
         try {
             $requestAll = $request->all();
             $data = $this->userRepository->status($requestAll);
-            return $this->successResponse($data, 'Thay đổi trạng thái User thành công');
+            return $this->successResponse($data, __('MESSAGE_CHANGE_STATUS_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 
@@ -133,7 +133,7 @@ class UserController extends Controller
             $requestAll = $request->all();
             return $this->userRepository->getUser($requestAll);
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
         }
     }
 }

@@ -8,6 +8,7 @@ $(document).ready(function () {
         }
     });
     var dataSearch = { load: 'index' };
+    $.fn.DataTable.ext.pager.numbers_length = 10;
 
     //Login
     $('#form-login').click( function(e) {
@@ -53,13 +54,41 @@ $(document).ready(function () {
 
     // Get all user
     function getUser(){
-
+        var $dataTable = $('#users-table');
         $('#users-table').DataTable({
             createdRow: function (row, data) {
                 if (data['is_active'] == 'Đang hoạt động') {
                     $('td', row).eq(4).addClass('text-success');
                 } else {
                     $('td', row).eq(4).addClass('text-danger');
+                }
+            },
+            drawCallback: function () {
+                var page_min = 1;
+                var $api = this.api();
+                var pages = $api.page.info().pages;
+                var rows = $api.data().length;
+
+                // Tailor the settings based on the row count
+                if (rows <= page_min) {
+                    // Not enough rows for really any features, hide filter/pagination/length
+                    $dataTable
+                        .next('.dataTables_info').css('display', 'none')
+                        .next('.dataTables_paginate').css('display', 'none');
+
+                    $dataTable
+                        .prev('.dataTables_filter').css('display', 'none')
+                        .prev('.dataTables_length').css('display', 'none')
+                } else if (pages === 1) {
+                    // With this current length setting, not more than 1 page, hide pagination
+                    $dataTable
+                        .next('.dataTables_info').css('display', 'none')
+                        .next('.dataTables_paginate').css('display', 'none');
+                } else {
+                    // SHow everything
+                    $dataTable
+                        .next('.dataTables_info').css('display', 'block')
+                        .next('.dataTables_paginate').css('display', 'block');
                 }
             },
             ajax: {
@@ -77,22 +106,24 @@ $(document).ready(function () {
             ],
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
-                lengthMenu: "Điều chỉnh số lượng bản ghi trên 1 trang ~ _MENU_ ",
+                lengthMenu: "Điều chỉnh số lượng _MENU_ ",
                 info: "Hiển thị từ _START_ ~ _END_ trong tổng số _TOTAL_ user",
                 infoEmpty: "Không có dữ liệu",
                 emptyTable: "Không có dữ liệu",
                 paginate: {
-                    first: "Trang đầu",
-                    previous: "Trang trước",
-                    next: "Trang sau",
-                    last: "Trang cuối"
+                    first: "<<",
+                    previous: "<",
+                    next: ">",
+                    last: ">>"
                 },
             },
             ordering:  false,
+            serverSide: true,
             searching: false,
-            paging: false,
-            info: false,
+            // paging: false,
+            // info: false,
             destroy: true,
+            dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
         });
     };
     getUser();
