@@ -111,8 +111,6 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function edit($id, $request)
     {
-        // $oldImage = $this->product->find($id)->pluck('product_image')->first();
-        $delete = $this->product->find($id);
         $dataUpdate = [
             'product_id' => $id,
             'product_name' => $request->product_name,
@@ -121,14 +119,16 @@ class ProductRepository implements ProductRepositoryInterface
             'is_sales' => $request->is_sales,
         ];
         if (isset($request->product_image) && ($request->product_image) != 'image_default.jpg') {
-            // $oldImage = 'storage/backend/images/product/'.$request->product_image;
             $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
             $fileNameImage .= $request->product_image->getClientOriginalName();
             $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileNameImage);
             $dataUpdate['product_image']  =  $fileNameImage;
-            // Storage::delete($oldImage);
-            Storage::disk('public')->delete('/backend/images/product'.$delete->product_image);
-            // \Storage::disk('public')->delete('backend/images/product'.$oldImage);
+
+            $oldImage = $this->product->find($id)->product_image;
+            $fileDelete = 'storage/backend/images/product/'.$oldImage;
+            if (file_exists($fileDelete)) {
+                unlink($fileDelete);
+            }
         };
         return $this->product->where('product_id', $id)->update($dataUpdate);
     }

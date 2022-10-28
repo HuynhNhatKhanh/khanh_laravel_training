@@ -80,7 +80,6 @@ $(document).ready(function () {
             data: {
                 id: id
             },
-            //dataType: "json",
             success: function (response) {
                 product = response;
             }
@@ -187,19 +186,10 @@ $(document).ready(function () {
         getProduct();
     });
 
-    // //Show button submit
-    // function showButtonSubmit(idButton) {
-    //     let button = '';
-    //     $('#show-button-submit').empty();
-    //     button = '<button id="'+ idButton +'"  class="btn btn-danger">Lưu</button>';
-    //     $('#show-button-submit').append(button);
-    // }
-
     //Click button Thêm mới
     $('#addNewProduct').click(function () {
         $('#product-id').val('');
         clearErrorsMessage();
-        // showButtonSubmit('addProductButton');
         $("#imgPreview").attr("src", defaultImage);
         $('#file-info').text('Chưa chọn file');
         $('#addProductForm').trigger("reset");
@@ -225,11 +215,8 @@ $(document).ready(function () {
     // Click xoá ảnh
     var defaultImage = $("#imgPreview").attr("src");
     $('#removeImage').click(function () {
-        // $('#removeImage').hide();
         $("#imgPreview").attr("src", defaultImage);
         $("#addProductImage").val("");
-        // $('.file-msg').text('Hoặc kéo thả ảnh vào đây');
-        // $('.fake-btn').text('Chọn ảnh');
         $('#file-info').text('Chưa chọn file');
         $("#product_image-err").empty();
       });
@@ -244,7 +231,6 @@ $(document).ready(function () {
             id: id,
         })
         .then(function (response) {
-            // console.log(response);
             if (response.data.product_image != null) {
                 $('#file-info').text(response.data.product_image);
                 $("#imgPreview").attr("src", base_url + '/storage/backend/images/product/' + response.data.product_image)
@@ -261,7 +247,6 @@ $(document).ready(function () {
             $('#popupProduct').modal('show');
         })
         .catch(function (error) {
-            console.log(error);
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -269,7 +254,6 @@ $(document).ready(function () {
             })
         });
     });
-
 
     // Click button Lưu trong modal add
     $('#addProductForm').on('click','#addProductButton',function (e) {
@@ -282,12 +266,10 @@ $(document).ready(function () {
             formData.append('product_price', $('#addProductPrice').val() );
             formData.append('description', $('#addProductDescription').val() );
             formData.append('is_sales', $('#addProductStatus').val());
-            // console.log(formData);
             axios.post( "product/add",formData,{
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(function (response) {
-                console.log(response);
                 if(response.data.status == true) {
                     $('#popupProduct').modal('hide');
                     Swal.fire({
@@ -318,9 +300,7 @@ $(document).ready(function () {
         }
         else {
             e.preventDefault();
-            // console($('#imgPreview').attr('src'));
             let id = $('#product-id').val();
-            // var form = $('#addProductForm')[0];
             var formData = new FormData();
             formData.append('product_image', $('#addProductImage')[0].files[0] );
             formData.append('product_name', $('#addProductName').val() );
@@ -328,14 +308,10 @@ $(document).ready(function () {
             formData.append('description', $('#addProductDescription').val() );
             formData.append('is_sales', $('#addProductStatus').val());
             // formData.append('product_id', $('#product-id').val());
-            // console.log(formData);
             axios.post( "product/edit/"+id,formData,{
                 headers: { "Content-Type": "multipart/form-data" },
-                // contentType: false,
-                // processData: false,
             })
             .then(function (response) {
-                console.log(response);
                 if(response.data.status == true) {
                     $('#popupProduct').modal('hide');
                     Swal.fire({
@@ -366,79 +342,11 @@ $(document).ready(function () {
         }
     });
 
-    // if($('#product-id').val() != '' && $('#product-id').val() != null) {
-    //     $('#addProductForm').on('click','#addProductButton',function (e) {
-    //         console.log('hi');
-    //     })
-    // }
-
-
-
-    // $('#addUserForm').on('click','#addProductButton', function (e) {
-    //     // e.preventDefault();
-    //     // console.log('hi');
-    //     if( $('#product-id').val() != ''){
-    //         console.log('hi');
-    //     } else {
-    //          //Click button Lưu trong modal add
-
-    //     }
-    // });
-
-    // // Click button Lưu trong modal edit
-    // $('#addUserForm').on('click','#editUserButton', function (e) {
-    //     e.preventDefault();
-    //     let id = $('#user-id').val();
-    //     let name = $('#addUserName').val();
-    //     let email = $('#addUserEmail').val();
-    //     let password = $('#addUserPassword').val();
-    //     let passwordConfirm = $('#addUserPasswordConfirm').val();
-    //     let role = $('#addUserRole').val();
-    //     let status = $('#addUserStatus').val();
-
-    //     axios.put( "user/edit/"+id,{
-    //         name: name,
-    //         email: email,
-    //         password: password,
-    //         password_confirm: passwordConfirm,
-    //         group_role: role,
-    //         is_active: status,
-    //     })
-    //     .then(function (response) {
-    //         if(response.data.status == true) {
-    //             $('#popupUser').modal('hide');
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: "Cập nhật người dùng thành công",
-    //                 showConfirmButton: false,
-    //                 timer: 1500
-    //             }).then(() => {
-    //                 getUser();
-    //             });
-    //         } else {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Oops...',
-    //                 text: 'Đã xảy ra lỗi!',
-    //             })
-    //         }
-    //     })
-    //     .catch(function (error) {
-    //         clearErrorsMessage();
-    //         $.each(error.response.data.errors, function (name, message) {
-    //             $("#" + name + '-err').html(message[0]);
-    //             $("#" + name + '-err').removeClass('d-none');
-    //         });
-    //     });
-    // });
-
     // Xoá thông báo lỗi modal user
     function clearErrorsMessage() {
         $("#product_name-err").empty();
         $("#product_price-err").empty();
         $("#is_sales-err").empty();
         $("#product_image-err").empty();
-    }
-
-
+    };
  });

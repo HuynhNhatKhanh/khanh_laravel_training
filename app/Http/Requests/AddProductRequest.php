@@ -27,7 +27,7 @@ class AddProductRequest extends FormRequest
             'product_name' => 'required|min:5',
             'product_price' => 'required|min:0|numeric',
             'is_sales' => 'in:0,1',
-            'product_image' => 'sometimes|mimes:jpeg,jpg,png|max:2048|dimensions:max_width=1024,max_height=1024',
+            'product_image' => 'image|sometimes|mimes:jpeg,jpg,png|max:2048|dimensions:max_width=1024,max_height=1024',
         ];
     }
 
@@ -44,6 +44,7 @@ class AddProductRequest extends FormRequest
 
             "is_sales.in" => "Vui lòng chọn trạng thái khác mặc định",
 
+            "product_image.image" => "Chưa chọn ảnh",
             "product_image.mimes" => "Chỉ chấp nhận file png, jpg, jpeg",
             "product_image.max" => "Dung lượng ảnh không được vượt quá 2Mb",
             "product_image.dimensions" => "Ảnh quá lớn",
