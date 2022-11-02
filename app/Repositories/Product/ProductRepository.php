@@ -26,7 +26,7 @@ class ProductRepository implements ProductRepositoryInterface
                 $query = $query->where("product_name", "LIKE", '%' . $request->name . '%');
             }
             if (isset($request->status) && $request->status != 'default') {
-                $query->where("is_sales", '=', $request['status']);
+                $query = $query->where("is_sales", '=', $request['status']);
             }
             if (isset($request->priceFrom) || isset($request->priceTo)) {
                 if (empty($request->priceFrom)) {

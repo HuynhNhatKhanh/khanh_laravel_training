@@ -33,10 +33,10 @@ class UserRepository implements UserRepositoryInterface
                 $query = $query->where("email", "LIKE", '%' . $request->email . '%');
             }
             if (isset($request->role) && $request->role != 'default') {
-                $query->where("group_role", '=', $request->role);
+                $query = $query->where("group_role", '=', $request->role);
             }
             if (isset($request->status) && $request->status != 'default') {
-                $query->where("is_active", '=', $request->status);
+                $query = $query->where("is_active", '=', $request->status);
             }
             $query = $query->orderBy('id', 'desc')->get();
             $results = $query;

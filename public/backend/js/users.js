@@ -107,7 +107,7 @@ $(document).ready(function () {
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
                 lengthMenu: "Điều chỉnh số lượng _MENU_ ",
-                info: "Hiển thị từ _START_ ~ _END_ trong tổng số _TOTAL_ user",
+                info: "Hiển thị từ _START_ ~ _END_ trong _TOTAL_ người dùng",
                 infoEmpty: "Không có dữ liệu",
                 emptyTable: "Không có dữ liệu",
                 paginate: {

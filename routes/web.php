@@ -11,12 +11,13 @@
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      http://localhost/
  */
-// use App\Http\Controllers\AdminController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -61,5 +62,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/add', [UserController::class, 'store'])->name('user.add');
         Route::put('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
         Route::put('/update', [UserController::class, 'update'])->name('user.update');
+    });
+    // Route Customer
+    Route::group(['prefix' => 'customer'], function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('customer');
+        Route::post('/getdata', [CustomerController::class, 'getCustomer'])->name('customer.getdata');
+        Route::post('/add', [CustomerController::class, 'store'])->name('customer.add');
+        Route::put('/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+        Route::put('/import', [CustomerController::class, 'import'])->name('customer.import');
+        Route::put('/export', [CustomerController::class, 'export'])->name('customer.export');
     });
 });

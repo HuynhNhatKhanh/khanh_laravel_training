@@ -35,14 +35,14 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="product" class="nav-link">Sản phẩm</a>
+      <li class="nav-item d-none d-sm-inline-block ">
+        <a href="product" class="nav-link " id="link-product">Sản phẩm</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="user" class="nav-link">Khách hàng</a>
+        <a href="user" class="nav-link" id="link-user">Khách hàng</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="customer" class="nav-link">Người dùng</a>
+        <a href="customer" class="nav-link" id="link-customer">Người dùng</a>
       </li>
     </ul>
 
@@ -217,6 +217,7 @@
 @yield('main')
 @include('admin.modal.product_modal')
 @include('admin.modal.user_modal')
+@include('admin.modal.customer_modal')
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
@@ -251,6 +252,7 @@
     <script src="{{asset("backend/js/myScript.js")}}"></script>
     <script src="{{asset("backend/js/users.js")}}"></script>
     <script src="{{asset("backend/js/products.js")}}"></script>
+    <script src="{{asset("backend/js/customers.js")}}"></script>
     <!--CkEditor -->
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <!--datatables -->
