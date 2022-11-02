@@ -1,24 +1,14 @@
 @php
-    $searchValue = isset($requestAll['search']) ? $requestAll['search'] : '';
-    $email = isset($requestAll['email']) ? $requestAll['email'] : '';
-    $filterRole = isset($requestAll['filter_role']) ? $requestAll['filter_role'] : '';
-    $filterStatus = isset($requestAll['filter_status']) ? $requestAll['filter_status'] : '';
-
     $optionsStatus = [
         'default' => '- Trạng thái -',
         '0' => 'Tạm khoá',
         '1' => 'Đang hoạt động',
     ];
-
 @endphp
 
 <section class="content-header">
 
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
+    <div id="errors-import" class="card-header" style="overflow:scroll; max-height:300px"></div>
 
     <div class="container-fluid">
         <!-- Search & Filter -->
@@ -52,7 +42,7 @@
                         <select id="customer-filte-status" name="customer-filte-status" class="custom-select custom-select-sm mr-1"
                             style="min-width: 100px">
                             @foreach ($optionsStatus as $key => $val)
-                                <option value="{{ $key }}" @selected($key == $filterStatus)>
+                                <option value="{{ $key }}" >
                                     {{ $val }}
                                 </option>
                             @endforeach

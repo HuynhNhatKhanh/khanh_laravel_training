@@ -1,6 +1,4 @@
-// const { default: axios } = require("axios");
 
-// var editor; // use a global for the submit and return data rendering in the examples
 $(document).ready(function () {
     var base_url = window.location.origin;
     $('[data-widget="pushmenu"]').PushMenu("collapse");
@@ -378,6 +376,84 @@ $(document).ready(function () {
                 $("#" + name + '-errors').html(message[0]);
                 $("#" + name + '-errors').removeClass('d-none');
             });
+        });
+    });
+
+    //Export
+    $('#exportCSV').click(function () {
+        let name = $('#customer-name-search').val();
+        let status = $('#customer-filte-status').val();
+        let email = $('#customer-email-search').val();
+        let address = $('#customer-address-search').val();
+
+        if(name != '' || status != 'default'|| email != '' || address != '') {
+            dataSearch = {
+                name: name,
+                status: status,
+                email: email,
+                address: address,
+                numRows: numRows,
+                load: 'search'
+            };
+        } else {
+            dataSearch = {
+                load: 'index',
+                numRows: numRows
+            };
+        }
+        Swal.fire({
+            title: 'Bạn có muốn xuất file khách hàng không?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, Xuất file '
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location = 'customer/export?'+ $.param(dataSearch);
+            }
+        })
+    });
+
+    //Import
+    $('#importCSV').on('change', function () {
+        var form = $('#uploadFileCSV')[0];
+        var formData = new FormData(form);
+        axios.post( "customer/import",formData,{
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(function (response) {
+            console.log(response);
+            if(response.data.status == true) {
+                Swal.fire({
+                    icon: 'success',
+                    title: "Thêm sản phẩm thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                        getCustomer();
+                });
+            }
+            else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Đã xảy ra lỗi!',
+                })
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+            $('#errors-import').empty();
+            let err = '';
+            $.each(error.response.data.errors, function (name, message) {
+                for( let key in message) {
+                    err +=  '<p>'+'Dòng ' + name + ': ' + message[key] +'</p>';
+                }
+            });
+            let xhtml = '';
+            xhtml += ' <div class="row h-50" style="width=100%"><div class="col-md-12 col-md-offset-1"><div  class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Lỗi import!</h4>'+ err +'</div></div></div>'
+            $('#errors-import').append(xhtml);
         });
     });
 

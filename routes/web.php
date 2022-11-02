@@ -69,7 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/getdata', [CustomerController::class, 'getCustomer'])->name('customer.getdata');
         Route::post('/add', [CustomerController::class, 'store'])->name('customer.add');
         Route::put('/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
-        Route::put('/import', [CustomerController::class, 'import'])->name('customer.import');
-        Route::put('/export', [CustomerController::class, 'export'])->name('customer.export');
+        Route::post('/import', [CustomerController::class, 'import'])->name('customer.import');
+        Route::get('/export', [CustomerController::class, 'export'])->name('customer.export');
     });
 });

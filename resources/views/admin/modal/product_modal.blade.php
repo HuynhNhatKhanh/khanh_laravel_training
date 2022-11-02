@@ -68,10 +68,6 @@
                             <div class="form-group row">
                               <div class="col-md-12 col-sm-9 col-xs-12">
                                 <div class="file-drop-area">
-                                  {{-- <span class="fake-btn">Chọn ảnh</span>
-                                  <span class="file-msg">Hoặc kéo thả ảnh vào đây</span> --}}
-                                    {{-- <span class="fake-btn"></span>
-                                    <span class="file-msg"></span> --}}
                                     <button id="removeImage" type="button" class="btn btn-danger mb-2">Xóa
                                         ảnh</button>
                                     <input class="file-input" id="addProductImage" type="file"

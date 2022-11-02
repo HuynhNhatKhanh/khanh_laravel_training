@@ -1,26 +1,13 @@
 @php
-    $searchValue = isset($requestAll['search']) ? $requestAll['search'] : '';
-    $priceToValue = isset($requestAll['price_to']) ? $requestAll['price_to'] : '';
-    $priceFromValue = isset($requestAll['price_from']) ? $requestAll['price_from'] : '';
-    $filterStatus = isset($requestAll['filter_status']) ? $requestAll['filter_status'] : '';
-
     $optionsStatus = [
         'default' => '- Trạng thái -',
         '1' => 'Đang bán',
-        // '1' => 'Hết hàng',
         '0' => 'Ngừng bán'
     ];
 
 @endphp
 
 <section class="content-header">
-
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
-
     <div class="container-fluid">
         <!-- Search & Filter -->
         <div class="card card-info card-outline">
@@ -47,7 +34,7 @@
                         <select id="product-filte-status" name="product-filte-status" class="custom-select custom-select-sm mr-1"
                             style="width: 150px">
                             @foreach ($optionsStatus as $key => $val)
-                                <option value="{{ $key }}" @selected($key == $filterStatus)>
+                                <option value="{{ $key }}" >
                                     {{ $val }}
                                 </option>
                             @endforeach

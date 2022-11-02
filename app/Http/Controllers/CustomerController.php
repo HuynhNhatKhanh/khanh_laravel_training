@@ -20,6 +20,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\AddCustomerRequest;
 use App\Repositories\Customer\CustomerRepositoryInterface;
+use App\Exports\CustomersExport;
+use App\Imports\CustomersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * CustomerController class
@@ -117,6 +120,39 @@ class CustomerController extends Controller
             return $this->userRepository->getUser($requestAll);
         } catch (\Exception $e) {
             return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+        }
+    }
+
+    public function export(Request $request)
+    {
+        try {
+            return Excel::download(new CustomersExport($request), 'customers.xlsx');
+        } catch (\Exception $e) {
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+        }
+    }
+
+    public function import(Request $request)
+    {
+        // return  $request;
+        try {
+            Excel::import(new CustomersImport, $request->customersFile);
+            return $this->successResponse('', __('MESSAGE_ADD_USER_SUCCESS'));
+            //cần sửa lại mess
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            Log::error($e->failures());
+            $failures = $e->failures();
+
+            $errors = [];
+            foreach ($failures as $failure) {
+                $row = $failure->row(); // row that went wrong
+                $attribute = $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $message = $failure->errors(); // Actual error messages from Laravel validator
+                $errors[$row][$attribute] = $message[0];
+            }
+
+            return $this->errorResponse(__('MESSAGE_ERROR'), 500, $errors);
         }
     }
 }

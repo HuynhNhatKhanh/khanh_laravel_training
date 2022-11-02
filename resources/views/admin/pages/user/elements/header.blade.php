@@ -1,9 +1,4 @@
 @php
-    $searchValue = isset($requestAll['search']) ? $requestAll['search'] : '';
-    $email = isset($requestAll['email']) ? $requestAll['email'] : '';
-    $filterRole = isset($requestAll['filter_role']) ? $requestAll['filter_role'] : '';
-    $filterStatus = isset($requestAll['filter_status']) ? $requestAll['filter_status'] : '';
-
     $optionsStatus = [
         'default' => '- Trạng thái -',
         '0' => 'Tạm khoá',
@@ -16,17 +11,9 @@
         'reviewer' => 'Reviewer',
         'editor' => 'Editor',
     ];
-
 @endphp
 
 <section class="content-header">
-
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-    @endif
-
     <div class="container-fluid">
         <!-- Search & Filter -->
         <div class="card card-info card-outline" id="search-user">
@@ -60,7 +47,7 @@
                         <select id="filter_role" name="filter_role" class="custom-select custom-select-sm mr-1"
                             style="min-width: 100px">
                             @foreach ($optionsRole as $key => $val)
-                                <option value="{{ $key }}" @selected($key == $filterRole)>
+                                <option value="{{ $key }}">
                                     {{ $val }}
                                 </option>
                             @endforeach
@@ -71,7 +58,7 @@
                         <select id="filter_status" name="filter_status" class="custom-select custom-select-sm mr-1"
                             style="min-width: 100px">
                             @foreach ($optionsStatus as $key => $val)
-                                <option value="{{ $key }}" @selected($key == $filterStatus)>
+                                <option value="{{ $key }}" >
                                     {{ $val }}
                                 </option>
                             @endforeach
