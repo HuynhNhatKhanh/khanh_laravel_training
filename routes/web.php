@@ -34,9 +34,6 @@ use App\Http\Controllers\Auth\LoginController;
 //Use Route of Auth
 Auth::routes();
 
-// Check Login
-Route::post('user/checkLogin', [LoginController::class, 'login']);
-
 // Admin middleware auth
 Route::group(['middleware' => ['auth']], function () {
     //Route Home
@@ -50,7 +47,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/delete', [ProductController::class, 'delete'])->name('product.delete');
         Route::post('/add', [ProductController::class, 'store'])->name('product.add');
         Route::post('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
-        Route::put('/update', [ProductController::class, 'update'])->name('product.update');
     });
     // Route User
     Route::group(['prefix' => 'user'], function () {
@@ -61,7 +57,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/getdata', [UserController::class, 'getUser'])->name('user.getdata');
         Route::post('/add', [UserController::class, 'store'])->name('user.add');
         Route::put('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
-        Route::put('/update', [UserController::class, 'update'])->name('user.update');
     });
     // Route Customer
     Route::group(['prefix' => 'customer'], function () {

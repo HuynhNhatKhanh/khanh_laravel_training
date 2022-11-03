@@ -17,12 +17,13 @@ use Datatables;
 use App\Models\Customer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Http\Requests\AddCustomerRequest;
-use App\Repositories\Customer\CustomerRepositoryInterface;
+use Illuminate\Http\Response;
 use App\Exports\CustomersExport;
 use App\Imports\CustomersImport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\AddCustomerRequest;
+use App\Repositories\Customer\CustomerRepositoryInterface;
 
 /**
  * CustomerController class
@@ -51,7 +52,7 @@ class CustomerController extends Controller
             return view('admin.pages.customer.dashboard');
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -67,6 +68,7 @@ class CustomerController extends Controller
             $this->customerRepository->store($request);
             return $this->successResponse('', __('MESSAGE_ADD_USER_SUCCESS'));
         } catch (\Exception $e) {
+            Log::error($e);
             return $this->errorResponse(__('MESSAGE_ERROR'));
         }
     }
@@ -85,7 +87,8 @@ class CustomerController extends Controller
             $this->userRepository->edit($id, $requestAll);
             return $this->successResponse('', __('MESSAGE_UPDATE_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -102,7 +105,8 @@ class CustomerController extends Controller
             $data =  $this->userRepository->delete($requestAll);
             return $this->successResponse($data, __('MESSAGE_DELETE_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -119,7 +123,8 @@ class CustomerController extends Controller
             $requestAll = $request->all();
             return $this->userRepository->getUser($requestAll);
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -129,30 +134,20 @@ class CustomerController extends Controller
             return Excel::download(new CustomersExport($request), 'customers.xlsx');
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function import(Request $request)
     {
-        // return  $request;
         try {
-            Excel::import(new CustomersImport, $request->customersFile);
-            return $this->successResponse('', __('MESSAGE_ADD_USER_SUCCESS'));
+            $import = new CustomersImport;
+            Excel::import($import, $request->customersFile);
+            return $this->successResponse(['errors' => $import->errorsImport, 'rowsInsert' => $import->dataInsert], ('MESSAGE_ADD_USER_SUCCESS'));
             //cần sửa lại mess
-        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            Log::error($e->failures());
-            $failures = $e->failures();
-
-            $errors = [];
-            foreach ($failures as $failure) {
-                $row = $failure->row(); // row that went wrong
-                $attribute = $failure->attribute(); // either heading key (if using heading row concern) or column index
-                $message = $failure->errors(); // Actual error messages from Laravel validator
-                $errors[$row][$attribute] = $message[0];
-            }
-
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500, $errors);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

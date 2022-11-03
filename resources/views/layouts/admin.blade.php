@@ -20,8 +20,10 @@
     <!-- Custom css-->
     <link rel="stylesheet" href="{{url('backend')}}/css/custom.css">
     <!--datatables -->
+    <link rel="stylesheet" href="{{url('backend')}}/editor/css/editor.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.css"/>
-
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.12.1/b-2.2.3/sl-1.4.0/datatables.min.css"/> --}}
+    {{-- <link rel="stylesheet" type="text/css" href="Editor-2.0.10/css/editor.dataTables.css"> --}}
 
 
 </head>
@@ -257,9 +259,13 @@
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <!--datatables -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
+    <script src="{{asset("backend/editor/js/dataTables.editor.min.js")}}"></script>
+    {{-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.12.1/b-2.2.3/sl-1.4.0/datatables.min.js"></script> --}}
+    {{-- <script type="text/javascript" src="Editor-2.0.10/js/dataTables.editor.js"></script> --}}
     <!--Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
     <script>
         $(function () {
             $('.select2').select2()

@@ -17,6 +17,7 @@ use Datatables;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\EditUserRequest;
@@ -48,7 +49,8 @@ class UserController extends Controller
             }
             return view('admin.pages.user.dashboard');
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,6 +67,7 @@ class UserController extends Controller
             $this->userRepository->store($requestAll);
             return $this->successResponse('', __('MESSAGE_ADD_USER_SUCCESS'));
         } catch (\Exception $e) {
+            Log::error($e);
             return $this->errorResponse(__('MESSAGE_ERROR'));
         }
     }
@@ -83,7 +86,8 @@ class UserController extends Controller
             $this->userRepository->edit($id, $requestAll);
             return $this->successResponse('', __('MESSAGE_UPDATE_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -100,7 +104,8 @@ class UserController extends Controller
             $data =  $this->userRepository->delete($requestAll);
             return $this->successResponse($data, __('MESSAGE_DELETE_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -117,7 +122,8 @@ class UserController extends Controller
             $data = $this->userRepository->status($requestAll);
             return $this->successResponse($data, __('MESSAGE_CHANGE_STATUS_USER_SUCCESS'));
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -133,7 +139,8 @@ class UserController extends Controller
             $requestAll = $request->all();
             return $this->userRepository->getUser($requestAll);
         } catch (\Exception $e) {
-            return $this->errorResponse(__('MESSAGE_ERROR'), 500);
+            Log::error($e);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

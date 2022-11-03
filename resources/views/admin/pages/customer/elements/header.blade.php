@@ -21,7 +21,7 @@
                         <i class="fas fa-minus"></i></button>
                 </div>
             </div>
-            <div class="card-body" id="search-customer">
+            <div class="card-body pb-0" id="search-customer" >
                 <div class="row justify-content-between">
                     <div class="mb-1 col-3">
                         <p>Tên </p>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-between p-2">
+                <div class="row justify-content-between p-2" style="height: 55px">
                     <div class="col-1 pl-0">
                         <button type="button" class="btn btn-sm btn-success" id="addNewCustomer" data-toggle="modal">Thêm mới</button>
 

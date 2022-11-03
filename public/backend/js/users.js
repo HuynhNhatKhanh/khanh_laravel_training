@@ -1,4 +1,33 @@
 // const { default: axios } = require("axios");
+ //Login
+ $('#form-login').click( function(e) {
+    e.preventDefault();
+    let email = $('#email').val();
+    let password = $('#password').val();
+    axios.post('login', {
+        email: email,
+        password: password
+    })
+    .then(function (response) {
+        if (response.data.status == true) {
+            window.location.href = 'product';
+        }
+        if (response.data.status == false) {
+            $("#email-error").empty();
+            $("#password-error").html(response.data.message);
+            $("#password-error").removeClass('d-none');
+        }
+    })
+    .catch(function (error) {
+        $("#email-error").empty();
+        $("#password-error").empty();
+        let arrError = error.response.data.errors;
+        $.each(arrError, function (name, message){
+            $("#" + name + '-error').html(message[0]);
+            $("#" + name + '-error').removeClass('d-none');
+        })
+    });
+});
 
 $(document).ready(function () {
     var base_url = window.location.origin;
@@ -9,48 +38,6 @@ $(document).ready(function () {
     });
     var dataSearch = { load: 'index' };
     $.fn.DataTable.ext.pager.numbers_length = 10;
-
-    //Login
-    $('#form-login').click( function(e) {
-        e.preventDefault();
-        let email = $('#email').val();
-        let password = $('#password').val();
-        axios.post('user/checkLogin', {
-            email: email,
-            password: password
-        })
-        .then(function (response) {
-            console.log(response);
-            if (response.data.status == true) {
-                window.location.href = 'product';
-            }
-            if (response.data.status == false) {
-                $("#email-error").empty();
-                $("#password-error").html(response.data.message);
-                $("#password-error").removeClass('d-none');
-            }
-        })
-        .catch(function (error) {
-            $("#email-error").empty();
-            $("#password-error").empty();
-            let arrError = error.response.data.errors;
-            $.each(arrError, function (name, message){
-                $("#" + name + '-error').html(message[0]);
-                $("#" + name + '-error').removeClass('d-none');
-            })
-        });
-    });
-
-    // Get data user
-    // function getDataUser() {
-    //     $.ajax({
-    //         type: "get",
-    //         url: "url",
-    //         // success: function (response) {
-
-    //         // }
-    //     });
-    // }
 
     // Get all user
     function getUser(){

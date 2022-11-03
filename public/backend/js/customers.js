@@ -1,4 +1,4 @@
-
+var editor; // use a global for the submit and return data rendering in the examples
 $(document).ready(function () {
     var base_url = window.location.origin;
     $('[data-widget="pushmenu"]').PushMenu("collapse");
@@ -13,34 +13,40 @@ $(document).ready(function () {
     // Get all product
     // var $dataTable;
 
-    // var editor = new $.fn.dataTable.Editor( {
-    //     ajax: "../php/staff.php",
-    //     table: "#customers-table",
-    //     fields: [ {
-    //             label: "DT_RowIndex:",
-    //             name: "DT_RowIndex"
-    //         }, {
-    //             label: "customer_name:",
-    //             name: "customer_name"
-    //         }, {
-    //             label: "email:",
-    //             name: "email"
-    //         }, {
-    //             label: "address:",
-    //             name: "address"
-    //         }, {
-    //             label: "tel_num:",
-    //             name: "tel_num"
-    //         }, {
-    //             label: "is_active:",
-    //             name: "is_active",
-    //         }
-    //     ]
-    // } );
+    var editor = new $.fn.dataTable.Editor( {
+        ajax: "../php/staff.php",
+        table: "#customers-table",
+        fields: [ {
+                label: "DT_RowIndex:",
+                name: "DT_RowIndex"
+            }, {
+                label: "customer_name:",
+                name: "customer_name"
+            }, {
+                label: "email:",
+                name: "email"
+            }, {
+                label: "address:",
+                name: "address"
+            }, {
+                label: "tel_num:",
+                name: "tel_num"
+            }, {
+                label: "is_active:",
+                name: "is_active",
+            }
+        ]
+    } );
 
-    //  // Activate an inline edit on click of a table cell
-    $('#customers-table').on( 'click', 'editbtn-user', function (e) {
-
+     // Activate an inline edit on click of a table cell
+    $('#customers-table').on( 'click', 'tbody td.row-edit', function (e) {
+        // editor.inline( table.cells(this.parentNode, '*').nodes(), {
+        //     onBlur: 'submit'
+        // } );
+        editor.inline(table.cells(this.parentNode, '*').nodes(), {
+            submitTrigger: -2,
+            submitHtml: '<i class="fa fa-play"/>'
+        } );
     });
 
     function getCustomer(){
@@ -94,16 +100,16 @@ $(document).ready(function () {
                 { data: 'address', name: 'address' },
                 { data: 'tel_num', name: 'tel_num', className: 'text-center' },
                 { data: 'is_active', name: 'is_active', className: 'text-center' },
-                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
+                // { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
                 // $xhtml = '<td class="text-center ">';
                 // //         $xhtml .= '<button type="button" value="'. $results->customer_id .'" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id="'. $results->customer_id .'"><i class="fas fa-pencil-alt"></i></button> </td>';
-                // {
-                //     data: null,
-                //     // defaultContent: '<i class="fa fa-pencil"/>',
-                //     defaultContent: '<button type="button" value="" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id=""><i class="fas fa-pencil-alt"></i></button>',
-                //     className: 'row-edit dt-center',
-                //     orderable: false
-                // },
+                {
+                    data: null,
+                    defaultContent: '<i class="fas fa-pencil-alt"/>',
+                    // defaultContent: '<button type="button" value="" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id=""><i class="fas fa-pencil-alt"></i></button>',
+                    className: 'row-edit dt-center',
+                    orderable: false
+                },
             ],
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
@@ -128,6 +134,18 @@ $(document).ready(function () {
             dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
             // "bDestroy": true
             // processing: true,
+            select: {
+                style: 'os',
+                selector: 'td:first-child'
+            },
+            buttons: [ {
+                extend: "createInline",
+                editor: editor,
+                formOptions: {
+                    submitTrigger: -2,
+                    submitHtml: '<i class="fa fa-play"/>'
+                }
+            } ]
 
         });
         // $('div.bottom').attr("width","500");
@@ -146,17 +164,14 @@ $(document).ready(function () {
 
     // Get 1 user
     // async function getUserById1(id){
-    //     var user = null;
-    //     await axios.post('user/getdata', {
+    //     let user = null;
+    //     const response = await axios.post('user/getdata', {
     //             id: id
     //         })
-    //         .then(function (response) {
-    //             user = response;
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    //         return Promise.resolve(user);
+    //         if(response.status){
+    //             user = response.data.data;
+    //         }
+    //         return user;
     //     }
 
     function getProductById(id){
@@ -424,10 +439,12 @@ $(document).ready(function () {
         })
         .then(function (response) {
             console.log(response);
-            if(response.data.status == true) {
+            let errors = response.data.data.errors;
+            if(response.data.data.rowsInsert != '') {
+                showErrorsImportCustomers(errors);
                 Swal.fire({
                     icon: 'success',
-                    title: "Thêm sản phẩm thành công",
+                    title: "Thêm khách hàng thành công",
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
@@ -435,27 +452,37 @@ $(document).ready(function () {
                 });
             }
             else {
+                showErrorsImportCustomers(errors);
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Đã xảy ra lỗi!',
+                    text: 'Không có dòng nào được IMPORT!',
                 })
             }
         })
         .catch(function (error) {
-            console.log(error);
-            $('#errors-import').empty();
-            let err = '';
-            $.each(error.response.data.errors, function (name, message) {
-                for( let key in message) {
-                    err +=  '<p>'+'Dòng ' + name + ': ' + message[key] +'</p>';
-                }
-            });
-            let xhtml = '';
-            xhtml += ' <div class="row h-50" style="width=100%"><div class="col-md-12 col-md-offset-1"><div  class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Lỗi import!</h4>'+ err +'</div></div></div>'
-            $('#errors-import').append(xhtml);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Đã xảy ra lỗi!',
+            })
+
         });
     });
+
+    function showErrorsImportCustomers( errors ) {
+        $('#errors-import').empty();
+        let err = '';
+        let xhtml = '';
+
+        errors.forEach((message, key) => {
+            let row = key + 2;
+            err +=  '<p>'+'Dòng ' + row + ': ' + message +'</p>';
+        });
+
+        xhtml += ' <div class="row h-50" style="width=100%"><div class="col-md-12 col-md-offset-1"><div  class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Lỗi import!</h4>'+ err +'</div></div></div>'
+        $('#errors-import').append(xhtml);
+    }
 
     // Xoá thông báo lỗi modal user
     function clearCustomerwErrorsMessage() {

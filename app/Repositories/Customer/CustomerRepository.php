@@ -43,14 +43,14 @@ class CustomerRepository implements CustomerRepositoryInterface
 
         return Datatables::of($results)
                 ->addIndexColumn()
-                ->addColumn(
-                    'action',
-                    function ($results) {
-                        $xhtml = '<td class="text-center ">';
-                        $xhtml .= '<button type="button" value="'. $results->customer_id .'" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id="'. $results->customer_id .'"><i class="fas fa-pencil-alt"></i></button> </td>';
-                        return $xhtml;
-                    }
-                )
+                // ->addColumn(
+                //     'action',
+                //     function ($results) {
+                //         $xhtml = '<td class="text-center ">';
+                //         $xhtml .= '<button type="button" value="'. $results->customer_id .'" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id="'. $results->customer_id .'"><i class="fas fa-pencil-alt"></i></button> </td>';
+                //         return $xhtml;
+                //     }
+                // )
                 ->editColumn(
                     'is_active',
                     function ($results) {
@@ -58,7 +58,7 @@ class CustomerRepository implements CustomerRepositoryInterface
                         return $status;
                     }
                 )
-                ->rawColumns(['action'])
+                // ->rawColumns(['action'])
                 ->make(true);
     }
 
