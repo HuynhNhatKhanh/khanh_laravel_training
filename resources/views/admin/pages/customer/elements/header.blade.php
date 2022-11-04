@@ -52,7 +52,7 @@
                         <p>Địa chi</p>
                         <div class="input-group">
                             <input type="text" class="form-control form-control-sm" id="customer-address-search" placeholder="Nhập địa chỉ"
-                                name="customer-address-search" value="" style="min-width: 300px">
+                                name="customer-address-search" value="" style="min-width: 200px">
                         </div>
                     </div>
                 </div>

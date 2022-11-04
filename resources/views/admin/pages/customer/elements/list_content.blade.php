@@ -6,9 +6,9 @@
                 <th style="width: 20%!important">Họ Tên</th>
                 <th style="width: 20%!important">Email</th>
                 <th style="width: 30%!important">Địa chỉ</th>
-                <th class="text-center" style="width: 10%!important">Điện thoại</th>
-                <th class="text-center" style="width: 9%!important">Trạng thái</th>
-                <th class="text-center" style="width: 10%!important">Hành động</th>
+                <th class="text-center" style="width: 15%!important">Điện thoại</th>
+                {{-- <th class="text-center" style="width: 9%!important">Trạng thái</th> --}}
+                <th class="text-center" style="width: 14%!important">Hành động</th>
             </tr>
         </thead>
         <tbody>

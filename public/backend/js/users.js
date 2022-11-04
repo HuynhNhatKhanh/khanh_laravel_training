@@ -107,6 +107,7 @@ $(document).ready(function () {
             ordering:  false,
             serverSide: true,
             searching: false,
+            scrollY: false,
             // paging: false,
             // info: false,
             destroy: true,

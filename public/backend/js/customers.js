@@ -10,49 +10,78 @@ $(document).ready(function () {
     var dataSearch = { load: 'index' };
     $.fn.DataTable.ext.pager.numbers_length = 10;
     var numRows = 0;
-    // Get all product
-    // var $dataTable;
 
+    // edit inline
     var editor = new $.fn.dataTable.Editor( {
-        ajax: "../php/staff.php",
+        ajax: {
+                type: 'PUT',
+                url:  'customer/edit',
+                data: function(d) {
+                    d.customer_id = editor.ids();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if(response.status == true) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            getCustomer();
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Đã xảy ra lỗi!',
+                        })
+                    }
+                },
+                error: function (error) {
+                    var mess = '';
+                    $.each(error.responseJSON.errors, function (name, message) {
+                        mess += message;
+                        alert(message);
+                    });
+                }
+        },
         table: "#customers-table",
-        fields: [ {
-                label: "DT_RowIndex:",
-                name: "DT_RowIndex"
-            }, {
+        idSrc: 'customer_id',
+        fields: [  {
                 label: "customer_name:",
-                name: "customer_name"
+                name: "customer_name",
+                attr: {
+                    type: "text"
+                }
             }, {
                 label: "email:",
-                name: "email"
+                name: "email",
+                attr: {
+                    type: "email"
+                }
             }, {
                 label: "address:",
-                name: "address"
+                name: "address",
+                attr: {
+                    type: "text"
+                }
             }, {
                 label: "tel_num:",
-                name: "tel_num"
-            }, {
-                label: "is_active:",
-                name: "is_active",
-            }
+                name: "tel_num",
+                attr: {
+                    type: "number"
+                }
+            },
         ]
     } );
 
-     // Activate an inline edit on click of a table cell
-    $('#customers-table').on( 'click', 'tbody td.row-edit', function (e) {
-        // editor.inline( table.cells(this.parentNode, '*').nodes(), {
-        //     onBlur: 'submit'
-        // } );
-        editor.inline(table.cells(this.parentNode, '*').nodes(), {
-            submitTrigger: -2,
-            submitHtml: '<i class="fa fa-play"/>'
-        } );
-    });
-
+    //Get all customer
     function getCustomer(){
         var $dataTable = $('#customers-table');
 
-        $('#customers-table').DataTable({
+        var table = $('#customers-table').DataTable({
             createdRow: function (row, data) {
                 if (data['is_active'] == 'Đang hoạt động') {
                     $('td', row).eq(5).addClass('text-success');
@@ -66,9 +95,7 @@ $(document).ready(function () {
                 var pages = $api.page.info().pages;
                 var rows = $api.data().length;
                 numRows = rows;
-                // Tailor the settings based on the row count
                 if (rows <= page_min) {
-                    // Not enough rows for really any features, hide filter/pagination/length
                     $dataTable
                         .next('.dataTables_info').css('display', 'none')
                         .next('.dataTables_paginate').css('display', 'none');
@@ -77,12 +104,10 @@ $(document).ready(function () {
                         .prev('.dataTables_filter').css('display', 'none')
                         .prev('.dataTables_length').css('display', 'none')
                 } else if (pages === 1) {
-                    // With this current length setting, not more than 1 page, hide pagination
                     $dataTable
                         .next('.dataTables_info').css('display', 'none')
                         .next('.dataTables_paginate').css('display', 'none');
                 } else {
-                    // SHow everything
                     $dataTable
                         .next('.dataTables_info').css('display', 'block')
                         .next('.dataTables_paginate').css('display', 'block');
@@ -99,7 +124,7 @@ $(document).ready(function () {
                 { data: 'email', name: 'email'},
                 { data: 'address', name: 'address' },
                 { data: 'tel_num', name: 'tel_num', className: 'text-center' },
-                { data: 'is_active', name: 'is_active', className: 'text-center' },
+                // { data: 'is_active', name: 'is_active', className: 'text-center' },
                 // { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
                 // $xhtml = '<td class="text-center ">';
                 // //         $xhtml .= '<button type="button" value="'. $results->customer_id .'" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id="'. $results->customer_id .'"><i class="fas fa-pencil-alt"></i></button> </td>';
@@ -127,13 +152,9 @@ $(document).ready(function () {
             ordering:  false,
             searching: false,
             serverSide: true,
-            // lengthChange: false,
-            // pagingType: "full_numbers",
             destroy: true,
-            // ajax: "...",
+            scrollY: false,
             dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
-            // "bDestroy": true
-            // processing: true,
             select: {
                 style: 'os',
                 selector: 'td:first-child'
@@ -148,31 +169,15 @@ $(document).ready(function () {
             } ]
 
         });
-        // $('div.bottom').attr("width","500");
+
+        $('#customers-table').on( 'click', 'tbody td.row-edit', function (e) {
+            editor.inline(table.cells(this.parentNode, '*').nodes(), {
+                onBlur: 'submit',
+                submit: 'all',
+            } );
+        });
     };
     getCustomer();
-
-
-
-    // var dataTable = $('#products-table').DataTable({
-    //     retrieve: true,
-    // });
-    // $('#rowsPerPage').on('change', function() {
-    //     let row = $("#rowsPerPage").val()
-    //     dataTable.page.len(row).draw();
-    // });
-
-    // Get 1 user
-    // async function getUserById1(id){
-    //     let user = null;
-    //     const response = await axios.post('user/getdata', {
-    //             id: id
-    //         })
-    //         if(response.status){
-    //             user = response.data.data;
-    //         }
-    //         return user;
-    //     }
 
     function getProductById(id){
         let product = null;
@@ -191,10 +196,10 @@ $(document).ready(function () {
         return product;
     }
 
+    // $('#products-table').on('click', '.btn-delete-product', function (e)
 
-
-    //Delete user
-    $('#products-table').on('click', '.btn-delete-product', function (e) {
+    //Delete customer
+    $('.btn-delete-product').on('click', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
         let productData = getProductById(id);
@@ -311,44 +316,7 @@ $(document).ready(function () {
         $('#popupCustomer').modal('show');
     });
 
-    // // Click button edit user
-    // $('#products-table').on('click', '.editbtn-product', function (e) {
-    //     e.preventDefault();
-    //     let id = $(this).data('id');
-    //     clearCustomerwErrorsMessage();
-
-    //     axios.post( "product/getdata", {
-    //         id: id,
-    //     })
-    //     .then(function (response) {
-    //         if (response.data.product_image != null) {
-    //             $('#file-info').text(response.data.product_image);
-    //             $("#imgPreview").attr("src", base_url + '/storage/backend/images/product/' + response.data.product_image)
-    //         } else {
-    //             $("#imgPreview").attr("src", defaultImage);
-    //             $('#file-info').text('Chưa chọn file');
-    //         }
-    //         $('#addProductName').val(response.data.product_name);
-    //         $('#addProductPrice').val(response.data.product_price);
-    //         $('#addProductDescription').val(response.data.description);
-    //         $('#addProductStatus').val(response.data.is_sales);
-    //         $('#product-id').val(response.data.product_id);
-    //         $('#popupProductTitle').html("Chỉnh sửa Sản Phẩm");
-    //         $('#popupProduct').modal('show');
-    //         // getProduct();
-    //     })
-    //     .catch(function (error) {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Oops...',
-    //             text: 'Đã xảy ra lỗi!',
-    //         })
-    //     });
-    // });
-
-
     // Click button Lưu trong modal add
-
     $('#addCustomerForm').on('click','#addCustomerButton',function (e) {
         e.preventDefault();
         let customer_name = $('#addCustomerName').val();
@@ -438,7 +406,7 @@ $(document).ready(function () {
             headers: { "Content-Type": "multipart/form-data" },
         })
         .then(function (response) {
-            console.log(response);
+            // console.log(response);
             let errors = response.data.data.errors;
             if(response.data.data.rowsInsert != '') {
                 showErrorsImportCustomers(errors);
@@ -461,27 +429,33 @@ $(document).ready(function () {
             }
         })
         .catch(function (error) {
+            console.log(error);
+            var mess = '';
+            $.each(error.response.data.errors, function (name, message) {
+                mess += message + ', ';
+            });
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Đã xảy ra lỗi!',
+                text: mess,
             })
-
         });
     });
 
+    //Show error import
     function showErrorsImportCustomers( errors ) {
         $('#errors-import').empty();
         let err = '';
         let xhtml = '';
-
         errors.forEach((message, key) => {
             let row = key + 2;
             err +=  '<p>'+'Dòng ' + row + ': ' + message +'</p>';
         });
 
-        xhtml += ' <div class="row h-50" style="width=100%"><div class="col-md-12 col-md-offset-1"><div  class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Lỗi import!</h4>'+ err +'</div></div></div>'
-        $('#errors-import').append(xhtml);
+        if(errors != '') {
+            xhtml += ' <div class="row h-50" style="width=100%"><div class="col-md-12 col-md-offset-1"><div  class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Lỗi import!</h4>'+ err +'</div></div></div>'
+            $('#errors-import').append(xhtml);
+        }
     }
 
     // Xoá thông báo lỗi modal user

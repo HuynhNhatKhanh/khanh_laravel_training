@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Route Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     // Route Logout
-    Route::get('/logout', [LoginController::class, 'logout']);
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logoutUser');
     // Route Product
     Route::group(['prefix' => 'product'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('product');
@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('customer');
         Route::post('/getdata', [CustomerController::class, 'getCustomer'])->name('customer.getdata');
         Route::post('/add', [CustomerController::class, 'store'])->name('customer.add');
-        Route::put('/edit/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+        Route::put('/edit', [CustomerController::class, 'edit'])->name('customer.edit');
         Route::post('/import', [CustomerController::class, 'import'])->name('customer.import');
         Route::get('/export', [CustomerController::class, 'export'])->name('customer.export');
     });

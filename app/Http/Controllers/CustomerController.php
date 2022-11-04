@@ -1,6 +1,6 @@
 <?php
 /**
- * Product Controller
+ * Customer Controller
  *
  * PHP version 8
  *
@@ -14,6 +14,8 @@
 namespace App\Http\Controllers;
 
 use Datatables;
+
+use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -80,11 +82,37 @@ class CustomerController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, EditUserRequest $request)
+    public function edit(Request $request)
     {
+        $id = implode('', $request->customer_id);
+        $rules = [
+            'customer_name' => 'required|min:5',
+            'email' => 'required|max:255|email:rfc,dns|unique:customers,email,' .$id. ',customer_id',
+            'tel_num' => 'required|regex:/^([0-9]*)$/|min:7|max:13',
+            'address' => 'required|max:255',
+        ];
+        $messages = [
+            "customer_name.required" => "Vui lòng nhập tên khách hàng",
+            "customer_name.min" => "Tên phải lớn hơn 5 ký tự",
+
+            "email.required" => "Email không được để trống",
+            "email.email" => "Email không đúng định dạng",
+            "email.exists" => "Email không tồn tại",
+            "email.unique" => "Email đã được đăng ký",
+            "email.max" => "Email quá dài",
+
+            "tel_num.required" => "Điện thoại không được để trống",
+            "tel_num.regex" => "Điện thoại không đúng định dạng",
+            "tel_num.min" => "Điện thoại không đúng định dạng",
+            "tel_num.max" => "Điện thoại không đúng định dạng",
+
+            "address.required" => "Địa chỉ không được để trống",
+            "address.max" => "Địa chỉ quá dài",
+        ];
+        $validator  = Validator::make($request->data[$id], $rules, $messages)->validate();
+
         try {
-            $requestAll = $request->all();
-            $this->userRepository->edit($id, $requestAll);
+            $this->customerRepository->edit($id, $request);
             return $this->successResponse('', __('MESSAGE_UPDATE_USER_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
@@ -140,11 +168,28 @@ class CustomerController extends Controller
 
     public function import(Request $request)
     {
+        $validator = Validator::make(
+            [
+                'file'      => $request->customersFile,
+                'extension' => strtolower($request->customersFile->getClientOriginalExtension()),
+            ],
+            [
+                'file'          => 'required',
+                'extension'      => 'required|in:csv,xlsx,xls',
+            ],
+            [
+                "file.required" => "Chưa chọn file",
+
+                "extension.required" => "Lỗi extention",
+                "extension.in" => "File phải thuộc csv,xlsx,xls",
+
+            ]
+        )->validate();
         try {
             $import = new CustomersImport;
+            dd($request->customersFile->getClientOriginalExtension());
             Excel::import($import, $request->customersFile);
-            return $this->successResponse(['errors' => $import->errorsImport, 'rowsInsert' => $import->dataInsert], ('MESSAGE_ADD_USER_SUCCESS'));
-            //cần sửa lại mess
+            return $this->successResponse(['errors' => $import->getErrorsInsert(), 'rowsInsert' => $import->getDataInsert()], ('MESSAGE_ADD_CUSTOMER_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
             return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);

@@ -1,5 +1,4 @@
 // const { default: axios } = require("axios");
-
 $(document).ready(function () {
     var base_url = window.location.origin;
     $('[data-widget="pushmenu"]').PushMenu("collapse");
@@ -30,9 +29,7 @@ $(document).ready(function () {
                 var pages = $api.page.info().pages;
                 var rows = $api.data().length;
 
-                // Tailor the settings based on the row count
                 if (rows <= page_min) {
-                    // Not enough rows for really any features, hide filter/pagination/length
                     $dataTable
                         .next('.dataTables_info').css('display', 'none')
                         .next('.dataTables_paginate').css('display', 'none');
@@ -41,12 +38,10 @@ $(document).ready(function () {
                         .prev('.dataTables_filter').css('display', 'none')
                         .prev('.dataTables_length').css('display', 'none')
                 } else if (pages === 1) {
-                    // With this current length setting, not more than 1 page, hide pagination
                     $dataTable
                         .next('.dataTables_info').css('display', 'none')
                         .next('.dataTables_paginate').css('display', 'none');
                 } else {
-                    // SHow everything
                     $dataTable
                         .next('.dataTables_info').css('display', 'block')
                         .next('.dataTables_paginate').css('display', 'block');
@@ -81,6 +76,7 @@ $(document).ready(function () {
             ordering:  false,
             searching: false,
             serverSide: true,
+            scrollY: false,
             // lengthChange: false,
             // pagingType: "full_numbers",
             destroy: true,
@@ -138,7 +134,7 @@ $(document).ready(function () {
 
 
 
-    //Delete user
+    //Delete product
     $('#products-table').on('click', '.btn-delete-product', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
@@ -174,7 +170,6 @@ $(document).ready(function () {
                             confirmButtonColor: '#d33',
                             confirmButtonText: 'OK!'
                         }).then(() => {
-                            getUser();
                         });
                     }
                 })
@@ -259,31 +254,33 @@ $(document).ready(function () {
     //Click add image product
     $("#addProductImage").change(function () {
         let file = this.files[0];
+        getFile(file);
+
+        $('#file-info').text($(this).val().split('\\').pop());
+        $("#product_image-err").empty();
+
+    });
+
+    function getFile(file) {
         if (file) {
             let reader = new FileReader();
             reader.onload = function (event) {
-                $("#imgPreview")
-                  .attr("src", event.target.result);
+                $("#imgPreview").attr("src", event.target.result);
             };
             reader.readAsDataURL(file);
         }
-        $('#file-info').text($(this).val().split('\\').pop());
-        $("#product_image-err").empty();
-    });
+    }
 
     // Click xoá ảnh
     var defaultImage = $("#imgPreview").attr("src");
     $('#removeImage').click(function () {
-        // $('#removeImage').hide();
         $("#imgPreview").attr("src", defaultImage);
         $("#addProductImage").val("");
-        // $('.file-msg').text('Hoặc kéo thả ảnh vào đây');
-        // $('.fake-btn').text('Chọn ảnh');
         $('#file-info').text('Chưa chọn file');
         $("#product_image-err").empty();
       });
 
-    // Click button edit user
+    // Click button edit product
     $('#products-table').on('click', '.editbtn-product', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
@@ -293,9 +290,10 @@ $(document).ready(function () {
             id: id,
         })
         .then(function (response) {
-            if (response.data.product_image != null) {
+            if (response.data.product_image != undefined) {
                 $('#file-info').text(response.data.product_image);
                 $("#imgPreview").attr("src", base_url + '/storage/backend/images/product/' + response.data.product_image)
+
             } else {
                 $("#imgPreview").attr("src", defaultImage);
                 $('#file-info').text('Chưa chọn file');
@@ -324,6 +322,7 @@ $(document).ready(function () {
 
         if ($('#product-id').val() == '' || $('#product-id').val() == null ) {
             e.preventDefault();
+
             var formData = new FormData();
             formData.append('product_image', $('#addProductImage')[0].files[0] );
             formData.append('product_name', $('#addProductName').val() );
@@ -363,6 +362,9 @@ $(document).ready(function () {
         }
         else {
             e.preventDefault();
+            let file = $('#addProductImage').files;
+            getFile(file);
+            // console.log($('#addProductImage')[0].files[0]);
             let id = $('#product-id').val();
             var formData = new FormData();
             formData.append('product_image', $('#addProductImage')[0].files[0] );

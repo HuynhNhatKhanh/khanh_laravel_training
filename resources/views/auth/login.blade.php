@@ -55,4 +55,7 @@
     </div>
 </div>
 @endsection
+{{-- <script>
+    const productURL = {{ route() }}
+</script> --}}
 

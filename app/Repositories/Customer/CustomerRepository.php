@@ -51,13 +51,13 @@ class CustomerRepository implements CustomerRepositoryInterface
                 //         return $xhtml;
                 //     }
                 // )
-                ->editColumn(
-                    'is_active',
-                    function ($results) {
-                        $results->is_active === 1 ? $status = 'Đang hoạt động' : $status = 'Tạm khóa';
-                        return $status;
-                    }
-                )
+                // ->editColumn(
+                //     'is_active',
+                //     function ($results) {
+                //         $results->is_active === 1 ? $status = 'Đang hoạt động' : $status = 'Tạm khóa';
+                //         return $status;
+                //     }
+                // )
                 // ->rawColumns(['action'])
                 ->make(true);
     }
@@ -74,26 +74,34 @@ class CustomerRepository implements CustomerRepositoryInterface
         return $this->customer->create($dataCreate);
     }
 
-    public function edit($id, $requestAll)
+    public function edit($id, $request)
     {
-        $dataUpdate = [
-            'name' => $requestAll['name'],
-            'email' => $requestAll['email'],
-            'password' => $requestAll['password'],
-            'group_role' => $requestAll['group_role'],
-            'is_active' => $requestAll['is_active'],
-        ];
-        return $this->user::where('id', $id)->update($dataUpdate);
+        $dataUpdate = [];
+        if (isset($request->data)) {
+            if (isset($request->data[$id]['customer_name'])) {
+                $dataUpdate['customer_name'] = $request->data[$id]['customer_name'];
+            }
+            if (isset($request->data[$id]['email'])) {
+                $dataUpdate['email'] = $request->data[$id]['email'];
+            }
+            if (isset($request->data[$id]['address'])) {
+                $dataUpdate['address'] = $request->data[$id]['address'];
+            }
+            if (isset($request->data[$id]['tel_num'])) {
+                $dataUpdate['tel_num'] = $request->data[$id]['tel_num'];
+            }
+            return $this->customer->where('customer_id', $id)->update($dataUpdate);
+        }
     }
 
-    public function delete($requestAll)
-    {
-        $requestAll['delete'] = ($requestAll['delete'] == 1) ? 0 : 1;
-        return $this->user->where('id', $requestAll['id'])->update(['is_delete' => $requestAll['delete']]);
-    }
+    // public function delete($requestAll)
+    // {
+    //     $requestAll['delete'] = ($requestAll['delete'] == 1) ? 0 : 1;
+    //     return $this->user->where('id', $requestAll['id'])->update(['is_delete' => $requestAll['delete']]);
+    // }
 
-    public function getCustomer($requestAll)
-    {
-        return $this->user->where('id', $requestAll['id'])->first();
-    }
+    // public function getCustomer($requestAll)
+    // {
+    //     return $this->user->where('id', $requestAll['id'])->first();
+    // }
 }

@@ -4,8 +4,6 @@ namespace App\Imports;
 
 use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -17,9 +15,8 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReading, WithStartRow, WithHeadingRow
 {
     use Importable;
-
-    public $dataInsert = [];
-    public $errorsImport = [];
+    private $dataInsert = [];
+    private $errorsInsert = [];
 
     public function collection(Collection $customerCollections)
     {
@@ -51,10 +48,9 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
             $validator  = Validator::make($customer->toArray(), $rules, $messages);
             if ($validator->fails()) {
                 $arrErrors = $validator->messages()->all();
-                $this->errorsImport[$key] = implode(", ", $arrErrors);
+                $this->errorsInsert[$key] = implode(", ", $arrErrors);
                 continue;
             }
-            dd($this->errorsImport);
             $this->dataInsert[] = [
                 'customer_name' => $customer['ten_khach_hang'],
                 'email' =>  $customer['email'],
@@ -63,6 +59,11 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
             ];
         }
         Customer::insert($this->dataInsert);
+    }
+
+    public function startRow(): int
+    {
+        return 2;
     }
 
     public function batchSize(): int
@@ -75,8 +76,13 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
         return 1000;
     }
 
-    public function startRow(): int
+    public function getDataInsert()
     {
-        return 2;
+        return $this->dataInsert;
+    }
+
+    public function getErrorsInsert()
+    {
+        return $this->errorsInsert;
     }
 }

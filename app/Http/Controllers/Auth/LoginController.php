@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Login Controller
+ *
+ * PHP version 8
+ *
+ * @category  Controllers/Auth
+ * @package   App
+ * @author    Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @license   https://opensource.org/licenses/MIT MIT License
+ * @link      http://localhost/
+ */
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
@@ -12,16 +23,36 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Repositories\User\UserRepositoryInterface;
 
+/**
+ * LoginController class
+ *
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @author Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ */
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param App\Repositories\User $userRepository
+     *
+     * @return void
+     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Handle user login.
+     *
+     * @param \Illuminate\Http\Request $request submitted by users
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function login(LoginRequest $request)
     {
         try {
@@ -32,13 +63,21 @@ class LoginController extends Controller
                 return $this->errorResponse(__('MESSAGE_CHECK_LOGIN_ERROR'));
             }
         } catch (\Exception $e) {
-            return $this->errorResponse('Đã xảy ra lỗi', 500);
+            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('login');
     }
 }

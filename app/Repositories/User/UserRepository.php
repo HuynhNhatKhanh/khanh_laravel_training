@@ -19,7 +19,6 @@ class UserRepository implements UserRepositoryInterface
     public function getAllUser($request)
     {
         $query = $this->user;
-
         if ($request->load == 'index') {
             $query = $query->where("is_delete", '=', 0);
             $query = $query->orderBy('id', 'desc')->get();
@@ -38,10 +37,10 @@ class UserRepository implements UserRepositoryInterface
             if (isset($request->status) && $request->status != 'default') {
                 $query = $query->where("is_active", '=', $request->status);
             }
+            $query = $query->where("is_delete", '=', 0);
             $query = $query->orderBy('id', 'desc')->get();
             $results = $query;
         }
-
         return Datatables::of($results)
                 ->addIndexColumn()
                 ->addColumn(
@@ -107,20 +106,6 @@ class UserRepository implements UserRepositoryInterface
         return $this->user->where('id', $requestAll['id'])->update(['is_active' => $requestAll['status']]);
     }
 
-    public function search($requestAll)
-    {
-        $querysearch = $this->user;
-        $querysearch =$querysearch->where("name", "LIKE", '%' . $requestAll['name'] . '%')
-                                ->where("email", "LIKE", '%' . $requestAll['email'] . '%');
-        if (isset($requestAll['role']) && $requestAll['role'] != 'default') {
-            $querysearch->where("group_role", '=', $requestAll['role']);
-        }
-        if (isset($requestAll['status']) && $requestAll['status'] != 'default') {
-            $querysearch->where("is_active", '=', $requestAll['status']);
-        }
-        return $querysearch->paginate(20);
-    }
-
     public function getUser($requestAll)
     {
         return $this->user->where('id', $requestAll['id'])->first();
@@ -128,10 +113,12 @@ class UserRepository implements UserRepositoryInterface
 
     public function login($request)
     {
-        return $this->user->where('email', $request->email)
-                            ->update([
-                                'last_login_at' => $this->now,
-                                'last_login_ip' => $request->ip(),
-                            ]);
+        $query = $this->user;
+        $query = $query->where('email', $request->email);
+        $query = $query->update([
+            'last_login_at' => $this->now,
+            'last_login_ip' => $request->ip(),
+        ]);
+        return $query;
     }
 }
