@@ -315,7 +315,7 @@ $(document).ready(function () {
     function showButtonSubmit(idButton) {
         let button = '';
         $('#show-button-submit').empty();
-        button = '<button id="'+ idButton +'"  class="btn btn-danger">Lưu</button>';
+        button = '<button id="'+ idButton +'"  class="btn btn-primary">Lưu</button>';
         $('#show-button-submit').append(button);
     }
 

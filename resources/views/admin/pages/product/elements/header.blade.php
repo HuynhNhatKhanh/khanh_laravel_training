@@ -25,13 +25,13 @@
                     <div class="mb-1 col-4">
                         <p>Tên sản phẩm</p>
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" name="product-name-search" id="product-name-search" value=""
+                            <input type="text" class="form-control form-control-sm" name="product-name-search" placeholder="Nhập tên sản phẩm" id="product-name-search" value=""
                                 style="min-width: 300px">
                         </div>
                     </div>
                     <div class="mb-1 col-2">
                         <p style="">Trạng thái</p>
-                        <select id="product-filte-status" name="product-filte-status" class="custom-select custom-select-sm mr-1"
+                        <select id="product-filte-status" name="product-filte-status" class="custom-select-sm mr-1 form-control"
                             style="width: 150px">
                             @foreach ($optionsStatus as $key => $val)
                                 <option value="{{ $key }}" >
@@ -43,7 +43,7 @@
                     <div class="mb-1 col-3">
                         <p>Giá bán từ</p>
                         <div class="input-group">
-                            <input type="number" class="form-control form-control-sm" name="price-from-search" id="price-from-search"
+                            <input type="number" class="form-control form-control-sm" name="price-from-search" id="price-from-search" placeholder="Nhập giá từ"
                                 value="" style="min-width: 100px">
                         </div>
                     </div>
@@ -51,6 +51,7 @@
                         <p>Giá bán đến</p>
                         <div class="input-group">
                             <input type="number" class="form-control form-control-sm" name="price-to-search" id="price-to-search"
+                            placeholder="Nhập giá đến"
                                 value="" style="min-width: 100px">
                         </div>
                     </div>

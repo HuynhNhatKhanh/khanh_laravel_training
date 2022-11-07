@@ -28,7 +28,13 @@ use App\Repositories\Product\ProductRepositoryInterface;
  */
 class ProductController extends Controller
 {
-
+    /**
+     * Create a new controller instance.
+     *
+     * @param $productRepository
+     *
+     * @return void
+     */
     public function __construct(ProductRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;

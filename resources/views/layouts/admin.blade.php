@@ -35,7 +35,7 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link sidebar-toggle-btn" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block ">
         <a href="product" class="nav-link " id="link-product">Sản phẩm</a>
@@ -103,7 +103,7 @@
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
-      <a href="https://rivercrane.vn/" class="text-secondary" target="blank">Rivercrane</a>
+      <a href="https://rivercrane.vn/" class="text-danger font-weight-bold" target="blank">Rivercrane</a>
     </div>
     <strong>Copyright &copy; 2022 <a href="https://github.com/HuynhNhatKhanh/khanh_laravel_training" target="blank">Khanh</a>.</strong> All rights reserved.
   </footer>
@@ -135,6 +135,8 @@
     <script src="{{asset("backend/js/users.js")}}"></script>
     <script src="{{asset("backend/js/products.js")}}"></script>
     <script src="{{asset("backend/js/customers.js")}}"></script>
+    <!-- NotifyJS -->
+    <script src="{{asset("backend/dist/js/notify.js")}}"></script>
     <!--CkEditor -->
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <!--datatables -->

@@ -39,7 +39,7 @@
                     </div>
                     <div class="mb-1 col-2">
                         <p style="">Trạng thái</p>
-                        <select id="customer-filte-status" name="customer-filte-status" class="custom-select custom-select-sm mr-1"
+                        <select id="customer-filte-status" name="customer-filte-status" class="custom-select-sm mr-1 form-control"
                             style="min-width: 100px">
                             @foreach ($optionsStatus as $key => $val)
                                 <option value="{{ $key }}" >
@@ -59,9 +59,8 @@
                 <div class="row justify-content-between p-2" style="height: 55px">
                     <div class="col-1 pl-0">
                         <button type="button" class="btn btn-sm btn-success" id="addNewCustomer" data-toggle="modal">Thêm mới</button>
-
                     </div>
-                    <div class="mb-3 row input-group-append col-10" style="height:50px">
+                    <div class="mb-3 row input-group-append col-9" style="height:50px">
                         <form id="uploadFileCSV" enctype="multipart/form-data">
                             <label for="importCSV" class="btn btn-sm btn-info " style="margin-right: 20px ;height:30px"> <i class="fa fa-upload"></i> &nbsp;Import
                               CSV
@@ -73,16 +72,14 @@
                             CSV</button>
                     </div>
 
-                    <div class="mb-1 col-1">
-
-                        <div class="input-group mr-auto">
+                    <div class="mb-1 col-2 pr-0">
+                        <div class="input-group mr-auto justify-content-end ml-0">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-sm btn-danger"
                                     id="btn-clear-search-customer">Clear</button>
                                 <button type="submit" class="btn btn-sm btn-info" id="btn-search-customer">Search</button>
                             </div>
                         </div>
-
                     </div>
                     {{-- </form> --}}
                 </div>

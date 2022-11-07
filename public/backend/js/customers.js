@@ -1,7 +1,6 @@
 var editor; // use a global for the submit and return data rendering in the examples
 $(document).ready(function () {
     var base_url = window.location.origin;
-    $('[data-widget="pushmenu"]').PushMenu("collapse");
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -14,38 +13,46 @@ $(document).ready(function () {
     // edit inline
     var editor = new $.fn.dataTable.Editor( {
         ajax: {
+            edit:{
                 type: 'PUT',
                 url:  'customer/edit',
-                data: function(d) {
-                    d.customer_id = editor.ids();
+                data: function(data) {
+                    data.customer_id = editor.ids()[0];
+                    data.dataEdit = data.data[(editor.ids())];
                 },
                 success: function (response) {
                     console.log(response);
-                    if(response.status == true) {
+                    if(response.data == 1) {
                         Swal.fire({
                             icon: 'success',
                             title: response.message,
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            getCustomer();
+                            editor.show();
                         });
                     }
                     else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Oops...',
-                            text: 'Đã xảy ra lỗi!',
+                            title: 'Dữ liệu trùng với dữ liệu cũ!',
+                            showConfirmButton: false,
+                            timer: 1000
                         })
                     }
                 },
                 error: function (error) {
+                    console.log(error);
                     var mess = '';
                     $.each(error.responseJSON.errors, function (name, message) {
-                        mess += message;
-                        alert(message);
+                        // mess += message;
+                        // let mess = '<span class="error text-danger d-block">'+message+'</span>';
+                        // $("#DTE_Field_"+ name ).parent("div").append(mess);
+                        // $("#DTE_Field_"+ name ).parent("div").html(message);
+                        $("#DTE_Field_"+ message[0][0] ).parent("div").notify(message[0][1], {className: 'error small', position: 'bot-center',})
                     });
                 }
+            }
         },
         table: "#customers-table",
         idSrc: 'customer_id',
@@ -78,6 +85,7 @@ $(document).ready(function () {
     } );
 
     //Get all customer
+    // var table;
     function getCustomer(){
         var $dataTable = $('#customers-table');
 
@@ -155,27 +163,51 @@ $(document).ready(function () {
             destroy: true,
             scrollY: false,
             dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
+            // select: true,
             select: {
                 style: 'os',
                 selector: 'td:first-child'
             },
-            buttons: [ {
-                extend: "createInline",
-                editor: editor,
-                formOptions: {
-                    submitTrigger: -2,
-                    submitHtml: '<i class="fa fa-play"/>'
-                }
-            } ]
+            // buttons: [ {
+            //     extend: "createInline",
+            //     editor: editor,
+            //     formOptions: {
+            //         submitTrigger: -2,
+            //         submitHtml: '<i class="fa fa-play"/>'
+            //     }
+            // } ]
+            buttons: [
+                // { extend: "create", editor: editor },
+                { extend: "edit",   editor: editor },
+                // { extend: "remove", editor: editor }
+            ]
 
         });
 
-        $('#customers-table').on( 'click', 'tbody td.row-edit', function (e) {
+        $('#customers-table tbody').on( 'click', 'td.row-edit', function (e) {
             editor.inline(table.cells(this.parentNode, '*').nodes(), {
                 onBlur: 'submit',
                 submit: 'all',
-            } );
+            //    onBlur: function () {
+            //     console.log(table.cells().nodes(this));
+            //    }
+            })
         });
+
+        // // Activate an inline edit on click of a table cell
+        // $('#customers-table').on( 'click', 'tbody td:not(:first-child)', function (e) {
+        //     editor.inline( this );
+        // } );
+
+        // // Activate an inline edit on click of a table cell
+        // $('#customers-table').on( 'click', 'tbody td:not(:first-child)', function (e) {
+        //     // Focus on the input in the cell that was clicked when Editor opens
+        //     editor.one( 'open', () => {
+        //         $('input', this).focus();
+        //     });
+
+        //     editor.inline( table.cells(this.parentNode, '*').nodes() );
+        // } );
     };
     getCustomer();
 

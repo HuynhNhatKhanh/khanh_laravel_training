@@ -31,20 +31,20 @@
                     <div class="mb-1 col-3">
                         <p>Tên </p>
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" id="name-search"
+                            <input type="text" class="form-control form-control-sm" id="name-search" placeholder="Nhập họ tên"
                                 name="nameSearch" value="" style="min-width: 300px">
                         </div>
                     </div>
                     <div class="mb-1 col-3">
                         <p>Email</p>
                         <div class="input-group">
-                            <input type="email" class="form-control form-control-sm" name="email" id="email-search"
+                            <input type="email" class="form-control form-control-sm" name="email" placeholder="Nhập email" id="email-search"
                                 value="" style="min-width: 100px">
                         </div>
                     </div>
                     <div class="mb-1 col-2">
                         <p style="">Nhóm</p>
-                        <select id="filter_role" name="filter_role" class="custom-select custom-select-sm mr-1"
+                        <select id="filter_role" name="filter_role" class="custom-select-sm mr-1 form-control"
                             style="min-width: 100px">
                             @foreach ($optionsRole as $key => $val)
                                 <option value="{{ $key }}">
@@ -55,7 +55,7 @@
                     </div>
                     <div class="mb-1 col-2">
                         <p style="">Trạng thái</p>
-                        <select id="filter_status" name="filter_status" class="custom-select custom-select-sm mr-1"
+                        <select id="filter_status" name="filter_status" class="custom-select-sm mr-1 form-control"
                             style="min-width: 100px">
                             @foreach ($optionsStatus as $key => $val)
                                 <option value="{{ $key }}" >
@@ -70,7 +70,6 @@
                         <button type="button" class="btn btn-sm btn-success" id="addNewUser" data-toggle="modal">Thêm mới</button>
                     </div>
                     <div class="mb-1 ">
-
                         <div class="input-group mr-auto">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-sm btn-danger"

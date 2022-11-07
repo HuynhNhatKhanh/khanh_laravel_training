@@ -1,8 +1,8 @@
+$('[data-widget="pushmenu"]').PushMenu("collapse");
 
 $(document).ready(function() {
     var base_url = window.location.origin;
     var path_url = window.location.pathname;
-    $('[data-widget="pushmenu"]').PushMenu("collapse");
 
     var linkProduct  = '/' + $('#link-product').attr('href');
     var linkUser     = '/' + $('#link-user').attr('href');

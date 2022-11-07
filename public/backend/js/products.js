@@ -1,7 +1,6 @@
 // const { default: axios } = require("axios");
 $(document).ready(function () {
     var base_url = window.location.origin;
-    $('[data-widget="pushmenu"]').PushMenu("collapse");
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

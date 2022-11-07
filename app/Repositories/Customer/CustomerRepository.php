@@ -74,34 +74,28 @@ class CustomerRepository implements CustomerRepositoryInterface
         return $this->customer->create($dataCreate);
     }
 
-    public function edit($id, $request)
+    public function edit($request)
     {
         $dataUpdate = [];
-        if (isset($request->data)) {
-            if (isset($request->data[$id]['customer_name'])) {
-                $dataUpdate['customer_name'] = $request->data[$id]['customer_name'];
-            }
-            if (isset($request->data[$id]['email'])) {
-                $dataUpdate['email'] = $request->data[$id]['email'];
-            }
-            if (isset($request->data[$id]['address'])) {
-                $dataUpdate['address'] = $request->data[$id]['address'];
-            }
-            if (isset($request->data[$id]['tel_num'])) {
-                $dataUpdate['tel_num'] = $request->data[$id]['tel_num'];
-            }
-            return $this->customer->where('customer_id', $id)->update($dataUpdate);
+        $data = $this->customer->where('customer_id', $request->customer_id)->first();
+
+        if (isset($request->dataEdit['customer_name']) && $request->dataEdit['customer_name'] != $data['customer_name']) {
+            $dataUpdate['customer_name'] = $request->dataEdit['customer_name'];
+        }
+        if (isset($request->dataEdit['email']) && $request->dataEdit['email'] != $data['email']) {
+            $dataUpdate['email'] = $request->dataEdit['email'];
+        }
+        if (isset($request->dataEdit['address']) && $request->dataEdit['address'] != $data['address']) {
+            $dataUpdate['address'] = $request->dataEdit['address'];
+        }
+        if (isset($request->dataEdit['tel_num']) && $request->dataEdit['tel_num'] != $data['tel_num']) {
+            $dataUpdate['tel_num'] = $request->dataEdit['tel_num'];
+        }
+
+        if (!empty($dataUpdate)) {
+            return $this->customer->where('customer_id', $request->customer_id)->update($dataUpdate);
+        } else {
+            return 0;
         }
     }
-
-    // public function delete($requestAll)
-    // {
-    //     $requestAll['delete'] = ($requestAll['delete'] == 1) ? 0 : 1;
-    //     return $this->user->where('id', $requestAll['id'])->update(['is_delete' => $requestAll['delete']]);
-    // }
-
-    // public function getCustomer($requestAll)
-    // {
-    //     return $this->user->where('id', $requestAll['id'])->first();
-    // }
 }

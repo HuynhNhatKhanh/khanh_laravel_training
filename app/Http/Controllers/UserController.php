@@ -31,6 +31,13 @@ use App\Repositories\User\UserRepositoryInterface;
  */
 class UserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @param $userRepository
+     *
+     * @return void
+     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;

@@ -25,6 +25,7 @@ use App\Imports\CustomersImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\AddCustomerRequest;
+use App\Http\Requests\EditCustomerRequest;
 use App\Repositories\Customer\CustomerRepositoryInterface;
 
 /**
@@ -35,16 +36,23 @@ use App\Repositories\Customer\CustomerRepositoryInterface;
  */
 class CustomerController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @param $customerRepository
+     *
+     * @return void
+     */
     public function __construct(CustomerRepositoryInterface $customerRepository)
     {
         $this->customerRepository = $customerRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index(Request $request)
     {
         try {
@@ -78,42 +86,14 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(EditCustomerRequest $request)
     {
-        $id = implode('', $request->customer_id);
-        $rules = [
-            'customer_name' => 'required|min:5',
-            'email' => 'required|max:255|email:rfc,dns|unique:customers,email,' .$id. ',customer_id',
-            'tel_num' => 'required|regex:/^([0-9]*)$/|min:7|max:13',
-            'address' => 'required|max:255',
-        ];
-        $messages = [
-            "customer_name.required" => "Vui lòng nhập tên khách hàng",
-            "customer_name.min" => "Tên phải lớn hơn 5 ký tự",
-
-            "email.required" => "Email không được để trống",
-            "email.email" => "Email không đúng định dạng",
-            "email.exists" => "Email không tồn tại",
-            "email.unique" => "Email đã được đăng ký",
-            "email.max" => "Email quá dài",
-
-            "tel_num.required" => "Điện thoại không được để trống",
-            "tel_num.regex" => "Điện thoại không đúng định dạng",
-            "tel_num.min" => "Điện thoại không đúng định dạng",
-            "tel_num.max" => "Điện thoại không đúng định dạng",
-
-            "address.required" => "Địa chỉ không được để trống",
-            "address.max" => "Địa chỉ quá dài",
-        ];
-        $validator  = Validator::make($request->data[$id], $rules, $messages)->validate();
-
         try {
-            $this->customerRepository->edit($id, $request);
-            return $this->successResponse('', __('MESSAGE_UPDATE_USER_SUCCESS'));
+            $data = $this->customerRepository->edit($request);
+            return $this->successResponse($data, __('MESSAGE_UPDATE_USER_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
             return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -121,41 +101,11 @@ class CustomerController extends Controller
     }
 
     /**
-     * Delete the specified resource from storage.
+     * Export data customer.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request)
-    {
-        try {
-            $requestAll = $request->all();
-            $data =  $this->userRepository->delete($requestAll);
-            return $this->successResponse($data, __('MESSAGE_DELETE_USER_SUCCESS'));
-        } catch (\Exception $e) {
-            Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-     /**
-     * Get data 1 user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getUser(Request $request)
-    {
-        try {
-            $requestAll = $request->all();
-            return $this->userRepository->getUser($requestAll);
-        } catch (\Exception $e) {
-            Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function export(Request $request)
     {
         try {
@@ -166,6 +116,12 @@ class CustomerController extends Controller
         }
     }
 
+     /**
+     * Import data customer.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function import(Request $request)
     {
         $validator = Validator::make(
