@@ -24,12 +24,12 @@ class EditUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5',
-            'email' => 'required|max:255|email:rfc,dns|unique:users,email,'. $this->id,
-            'password' => 'sometimes|required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+            'name'             => 'required|min:5',
+            'email'            => 'required|max:255|email:rfc,dns|unique:users,email,'. $this->id,
+            'password'         => 'sometimes|required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'sometimes|required|min:5|same:password',
-            'group_role' => 'required|in:admin,reviewer,editor',
-            'is_active' => 'required|in:"1","0"',
+            'group_role'       => 'required|in:admin,reviewer,editor',
+            'is_active'        => 'required|in:"1","0"',
         ];
     }
 
@@ -42,29 +42,28 @@ class EditUserRequest extends FormRequest
     {
         return [
 
-            "name.required" => "Vui lòng nhập tên người sử dụng",
-            "name.min" => "Tên phải lớn hơn 5 ký tự",
+            "name.required"             => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
+            "name.min"                  => __('message.MESSAGE_VALIDATE_MIN5_CHAR', ['attribute' => 'Tên']),
 
-            "group_role.required" => "Vui lòng chọn nhóm",
-            "group_role.in" => "Vui lòng chọn nhóm khác mặc định",
+            "group_role.required"       => __('message.MESSAGE_VALIDATE_SELECT_STATUS', ['attribute' => 'Nhóm']),
+            "group_role.in"             => __('message.MESSAGE_VALIDATE_SELECT_STATUS_DIFFERENT_DEFAULT', ['attribute' => 'Nhóm']),
 
-            "is_active.required" => "Vui lòng chọn trạng thái",
-            "is_active.in" => "Vui lòng chọn trạng thái khác mặc định",
+            "is_active.required"        => __('message.MESSAGE_VALIDATE_SELECT_STATUS', ['attribute' => 'Trạng thái']),
+            "is_active.in"              => __('message.MESSAGE_VALIDATE_SELECT_STATUS_DIFFERENT_DEFAULT', ['attribute' => 'Trạng thái']),
 
-            "email.required" => "Email không được để trống",
-            "email.email" => "Email không đúng định dạng",
-            "email.exists" => "Email không tồn tại",
-            "email.unique" => "Email này đã được đăng ký",
+            "email.required"            => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
+            "email.email"               => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+            "email.exists"              => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
+            "email.unique"              => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
+            "email.max"                 => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),
 
-            "email.max" => "Email quá dài",
+            "password.required"         => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Mật khẩu']),
+            "password.min"              => __('message.MESSAGE_VALIDATE_MIN6_CHAR', ['attribute' => 'Mật khẩu']),
+            "password.regex"            => __('message.MESSAGE_VALIDATE_FORMAT_PASSWORD', ['attribute' => 'Mật khẩu']),
 
-            "password.required" => "Mật khẩu không được để trống",
-            "password.min" => "Mật khẩu phải lớn hơn 5 ký tự",
-            "password.regex" => "Phải bao gồm chữ thường, in hoa, số và kí tự đặc biệt",
-
-            "password_confirm.required" => "Xác nhận mật khẩu",
-            "password_confirm.min" => "Mật khẩu phải lớn hơn 5 ký tự",
-            "password_confirm.same" => "Mật khẩu và xác nhận mật khẩu không chính xác",
+            "password_confirm.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Xác nhận mật khẩu']),
+            "password_confirm.min"      => __('message.MESSAGE_VALIDATE_MIN6_CHAR', ['attribute' => 'Xác nhận mật khẩu']),
+            "password_confirm.same"     => __('message.MESSAGE_VALIDATE_SAME', ['attribute' => 'Xác nhận mật khẩu']),
 
         ];
     }

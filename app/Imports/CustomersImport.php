@@ -58,7 +58,13 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
                 'address' =>  $customer['dia_chi'],
             ];
         }
-        Customer::insert($this->dataInsert);
+        // dd($this->dataInsert[]);
+        if (!empty($dataInsert)) {
+            // return $this->customerRepository->import($this->dataInsert);
+            return Customer::insert($this->dataInsert);
+        } else {
+            return 0;
+        }
     }
 
     public function startRow(): int

@@ -62,7 +62,7 @@ class CustomerController extends Controller
             return view('admin.pages.customer.dashboard');
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -76,10 +76,10 @@ class CustomerController extends Controller
     {
         try {
             $this->customerRepository->store($request);
-            return $this->successResponse('', __('MESSAGE_ADD_USER_SUCCESS'));
+            return $this->successResponse('', __('message.MESSAGE_ADD_CUSTOMER_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'));
+            return $this->errorResponse(__('message.MESSAGE_ERROR'));
         }
     }
 
@@ -93,10 +93,10 @@ class CustomerController extends Controller
     {
         try {
             $data = $this->customerRepository->edit($request);
-            return $this->successResponse($data, __('MESSAGE_UPDATE_USER_SUCCESS'));
+            return $this->successResponse($data, __('message.MESSAGE_UPDATE_CUSTOMER_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -112,7 +112,7 @@ class CustomerController extends Controller
             return Excel::download(new CustomersExport($request), 'customers.xlsx');
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -148,7 +148,7 @@ class CustomerController extends Controller
             return $this->successResponse(['errors' => $import->getErrorsInsert(), 'rowsInsert' => $import->getDataInsert()], ('MESSAGE_ADD_CUSTOMER_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

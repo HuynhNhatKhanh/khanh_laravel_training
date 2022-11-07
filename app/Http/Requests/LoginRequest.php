@@ -38,12 +38,12 @@ class LoginRequest extends FormRequest
     {
         return [
 
-            "email.required" => "Email không được để trống",
-            "email.email"    => "Email không đúng định dạng",
-            "email.exists"   => "Email không tồn tại",
+            "email.required"    => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
+            "email.email"       => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+            "email.exists"      => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
 
-            "password.required" => "Mật khẩu không được để trống",
-            "password.min"      => "Mật khẩu phải lớn hơn 6 ký tự",
+            "password.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Mật khẩu']),
+            "password.min"      => __('message.MESSAGE_VALIDATE_MIN6_CHAR', ['attribute' => 'Mật khẩu']),
 
         ];
     }

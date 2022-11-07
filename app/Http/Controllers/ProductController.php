@@ -54,7 +54,7 @@ class ProductController extends Controller
             return view('admin.pages.product.dashboard');
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -68,10 +68,10 @@ class ProductController extends Controller
     {
         try {
             $this->productRepository->store($request);
-            return $this->successResponse('', __('MESSAGE_ADD_PRODUCT_SUCCESS'));
+            return $this->successResponse('', __('message.MESSAGE_ADD_PRODUCT_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,10 +86,10 @@ class ProductController extends Controller
     {
         try {
             $data = $this->productRepository->edit($id, $request);
-            return $this->successResponse($data, __('MESSAGE_UPDATE_PRODUCT_SUCCESS'));
+            return $this->successResponse($data, __('message.MESSAGE_UPDATE_PRODUCT_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -104,10 +104,10 @@ class ProductController extends Controller
         try {
             $id = $request->id;
             $data = $this->productRepository->delete($id);
-            return $this->successResponse($data, __('MESSAGE_DELETE_PRODUCT_SUCCESS'));
+            return $this->successResponse($data, __('message.MESSAGE_DELETE_PRODUCT_SUCCESS'));
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -123,7 +123,7 @@ class ProductController extends Controller
             return $this->productRepository->getProduct($request);
         } catch (\Exception $e) {
             Log::error($e);
-            return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

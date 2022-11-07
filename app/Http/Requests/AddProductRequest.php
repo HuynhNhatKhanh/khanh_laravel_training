@@ -24,9 +24,9 @@ class AddProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_name' => 'required|min:5',
+            'product_name'  => 'required|min:5',
             'product_price' => 'required|min:0|numeric',
-            'is_sales' => 'in:0,1',
+            'is_sales'      => 'in:0,1',
             'product_image' => 'image|sometimes|mimes:jpeg,jpg,png|max:2048|dimensions:max_width=1024,max_height=1024',
         ];
     }
@@ -35,19 +35,19 @@ class AddProductRequest extends FormRequest
     {
         return [
 
-            "product_name.required" => "Vui lòng nhập tên sản phẩm",
-            "product_name.min" => "Sản phẩm phải lớn hơn 5 ký tự",
+            "product_name.required"    => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
+            "product_name.min"         => __('message.MESSAGE_VALIDATE_MIN5_CHAR', ['attribute' => 'Tên']),
 
-            "product_price.required" => "Giá bán không được để trống",
-            "product_price.numeric" => "Giá bán chỉ được nhập số",
-            "product_price.min" => "Giá bán không được nhỏ hơn 0",
+            "product_price.required"   => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Giá']),
+            "product_price.numeric"    => __('message.MESSAGE_VALIDATE_NUMBER', ['attribute' => 'Giá']),
+            "product_price.min"        => __('message.MESSAGE_VALIDATE_MIN0_NUM', ['attribute' => 'Giá']),
 
-            "is_sales.in" => "Vui lòng chọn trạng thái khác mặc định",
+            "is_sales.in"              => __('message.MESSAGE_VALIDATE_SELECT_STATUS_DIFFERENT_DEFAULT', ['attribute' => 'Trạng thái']),
 
-            "product_image.image" => "Chưa chọn ảnh",
-            "product_image.mimes" => "Chỉ chấp nhận file png, jpg, jpeg",
-            "product_image.max" => "Dung lượng ảnh không được vượt quá 2Mb",
-            "product_image.dimensions" => "Ảnh quá lớn",
+            "product_image.image"      => __('message.MESSAGE_VALIDATE_IMAGE', ['attribute' => 'Ảnh']),
+            "product_image.mimes"      => __('message.MESSAGE_VALIDATE_IMAGE_MIMES', ['attribute' => 'Ảnh']),
+            "product_image.max"        => __('message.MESSAGE_VALIDATE_IMAGE_MAX_SIZE_2MB', ['attribute' => 'Ảnh']),
+            "product_image.dimensions" => __('message.MESSAGE_VALIDATE_IMAGE_MAX_LENGTH', ['attribute' => 'Ảnh']),
 
         ];
     }

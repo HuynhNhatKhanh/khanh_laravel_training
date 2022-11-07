@@ -40,22 +40,22 @@ class EditCustomerRequest extends FormRequest
     {
         return [
 
-            "dataEdit.customer_name.required" => ['customer_name', "Vui lòng nhập tên khách hàng"],
-            "dataEdit.customer_name.min"      => ['customer_name',"Tên phải lớn hơn 5 ký tự"],
+            "dataEdit.customer_name.required" => ['customer_name',  __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên'])],
+            "dataEdit.customer_name.min"      => ['customer_name', __('message.MESSAGE_VALIDATE_MIN5_CHAR', ['attribute' => 'Tên'])],
 
-            "dataEdit.email.required" => ['email', "Email không được để trống"],
-            "dataEdit.email.email"    => ['email', "Email không đúng định dạng"],
-            "dataEdit.email.exists"   => ['email', "Email không tồn tại"],
-            "dataEdit.email.unique"   => ['email'," Email đã được đăng ký"],
-            "dataEdit.email.max"      => ['email', "Email quá dài"],
+            "dataEdit.email.required"         => ['email', __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email'])],
+            "dataEdit.email.email"            => ['email', __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email'])],
+            "dataEdit.email.exists"           => ['email', __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email'])],
+            "dataEdit.email.unique"           => ['email', __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email'])],
+            "dataEdit.email.max"              => ['email', __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email'])],
 
-            "dataEdit.tel_num.required" => ['tel_num', "Điện thoại không được để trống"],
-            "dataEdit.tel_num.regex"    => ['tel_num', "Điện thoại không đúng định dạng"],
-            "dataEdit.tel_num.min"      => ['tel_num', "Điện thoại không đúng định dạng"],
-            "dataEdit.tel_num.max"      => ['tel_num', "Điện thoại không đúng định dạng"],
+            "dataEdit.tel_num.required"       => ['tel_num', __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Điện thoại'])],
+            "dataEdit.tel_num.regex"          => ['tel_num', __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại'])],
+            "dataEdit.tel_num.min"            => ['tel_num', __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại'])],
+            "dataEdit.tel_num.max"            => ['tel_num', __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại'])],
 
-            "dataEdit.address.required" => ['address', "Địa chỉ không được để trống"],
-            "dataEdit.address.max"      => ['address', "Địa chỉ quá dài"],
+            "dataEdit.address.required"       => ['address', __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Địa chỉ'])],
+            "dataEdit.address.max"            => ['address', __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Địa chỉ'])],
 
         ];
     }
