@@ -43,22 +43,8 @@ class CustomerRepository implements CustomerRepositoryInterface
 
         return Datatables::of($results)
                 ->addIndexColumn()
-                // ->addColumn(
-                //     'action',
-                //     function ($results) {
-                //         $xhtml = '<td class="text-center ">';
-                //         $xhtml .= '<button type="button" value="'. $results->customer_id .'" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id="'. $results->customer_id .'"><i class="fas fa-pencil-alt"></i></button> </td>';
-                //         return $xhtml;
-                //     }
-                // )
-                // ->editColumn(
-                //     'is_active',
-                //     function ($results) {
-                //         $results->is_active === 1 ? $status = 'Đang hoạt động' : $status = 'Tạm khóa';
-                //         return $status;
-                //     }
-                // )
-                // ->rawColumns(['action'])
+                ->addColumn('action', function () {
+                })
                 ->make(true);
     }
 

@@ -8,7 +8,8 @@
                 <th style="width: 30%!important">Địa chỉ</th>
                 <th class="text-center" style="width: 15%!important">Điện thoại</th>
                 {{-- <th class="text-center" style="width: 9%!important">Trạng thái</th> --}}
-                <th class="text-center" style="width: 14%!important">Hành động</th>
+                <th class="text-center" style="width: 8%!important">Sửa</th>
+                <th class="text-center" >Action</th>
             </tr>
         </thead>
         <tbody>

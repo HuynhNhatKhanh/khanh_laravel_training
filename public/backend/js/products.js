@@ -8,8 +8,8 @@ $(document).ready(function () {
     });
     var dataSearch = { load: 'index' };
     $.fn.DataTable.ext.pager.numbers_length = 10;
+
     // Get all product
-    // var $dataTable;
     function getProduct(){
         var $dataTable = $('#products-table');
 
@@ -76,44 +76,14 @@ $(document).ready(function () {
             searching: false,
             serverSide: true,
             scrollY: false,
-            // lengthChange: false,
-            // pagingType: "full_numbers",
             destroy: true,
-            // ajax: "...",
             dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
-            // "bDestroy": true
-            // processing: true,
 
         });
-        // $('div.bottom').attr("width","500");
     };
     getProduct();
 
-
-
-    // var dataTable = $('#products-table').DataTable({
-    //     retrieve: true,
-    // });
-    // $('#rowsPerPage').on('change', function() {
-    //     let row = $("#rowsPerPage").val()
-    //     dataTable.page.len(row).draw();
-    // });
-
-    // Get 1 user
-    // async function getUserById1(id){
-    //     var user = null;
-    //     await axios.post('user/getdata', {
-    //             id: id
-    //         })
-    //         .then(function (response) {
-    //             user = response;
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    //         return Promise.resolve(user);
-    //     }
-
+    // Get product by id
     function getProductById(id){
         let product = null;
         $.ajax({
@@ -130,8 +100,6 @@ $(document).ready(function () {
         });
         return product;
     }
-
-
 
     //Delete product
     $('#products-table').on('click', '.btn-delete-product', function (e) {
@@ -208,10 +176,14 @@ $(document).ready(function () {
             );
         }
     }
+
+    // Click search
     $('#btn-search-product').click(function (e) {
         e.preventDefault();
         searchProduct();
     });
+
+    // Enter search
     $('#search-product').on('keyup', function(e) {
         e.preventDefault();
         if (e.which == 13) {
@@ -229,14 +201,6 @@ $(document).ready(function () {
         $('#product-filte-status').val('default');
         getProduct();
     });
-
-    // //Show button submit
-    // function showButtonSubmit(idButton) {
-    //     let button = '';
-    //     $('#show-button-submit').empty();
-    //     button = '<button id="'+ idButton +'"  class="btn btn-danger">Lưu</button>';
-    //     $('#show-button-submit').append(button);
-    // }
 
     //Click button Thêm mới
     $('#addNewProduct').click(function () {
@@ -260,6 +224,7 @@ $(document).ready(function () {
 
     });
 
+    // Get file image
     function getFile(file) {
         if (file) {
             let reader = new FileReader();
@@ -314,7 +279,6 @@ $(document).ready(function () {
             })
         });
     });
-
 
     // Click button Lưu trong modal add
     $('#addProductForm').on('click','#addProductButton',function (e) {
@@ -414,6 +378,5 @@ $(document).ready(function () {
         $("#is_sales-err").empty();
         $("#product_image-err").empty();
     }
-
 
  });

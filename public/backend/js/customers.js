@@ -1,6 +1,5 @@
 var editor; // use a global for the submit and return data rendering in the examples
 $(document).ready(function () {
-    var base_url = window.location.origin;
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -10,7 +9,7 @@ $(document).ready(function () {
     $.fn.DataTable.ext.pager.numbers_length = 10;
     var numRows = 0;
 
-    // edit inline
+    // Edit inline
     var editor = new $.fn.dataTable.Editor( {
         ajax: {
             edit:{
@@ -84,8 +83,7 @@ $(document).ready(function () {
         ]
     } );
 
-    //Get all customer
-    // var table;
+    // Get all customer
     function getCustomer(){
         var $dataTable = $('#customers-table');
 
@@ -132,17 +130,13 @@ $(document).ready(function () {
                 { data: 'email', name: 'email'},
                 { data: 'address', name: 'address' },
                 { data: 'tel_num', name: 'tel_num', className: 'text-center' },
-                // { data: 'is_active', name: 'is_active', className: 'text-center' },
-                // { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
-                // $xhtml = '<td class="text-center ">';
-                // //         $xhtml .= '<button type="button" value="'. $results->customer_id .'" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id="'. $results->customer_id .'"><i class="fas fa-pencil-alt"></i></button> </td>';
                 {
                     data: null,
-                    defaultContent: '<i class="fas fa-pencil-alt"/>',
-                    // defaultContent: '<button type="button" value="" class="rounded-circle btn btn-sm btn-info m-1 editbtn-user " title="Chỉnh sửa" data-id=""><i class="fas fa-pencil-alt"></i></button>',
+                    defaultContent: '<button type="button" class="rounded-circle btn btn-sm btn-info m-1" title="Chỉnh sửa" "><i class="fas fa-pencil-alt"/></button>',
                     className: 'row-edit dt-center',
                     orderable: false
                 },
+                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
             ],
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
@@ -168,69 +162,22 @@ $(document).ready(function () {
                 style: 'os',
                 selector: 'td:first-child'
             },
-            // buttons: [ {
-            //     extend: "createInline",
-            //     editor: editor,
-            //     formOptions: {
-            //         submitTrigger: -2,
-            //         submitHtml: '<i class="fa fa-play"/>'
-            //     }
-            // } ]
             buttons: [
-                // { extend: "create", editor: editor },
                 { extend: "edit",   editor: editor },
-                // { extend: "remove", editor: editor }
             ]
-
         });
 
         $('#customers-table tbody').on( 'click', 'td.row-edit', function (e) {
             editor.inline(table.cells(this.parentNode, '*').nodes(), {
-                onBlur: 'submit',
+                submitTrigger: -1,
+                submitHtml: '<button type="button" class="rounded-circle btn btn-sm btn-success m-1" title="Chỉnh sửa" "><i class="fas fa-check"></i></button>',
                 submit: 'all',
-            //    onBlur: function () {
-            //     console.log(table.cells().nodes(this));
-            //    }
             })
         });
-
-        // // Activate an inline edit on click of a table cell
-        // $('#customers-table').on( 'click', 'tbody td:not(:first-child)', function (e) {
-        //     editor.inline( this );
-        // } );
-
-        // // Activate an inline edit on click of a table cell
-        // $('#customers-table').on( 'click', 'tbody td:not(:first-child)', function (e) {
-        //     // Focus on the input in the cell that was clicked when Editor opens
-        //     editor.one( 'open', () => {
-        //         $('input', this).focus();
-        //     });
-
-        //     editor.inline( table.cells(this.parentNode, '*').nodes() );
-        // } );
     };
     getCustomer();
 
-    function getProductById(id){
-        let product = null;
-        $.ajax({
-            type: "post",
-            url: "product/getdata",
-            async: false,
-            data: {
-                id: id
-            },
-            //dataType: "json",
-            success: function (response) {
-                product = response;
-            }
-        });
-        return product;
-    }
-
-    // $('#products-table').on('click', '.btn-delete-product', function (e)
-
-    //Delete customer
+    // Delete customer
     $('.btn-delete-product').on('click', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
@@ -306,10 +253,14 @@ $(document).ready(function () {
             );
         }
     }
+
+    // Click search
     $('#btn-search-customer').click(function (e) {
         e.preventDefault();
         searchCustomer();
     });
+
+    // Enter search
     $('#search-customer').on('keyup', function(e) {
         e.preventDefault();
         if (e.which == 13) {
@@ -435,7 +386,6 @@ $(document).ready(function () {
         $('#import-loading').empty();
         $('#modalImport').modal('show');
     });
-
 
     //Import
     $('#uploadFileCSV').on('submit', function (e) {

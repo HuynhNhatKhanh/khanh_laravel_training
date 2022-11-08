@@ -1,4 +1,5 @@
 // const { default: axios } = require("axios");
+
  //Login
  $('#form-login').click( function(e) {
     e.preventDefault();
@@ -30,7 +31,6 @@
 });
 
 $(document).ready(function () {
-    var base_url = window.location.origin;
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -56,9 +56,7 @@ $(document).ready(function () {
                 var pages = $api.page.info().pages;
                 var rows = $api.data().length;
 
-                // Tailor the settings based on the row count
                 if (rows <= page_min) {
-                    // Not enough rows for really any features, hide filter/pagination/length
                     $dataTable
                         .next('.dataTables_info').css('display', 'none')
                         .next('.dataTables_paginate').css('display', 'none');
@@ -67,12 +65,10 @@ $(document).ready(function () {
                         .prev('.dataTables_filter').css('display', 'none')
                         .prev('.dataTables_length').css('display', 'none')
                 } else if (pages === 1) {
-                    // With this current length setting, not more than 1 page, hide pagination
                     $dataTable
                         .next('.dataTables_info').css('display', 'none')
                         .next('.dataTables_paginate').css('display', 'none');
                 } else {
-                    // SHow everything
                     $dataTable
                         .next('.dataTables_info').css('display', 'block')
                         .next('.dataTables_paginate').css('display', 'block');
@@ -108,8 +104,6 @@ $(document).ready(function () {
             serverSide: true,
             searching: false,
             scrollY: false,
-            // paging: false,
-            // info: false,
             destroy: true,
             dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
         });
@@ -138,7 +132,6 @@ $(document).ready(function () {
             data: {
                 id: id
             },
-            //dataType: "json",
             success: function (response) {
                 user = response;
             }
@@ -168,7 +161,6 @@ $(document).ready(function () {
                 .then(function (response) {
                     if(response.data.data === 1) {
                         Swal.fire({
-                            // position: 'center-center',
                             icon: 'success',
                             title: "Xoá thành viên [ "+ userData.name +" ] thành công",
                             showConfirmButton: false,
@@ -191,7 +183,6 @@ $(document).ready(function () {
                 .catch(function (error) {
                     Swal.fire({
                         title: 'Lỗi!',
-                        // text: "Hành động không thành công?",
                         icon: 'warning',
                         confirmButtonColor: '#d33',
                         confirmButtonText: 'OK!'
@@ -205,14 +196,6 @@ $(document).ready(function () {
     $('#users-table').on('click', '.btn-block-user', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
-
-        // var userData = null;
-        // getUserById1(id).then((res) => {
-        //     console.log(res.data); // Success!
-        //     userData = res.data;
-
-        // })
-        // console.log(userData);
 
         let status = getUserById(id).is_active;
         let nameStatus = 'Mở khoá';
@@ -289,10 +272,14 @@ $(document).ready(function () {
             );
         }
     }
+
+    // Click search
     $('#btn-search-user').click(function (e) {
         e.preventDefault();
         searchUser();
     });
+
+    //Enter search
     $('#search-user').on('keyup', function(e) {
         e.preventDefault();
         if (e.which == 13) {

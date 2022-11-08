@@ -24,27 +24,27 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
     {
         $rules = [
             'ten_khach_hang' => 'required|min:5',
-            'email' => 'required|max:255|email:rfc,dns|unique:customers,email',
-            'telnum' => 'required|regex:/^([0-9]*)$/|min:7|max:13',
-            'dia_chi' => 'required|max:255',
+            'email'          => 'required|max:255|email:rfc,dns|unique:customers,email',
+            'telnum'         => 'required|regex:/^([0-9]*)$/|min:7|max:13',
+            'dia_chi'        => 'required|max:255',
         ];
         $messages = [
-            "ten_khach_hang.required" => "Vui lòng nhập tên khách hàng",
-            "ten_khach_hang.min" => "Tên phải lớn hơn 5 ký tự",
+            "ten_khach_hang.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
+            "ten_khach_hang.min"      => __('message.MESSAGE_VALIDATE_MIN5', ['attribute' => 'Tên']),
 
-            "email.required" => "Email không được để trống",
-            "email.email" => "Email không đúng định dạng",
-            "email.exists" => "Email không tồn tại",
-            "email.unique" => "Email đã được đăng ký",
-            "email.max" => "Email quá dài",
+            "email.required"          => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
+            "email.email"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+            "email.exists"            => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
+            "email.unique"            => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
+            "email.max"               => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),
 
-            "telnum.required" => "Điện thoại không được để trống",
-            "telnum.regex" => "Điện thoại không đúng định dạng",
-            "telnum.min" => "Điện thoại không đúng định dạng",
-            "telnum.max" => "Điện thoại không đúng định dạng",
+            "tel_num.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Điện thoại']),
+            "tel_num.regex"           => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+            "tel_num.min"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+            "tel_num.max"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
 
-            "dia_chi.required" => "Địa chỉ không được để trống",
-            "dia_chi.max" => "Địa chỉ quá dài",
+            "dia_chi.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Địa chỉ']),
+            "dia_chi.max"             => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Địa chỉ']),
         ];
         foreach ($customerCollections as $key => $customer) {
             $validator  = Validator::make($customer->toArray(), $rules, $messages);
