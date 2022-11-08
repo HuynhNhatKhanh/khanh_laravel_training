@@ -22,47 +22,47 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
 
     public function collection(Collection $customerCollections)
     {
-        $rules = [
-            'ten_khach_hang' => 'required|min:5',
-            'email'          => 'required|max:255|email:rfc,dns|unique:customers,email',
-            'telnum'         => 'required|regex:/^([0-9]*)$/|min:7|max:13',
-            'dia_chi'        => 'required|max:255',
-        ];
-        $messages = [
-            "ten_khach_hang.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
-            "ten_khach_hang.min"      => __('message.MESSAGE_VALIDATE_MIN5', ['attribute' => 'Tên']),
-
-            "email.required"          => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
-            "email.email"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
-            "email.exists"            => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
-            "email.unique"            => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
-            "email.max"               => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),
-
-            "tel_num.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Điện thoại']),
-            "tel_num.regex"           => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
-            "tel_num.min"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
-            "tel_num.max"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
-
-            "dia_chi.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Địa chỉ']),
-            "dia_chi.max"             => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Địa chỉ']),
-        ];
-        foreach ($customerCollections as $key => $customer) {
-            $validator  = Validator::make($customer->toArray(), $rules, $messages);
-            if ($validator->fails()) {
-                $arrErrors = $validator->messages()->all();
-                $this->errorsInsert[$key] = implode(", ", $arrErrors);
-                continue;
-            }
-            $this->dataInsert[] = [
-                'customer_name' => $customer['ten_khach_hang'],
-                'email' =>  $customer['email'],
-                'tel_num' =>  $customer['telnum'],
-                'address' =>  $customer['dia_chi'],
-            ];
-        }
-
         DB::beginTransaction();
         try {
+            $rules = [
+                'ten_khach_hang' => 'required|min:5',
+                'email'          => 'required|max:255|email:rfc,dns|unique:customers,email',
+                'telnum'         => 'required|regex:/^([0-9]*)$/|min:7|max:13',
+                'dia_chi'        => 'required|max:255',
+            ];
+            $messages = [
+                "ten_khach_hang.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
+                "ten_khach_hang.min"      => __('message.MESSAGE_VALIDATE_MIN5', ['attribute' => 'Tên']),
+
+                "email.required"          => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
+                "email.email"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+                "email.exists"            => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
+                "email.unique"            => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
+                "email.max"               => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),
+
+                "tel_num.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Điện thoại']),
+                "tel_num.regex"           => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+                "tel_num.min"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+                "tel_num.max"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+
+                "dia_chi.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Địa chỉ']),
+                "dia_chi.max"             => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Địa chỉ']),
+            ];
+            foreach ($customerCollections as $key => $customer) {
+                $validator  = Validator::make($customer->toArray(), $rules, $messages);
+                if ($validator->fails()) {
+                    $arrErrors = $validator->messages()->all();
+                    $this->errorsInsert[$key] = implode(", ", $arrErrors);
+                    continue;
+                }
+                $this->dataInsert[] = [
+                    'customer_name' => $customer['ten_khach_hang'],
+                    'email' =>  $customer['email'],
+                    'tel_num' =>  $customer['telnum'],
+                    'address' =>  $customer['dia_chi'],
+                ];
+            }
+
             DB::table('customers')->insert($this->dataInsert);
             DB::commit();
             $this->transactions = true;

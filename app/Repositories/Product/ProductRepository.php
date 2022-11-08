@@ -118,6 +118,10 @@ class ProductRepository implements ProductRepositoryInterface
             'description' => $request->description,
             'is_sales' => $request->is_sales,
         ];
+        // $data = $this->customer->where('product_id', $request->product_id)->first();
+        // if (isset($request->dataEdit['customer_name']) && $request->dataEdit['customer_name'] != $data['customer_name']) {
+        //     $dataUpdate['customer_name'] = $request->dataEdit['customer_name'];
+        // }
         if (isset($request->product_image) && ($request->product_image) != 'image_default.jpg') {
             $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
             $fileNameImage .= $request->product_image->getClientOriginalName();

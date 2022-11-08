@@ -125,19 +125,21 @@ $(document).ready(function () {
                 data: dataSearch,
             },
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center' },
-                { data: 'customer_name', name: 'customer_name'},
-                { data: 'email', name: 'email'},
-                { data: 'address', name: 'address' },
-                { data: 'tel_num', name: 'tel_num', className: 'text-center' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', "width": "1%" },
+                { data: 'customer_name', name: 'customer_name', "width": "20%"},
+                { data: 'email', name: 'email', "width": "20%"},
+                { data: 'address', name: 'address', "width": "30%" },
+                { data: 'tel_num', name: 'tel_num', className: 'text-center', "width": "15%"},
                 {
                     data: null,
                     defaultContent: '<button type="button" class="rounded-circle btn btn-sm btn-info m-1" title="Chỉnh sửa" "><i class="fas fa-pencil-alt"/></button>',
                     className: 'row-edit dt-center',
-                    orderable: false
+                    orderable: false,
+                    "width": "7%"
                 },
-                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
+                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false, "width": "7%" },
             ],
+            // responsive: true,
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
                 lengthMenu: "Điều chỉnh số lượng _MENU_ ",
@@ -170,7 +172,7 @@ $(document).ready(function () {
         $('#customers-table tbody').on( 'click', 'td.row-edit', function (e) {
             editor.inline(table.cells(this.parentNode, '*').nodes(), {
                 submitTrigger: -1,
-                submitHtml: '<button type="button" class="rounded-circle btn btn-sm btn-success m-1" title="Chỉnh sửa" "><i class="fas fa-check"></i></button>',
+                submitHtml: '<button type="button" class="rounded-circle btn btn-sm btn-success m-1" title="Chỉnh sửa">Lưu</button>',
                 submit: 'all',
             })
         });

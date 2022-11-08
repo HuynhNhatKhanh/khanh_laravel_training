@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title text-secondary" id="exampleModalLongTitle">Các dòng lỗi Import</h2>
+                <h2 class="modal-title text-secondary" id="exampleModalLongTitle">Các dòng lỗi</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

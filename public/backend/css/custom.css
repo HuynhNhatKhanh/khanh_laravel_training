@@ -1,4 +1,7 @@
-
+#customers-table,#users-table,#products-table > tbody > tr > td {
+    white-space: pre-wrap !important;
+    word-wrap:break-word;
+}
 .img_hover img{
     visibility: hidden;
     position:absolute;

@@ -53,11 +53,11 @@ $(document).ready(function () {
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center' },
-                { data: 'product_name', name: 'product_name', orderable: false, searchable: false },
-                { data: 'description', name: 'description'},
-                { data: 'product_price', name: 'product_price', className: 'text-center text-success' },
-                { data: 'is_sales', name: 'is_sales', className: 'text-center' },
-                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
+                { data: 'product_name', name: 'product_name', orderable: false, searchable: false, "width": "20%" },
+                { data: 'description', name: 'description', "width": "30%" },
+                { data: 'product_price', name: 'product_price', className: 'text-center text-success', "width": "14%" },
+                { data: 'is_sales', name: 'is_sales', className: 'text-center', "width": "15%" },
+                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false, "width": "20%" },
             ],
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
@@ -72,6 +72,7 @@ $(document).ready(function () {
                     last: ">>"
                 },
             },
+            // responsive: true,
             ordering:  false,
             searching: false,
             serverSide: true,
@@ -217,8 +218,9 @@ $(document).ready(function () {
     //Click add image product
     $("#addProductImage").change(function () {
         let file = this.files[0];
+        // console.log(file);
         getFile(file);
-
+        // $("#addProductImage").val() = file;
         $('#file-info').text($(this).val().split('\\').pop());
         $("#product_image-err").empty();
 
@@ -254,10 +256,12 @@ $(document).ready(function () {
             id: id,
         })
         .then(function (response) {
+            // console.log(response.data.product_image);
+            // console.log($('#addProductImage')[0].files);
             if (response.data.product_image != undefined) {
                 $('#file-info').text(response.data.product_image);
                 $("#imgPreview").attr("src", base_url + '/storage/backend/images/product/' + response.data.product_image)
-
+                // $('#addProductImage').
             } else {
                 $("#imgPreview").attr("src", defaultImage);
                 $('#file-info').text('Chưa chọn file');
@@ -287,11 +291,11 @@ $(document).ready(function () {
             e.preventDefault();
 
             var formData = new FormData();
-            formData.append('product_image', $('#addProductImage')[0].files[0] );
             formData.append('product_name', $('#addProductName').val() );
             formData.append('product_price', $('#addProductPrice').val() );
             formData.append('description', $('#addProductDescription').val() );
             formData.append('is_sales', $('#addProductStatus').val());
+            formData.append('product_image', $('#addProductImage')[0].files[0] );
             axios.post( "product/add",formData,{
                 headers: { "Content-Type": "multipart/form-data" },
             })
@@ -325,49 +329,79 @@ $(document).ready(function () {
         }
         else {
             e.preventDefault();
-            let file = $('#addProductImage').files;
-            getFile(file);
             // console.log($('#addProductImage')[0].files[0]);
             let id = $('#product-id').val();
             var formData = new FormData();
-            formData.append('product_image', $('#addProductImage')[0].files[0] );
+            // formData.append('product_image', $('#addProductImage')[0].files[0] );
             formData.append('product_name', $('#addProductName').val() );
             formData.append('product_price', $('#addProductPrice').val() );
             formData.append('description', $('#addProductDescription').val() );
             formData.append('is_sales', $('#addProductStatus').val());
-
-            axios.post( "product/edit/"+id,formData,{
-                headers: { "Content-Type": "multipart/form-data" },
-                // contentType: false,
-                // processData: false,
-            })
-            .then(function (response) {
-                if(response.data.status == true) {
-                    $('#popupProduct').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: "Chỉnh sửa sản phẩm thành công",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                            getProduct();
+            // console.log($('#addProductImage')[0].files[0] );
+            if ($('#addProductImage')[0].files[0] || $("#imgPreview").attr("src") == defaultImage) {
+                formData.append('product_image', $('#addProductImage')[0].files[0] );
+                axios.post( "product/edit/"+id,formData,{
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
+                .then(function (response) {
+                    if(response.data.status == true) {
+                        $('#popupProduct').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Chỉnh sửa sản phẩm thành công",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                                getProduct();
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Đã xảy ra lỗi!',
+                        })
+                    }
+                })
+                .catch(function (error) {
+                    clearErrorsMessage();
+                    $.each(error.response.data.errors, function (name, message) {
+                        $("#" + name + '-err').html(message[0]);
+                        $("#" + name + '-err').removeClass('d-none');
                     });
-                }
-                else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Đã xảy ra lỗi!',
-                    })
-                }
-            })
-            .catch(function (error) {
-                clearErrorsMessage();
-                $.each(error.response.data.errors, function (name, message) {
-                    $("#" + name + '-err').html(message[0]);
-                    $("#" + name + '-err').removeClass('d-none');
                 });
-            });
+            } else {
+                axios.post( "product/edit_no_img/"+id,formData,{
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
+                .then(function (response) {
+                    if(response.data.status == true) {
+                        $('#popupProduct').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Chỉnh sửa sản phẩm thành công",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                                getProduct();
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Đã xảy ra lỗi!',
+                        })
+                    }
+                })
+                .catch(function (error) {
+                    clearErrorsMessage();
+                    $.each(error.response.data.errors, function (name, message) {
+                        $("#" + name + '-err').html(message[0]);
+                        $("#" + name + '-err').removeClass('d-none');
+                    });
+                });
+            }
         }
     });
 

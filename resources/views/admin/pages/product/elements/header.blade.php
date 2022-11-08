@@ -67,9 +67,9 @@
                         <div class="input-group mr-auto">
                             <div class="input-group-append">
                                 <button  type="button" class="btn btn-sm btn-danger"
-                                    id="btn-clear-search-product">Clear</button>
+                                    id="btn-clear-search-product">Xoá</button>
                                 <button type="submit" class="btn btn-sm btn-info"
-                                    id="btn-search-product">Search</button>
+                                    id="btn-search-product">Tìm kiếm</button>
                             </div>
                         </div>
                     </div>

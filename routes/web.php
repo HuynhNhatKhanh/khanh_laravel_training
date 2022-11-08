@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/delete', [ProductController::class, 'delete'])->name('product.delete');
         Route::post('/add', [ProductController::class, 'store'])->name('product.add');
         Route::post('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+        Route::post('/edit_no_img/{id}', [ProductController::class, 'editNoImg'])->name('product.editNoImg');
     });
     // Route User
     Route::group(['prefix' => 'user'], function () {

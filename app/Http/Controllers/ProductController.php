@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\AddProductRequest;
+use App\Http\Requests\EditProductRequest;
 use App\Repositories\Product\ProductRepositoryInterface;
 
 /**
@@ -83,6 +84,23 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id, AddProductRequest $request)
+    {
+        try {
+            $data = $this->productRepository->edit($id, $request);
+            return $this->successResponse($data, __('message.MESSAGE_UPDATE_PRODUCT_SUCCESS'));
+        } catch (\Exception $e) {
+            Log::error($e);
+            return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editNoImg($id, EditProductRequest $request)
     {
         try {
             $data = $this->productRepository->edit($id, $request);

@@ -65,20 +65,19 @@
                               <input class="hidden" name="customersFile" id="importCSV" type="file" >
                             </label>
                           </form> --}}
-                          <button type="button" style="margin-right: 20px ;height:30px" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" id="buttonImport">
-                            Import Data
+                          <button type="button" style="margin-right: 36px ;height:30px" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" id="buttonImport"><i class="fa fa-upload"></i> &nbsp;
+                            Nhập dữ liệu
                             </button>
 
-                          <button type="button" id="exportCSV" class="btn btn-sm btn-success" style="height:30px"><i class="fa fa-download" ></i> &nbsp;Export
-                            CSV</button>
+                          <button type="button" id="exportCSV" class="btn btn-sm btn-success" style="height:30px"><i class="fa fa-download" ></i> &nbsp;Xuất dữ liệu</button>
                     </div>
 
                     <div class="mb-1 col-2 pr-0">
                         <div class="input-group mr-auto justify-content-end ml-0">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-sm btn-danger"
-                                    id="btn-clear-search-customer">Clear</button>
-                                <button type="submit" class="btn btn-sm btn-info" id="btn-search-customer">Search</button>
+                                    id="btn-clear-search-customer">Xoá</button>
+                                <button type="submit" class="btn btn-sm btn-info" id="btn-search-customer">Tìm kiếm</button>
                             </div>
                         </div>
                     </div>
