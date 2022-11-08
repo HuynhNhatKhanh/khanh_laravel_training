@@ -15,7 +15,6 @@ namespace App\Http\Controllers;
 
 use Datatables;
 
-use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -25,7 +24,9 @@ use App\Imports\CustomersImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\AddCustomerRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\EditCustomerRequest;
+use App\Http\Requests\ImportCustomerRequest;
 use App\Repositories\Customer\CustomerRepositoryInterface;
 
 /**
@@ -122,30 +123,16 @@ class CustomerController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function import(Request $request)
+    public function import(ImportCustomerRequest $request)
     {
-        $validator = Validator::make(
-            [
-                'file'      => $request->customersFile,
-                'extension' => strtolower($request->customersFile->getClientOriginalExtension()),
-            ],
-            [
-                'file'          => 'required',
-                'extension'      => 'required|in:csv,xlsx,xls',
-            ],
-            [
-                "file.required" => "Chưa chọn file",
-
-                "extension.required" => "Lỗi extention",
-                "extension.in" => "File phải thuộc csv,xlsx,xls",
-
-            ]
-        )->validate();
         try {
             $import = new CustomersImport;
-            dd($request->customersFile->getClientOriginalExtension());
             Excel::import($import, $request->customersFile);
-            return $this->successResponse(['errors' => $import->getErrorsInsert(), 'rowsInsert' => $import->getDataInsert()], ('MESSAGE_ADD_CUSTOMER_SUCCESS'));
+            if ($import->getTransections() === true) {
+                return $this->successResponse(['errors' => $import->getErrorsInsert(), 'rowsInsert' => $import->getDataInsert()], __('message.MESSAGE_PASS_TRANSACTIONS'));
+            } else {
+                return $this->errorResponse(__('message.MESSAGE_ERROR_TRANSACTIONS'));
+            }
         } catch (\Exception $e) {
             Log::error($e);
             return $this->errorResponse(__('message.MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);

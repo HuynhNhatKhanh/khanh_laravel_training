@@ -8,8 +8,6 @@
 
 <section class="content-header">
 
-    <div id="errors-import" class="card-header" style="overflow:scroll; max-height:300px"></div>
-
     <div class="container-fluid">
         <!-- Search & Filter -->
         <div class="card card-info card-outline" id="search-user">
@@ -61,12 +59,15 @@
                         <button type="button" class="btn btn-sm btn-success" id="addNewCustomer" data-toggle="modal">Thêm mới</button>
                     </div>
                     <div class="mb-3 row input-group-append col-9" style="height:50px">
-                        <form id="uploadFileCSV" enctype="multipart/form-data">
+                        {{-- <form id="uploadFileCSV" enctype="multipart/form-data">
                             <label for="importCSV" class="btn btn-sm btn-info " style="margin-right: 20px ;height:30px"> <i class="fa fa-upload"></i> &nbsp;Import
                               CSV
-                              <input class="hidden" name="customersFile" id="importCSV" type="file" hidden>
+                              <input class="hidden" name="customersFile" id="importCSV" type="file" >
                             </label>
-                          </form>
+                          </form> --}}
+                          <button type="button" style="margin-right: 20px ;height:30px" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" id="buttonImport">
+                            Import Data
+                            </button>
 
                           <button type="button" id="exportCSV" class="btn btn-sm btn-success" style="height:30px"><i class="fa fa-download" ></i> &nbsp;Export
                             CSV</button>

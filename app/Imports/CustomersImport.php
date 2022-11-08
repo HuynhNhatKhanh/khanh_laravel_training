@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use DB;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -17,6 +18,7 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
     use Importable;
     private $dataInsert = [];
     private $errorsInsert = [];
+    public $transactions = null;
 
     public function collection(Collection $customerCollections)
     {
@@ -58,12 +60,16 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
                 'address' =>  $customer['dia_chi'],
             ];
         }
-        // dd($this->dataInsert[]);
-        if (!empty($dataInsert)) {
-            // return $this->customerRepository->import($this->dataInsert);
-            return Customer::insert($this->dataInsert);
-        } else {
-            return 0;
+
+        DB::beginTransaction();
+        try {
+            DB::table('customers')->insert($this->dataInsert);
+            DB::commit();
+            $this->transactions = true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            $this->transactions = false;
+            return $e;
         }
     }
 
@@ -90,5 +96,10 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
     public function getErrorsInsert()
     {
         return $this->errorsInsert;
+    }
+
+    public function getTransections()
+    {
+        return $this->transactions;
     }
 }

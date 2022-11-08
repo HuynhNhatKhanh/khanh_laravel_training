@@ -100,6 +100,8 @@
 @include('admin.modal.product_modal')
 @include('admin.modal.user_modal')
 @include('admin.modal.customer_modal')
+@include('admin.modal.import_customer_modal')
+@include('admin.modal.show_errors_import_customer')
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">

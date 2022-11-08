@@ -430,53 +430,98 @@ $(document).ready(function () {
         })
     });
 
-    //Import
-    $('#importCSV').on('change', function () {
-        var form = $('#uploadFileCSV')[0];
-        var formData = new FormData(form);
-        axios.post( "customer/import",formData,{
-            headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then(function (response) {
-            // console.log(response);
-            let errors = response.data.data.errors;
-            if(response.data.data.rowsInsert != '') {
-                showErrorsImportCustomers(errors);
-                Swal.fire({
-                    icon: 'success',
-                    title: "Thêm khách hàng thành công",
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                        getCustomer();
-                });
-            }
-            else {
-                showErrorsImportCustomers(errors);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Không có dòng nào được IMPORT!',
-                })
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-            var mess = '';
-            $.each(error.response.data.errors, function (name, message) {
-                mess += message + ', ';
-            });
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: mess,
-            })
-        });
+    //Click button import
+    $('#buttonImport').click( function () {
+        $('#import-loading').empty();
+        $('#modalImport').modal('show');
     });
 
+
+    //Import
+    $('#uploadFileCSV').on('submit', function (e) {
+        e.preventDefault();
+
+        var fileUpload = $("#importCSV").val();
+        // console.log(fileUpload);
+        if (typeof fileUpload !== 'undefined' && fileUpload !== '') {
+            var extension = fileUpload.split('.').pop().toLowerCase();
+            var filename = fileUpload.split('\\').pop();
+            if ($.inArray(extension, ['xlsx', 'csv', 'xls']) !== -1) {
+                showIconLoading();
+                var form = $('#uploadFileCSV')[0];
+                var formData = new FormData(form);
+                console.log(filename);
+                axios.post( "customer/import",formData,{
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
+                .then(function (response) {
+                    console.log(response);
+                    let errors = response.data.data.errors;
+                    if(response.data.data.rowsInsert != '') {
+                        $('.importInput input[type=file]').val('');
+                        $('#modalImport').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: "Thêm khách hàng thành công",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            getCustomer();
+                            showErrorsImportCustomers(errors, filename);
+                        });
+                    }
+                    else {
+                        $('.importInput input[type=file]').val('');
+                        $('#modalImport').modal('hide');
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không có dòng nào được IMPORT!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            showErrorsImportCustomers(errors, filename);
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    $('.importInput input[type=file]').val('');
+                    $('#modalImport').modal('hide');
+                    $('#import-loading').empty();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error.response.data.message,
+                    })
+                });
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: "Phải là file 'xlsx', 'csv', 'xls'",
+                })
+            }
+        } else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Không có tệp',
+            })
+        }
+    });
+
+    //Show icon loading
+    function showIconLoading() {
+        $('#import-loading').empty();
+        var loading = '<div class="d-flex justify-content-center mt-2"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>';
+        $('#import-loading').append(loading);
+    }
+
     //Show error import
-    function showErrorsImportCustomers( errors ) {
-        $('#errors-import').empty();
+    function showErrorsImportCustomers( errors, filename ) {
+
+        $('#errorsImport').modal('show');
+        // $('#errors-import').empty();
+        $('#fails-import').empty();
         let err = '';
         let xhtml = '';
         errors.forEach((message, key) => {
@@ -485,8 +530,9 @@ $(document).ready(function () {
         });
 
         if(errors != '') {
-            xhtml += ' <div class="row h-50" style="width=100%"><div class="col-md-12 col-md-offset-1"><div  class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Lỗi import!</h4>'+ err +'</div></div></div>'
-            $('#errors-import').append(xhtml);
+            xhtml += '<span class="text-danger">'+err+'</span>';
+            $('#fails-import').append(xhtml);
+            $('#file-name-import').text(filename);
         }
     }
 

@@ -17,7 +17,9 @@ return [
     'MESSAGE_CHECK_LOGIN_SUCCESS' => 'Kiểm tra đăng nhập chính xác.',
     'MESSAGE_CHECK_LOGIN_ERROR'   => 'Mật khẩu không chính xác.',
 
+    'MESSAGE_PASS_TRANSACTIONS' => 'Không xảy ra lỗi transaction.',
     'MESSAGE_ERROR' => 'Đã xảy ra lỗi.',
+    'MESSAGE_ERROR_TRANSACTIONS' => 'Đã xảy ra lỗi transactions.',
 
     'MESSAGE_VALIDATE_REQUIRED' => ':attribute không được để trống',
     'MESSAGE_VALIDATE_EXISTS'   => ':attribute không tồn tại',
@@ -36,5 +38,7 @@ return [
     'MESSAGE_VALIDATE_IMAGE_MIMES'     => ':attribute phải là file jpg, jpeg, png',
     'MESSAGE_VALIDATE_IMAGE_MAX_SIZE_2MB'     => ':attribute vượt quá 2MB',
     'MESSAGE_VALIDATE_IMAGE_MAX_LENGTH'     => ':attribute quá lớn',
+
+    'MESSAGE_VALIDATE_EXCEL_MIMES'     => ':attribute phải là file csv, xsl, xlsx',
 
 ];
