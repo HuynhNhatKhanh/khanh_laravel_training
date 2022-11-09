@@ -40,10 +40,10 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
                 "email.unique"            => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
                 "email.max"               => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),
 
-                "tel_num.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Điện thoại']),
-                "tel_num.regex"           => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
-                "tel_num.min"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
-                "tel_num.max"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+                "telnum.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Điện thoại']),
+                "telnum.regex"           => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+                "telnum.min"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
+                "telnum.max"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Điện thoại']),
 
                 "dia_chi.required"        => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Địa chỉ']),
                 "dia_chi.max"             => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Địa chỉ']),

@@ -13,10 +13,6 @@
  */
 namespace App\Http\Controllers;
 
-use Datatables;
-
-use App\Models\Customer;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Exports\CustomersExport;
@@ -24,7 +20,6 @@ use App\Imports\CustomersImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\AddCustomerRequest;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\EditCustomerRequest;
 use App\Http\Requests\ImportCustomerRequest;
 use App\Repositories\Customer\CustomerRepositoryInterface;
