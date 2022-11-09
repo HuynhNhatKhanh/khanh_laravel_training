@@ -479,4 +479,8 @@ $(document).ready(function () {
             $('.products-body').append(xhtml);
         })
     }
+
+
  });
+
+

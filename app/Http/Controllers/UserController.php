@@ -42,12 +42,12 @@ class UserController extends Controller
     {
         $this->userRepository = $userRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index(Request $request)
     {
         try {

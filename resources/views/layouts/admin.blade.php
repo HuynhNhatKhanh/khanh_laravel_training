@@ -27,52 +27,59 @@
 
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="layout-top-nav">
+{{-- <body class="hold-transition sidebar-mini layout-fixed"> --}}
+    {{-- sidebar-mini sidebar-collapse --}}
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
+   <div class="container">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link sidebar-toggle-btn" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block ">
-        <a href="product" class="nav-link " id="link-product">Sản phẩm</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="user" class="nav-link" id="link-user">Người dùng</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="customer" class="nav-link" id="link-customer">Khách hàng</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown user-menu">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="{{url('backend')}}/dist/img/khanh.jpg" class="user-image img-circle elevation-2" alt="User Image">
-                <span class="d-none d-md-inline">Admin</span>
+        <!-- Brand Logo -->
+        <li class="nav-item d-none d-sm-inline-block ">
+            <a href="https://rivercrane.vn/" class="brand-link" target="blank" title="Công ty Rivercrane Việt Nam">
+                <img src="{{url('backend')}}/dist/img/rivercrane.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                {{-- <span class="brand-text font-weight-light">Rivercrane</span> --}}
             </a>
-            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <!-- User image -->
-                <li class="user-header bg-info">
-                    <img src="{{url('backend')}}/dist/img/khanh.jpg" class="img-circle elevation-2" alt="User Image">
-
-                    <p>Khanh <small>Admin</small></p>
-                </li>
-                <!-- Menu Footer-->
-                <li class="user-footer">
-                    <a href="https://github.com/HuynhNhatKhanh" class="btn btn-default btn-flat" target="blank">Profile</a>
-                    <a href="{{ route('logoutUser') }}" class="btn btn-default btn-flat float-right">Sign out</a>
-                </li>
-            </ul>
         </li>
-    </ul>
+        <li class="nav-item d-none d-sm-inline-block ">
+          <a href="product" class="nav-link text-dark" id="link-product">Sản phẩm</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="user" class="nav-link text-dark" id="link-user">Người dùng</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="customer" class="nav-link text-dark" id="link-customer">Khách hàng</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown user-menu">
+              <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                  <img src="{{url('backend')}}/dist/img/khanh.jpg" class="user-image img-circle elevation-2" alt="User Image">
+                  <span class="d-none d-md-inline text-dark">Admin</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right rounded-lg">
+                  <!-- User image -->
+                  <li class="user-header bg-info">
+                      <img src="{{url('backend')}}/dist/img/khanh.jpg" class="img-circle elevation-2" alt="User Image">
+                      <p>Huỳnh Nhật Khánh<small>Quản trị viên</small></p>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                      <a href="https://github.com/HuynhNhatKhanh" class="btn btn-default btn-flat rounded" target="blank">Trang cá nhân</a>
+                      <a href="{{ route('logoutUser') }}" class="btn btn-default btn-flat float-right rounded">Đăng xuất</a>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+   </div>
   </nav>
   <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
+  {{-- <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{url('backend')}}/index3.html" class="brand-link">
@@ -94,7 +101,7 @@
 
     </div>
     <!-- /.sidebar -->
-  </aside>
+  </aside> --}}
 
 @yield('main')
 @include('admin.modal.product_modal')
@@ -104,10 +111,12 @@
 @include('admin.modal.show_errors_import_customer')
 
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <a href="https://rivercrane.vn/" class="text-danger font-weight-bold" target="blank">Rivercrane</a>
+    <div class="container">
+        <div class="float-right d-none d-sm-block">
+            <a href="https://rivercrane.vn/" class="text-danger font-weight-bold" target="blank">Rivercrane</a>
+          </div>
+          <strong>Copyright &copy; 2022 <a href="https://github.com/HuynhNhatKhanh/khanh_laravel_training" target="blank">Khanh</a>.</strong> All rights reserved.
     </div>
-    <strong>Copyright &copy; 2022 <a href="https://github.com/HuynhNhatKhanh/khanh_laravel_training" target="blank">Khanh</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

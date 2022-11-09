@@ -8,7 +8,7 @@
 @endphp
 
 <section class="content-header">
-    <div class="container-fluid">
+    <div class="container">
         <!-- Search & Filter -->
         <div class="card card-info card-outline">
             <div class="card-header">
@@ -23,14 +23,14 @@
                 <div class="row justify-content-between">
                     <form action="" method="get" class="input-group justify-content-between">
                     <div class="mb-1 col-4">
-                        <p>Tên sản phẩm</p>
+                        <label for="product-name-search" class="font-weight-normal">Tên sản phẩm</label>
                         <div class="input-group">
                             <input type="text" class="form-control form-control-sm" name="product-name-search" placeholder="Nhập tên sản phẩm" id="product-name-search" value=""
                                 style="min-width: 300px">
                         </div>
                     </div>
                     <div class="mb-1 col-2">
-                        <p style="">Trạng thái</p>
+                        <label for="product-filte-status" class="font-weight-normal">Trạng thái</label>
                         <select id="product-filte-status" name="product-filte-status" class="custom-select-sm mr-1 form-control"
                             style="width: 150px">
                             @foreach ($optionsStatus as $key => $val)
@@ -41,14 +41,14 @@
                         </select>
                     </div>
                     <div class="mb-1 col-3">
-                        <p>Giá bán từ</p>
+                        <label for="price-from-search" class="font-weight-normal">Giá bán từ</label>
                         <div class="input-group">
                             <input type="number" class="form-control form-control-sm" name="price-from-search" id="price-from-search" placeholder="Nhập giá từ"
                                 value="" style="min-width: 100px">
                         </div>
                     </div>
                     <div class="mb-1 col-3">
-                        <p>Giá bán đến</p>
+                        <label for="price-to-search" class="font-weight-normal">Giá bán đến</label>
                         <div class="input-group">
                             <input type="number" class="form-control form-control-sm" name="price-to-search" id="price-to-search"
                             placeholder="Nhập giá đến"
@@ -60,16 +60,16 @@
                     <div>
                         {{-- <button type="button" class="btn btn-sm btn-success" id="" data-toggle="modal" data-target="#FormProductModal">Thêm
                             mới</button> --}}
-                        <button type="button" class="btn btn-sm btn-success" id="addNewProduct" data-toggle="modal">Thêm mới</button>
+                        <button type="button" class="btn btn-sm btn-success" id="addNewProduct" data-toggle="modal"><i class="fas fa-plus"></i>&nbsp; Thêm mới</button>
                         {{-- @include('admin.pages.elements.form') --}}
                     </div>
                     <div class="mb-1 ">
                         <div class="input-group mr-auto">
                             <div class="input-group-append">
-                                <button  type="button" class="btn btn-sm btn-danger"
-                                    id="btn-clear-search-product">Xoá</button>
-                                <button type="submit" class="btn btn-sm btn-info"
-                                    id="btn-search-product">Tìm kiếm</button>
+                                <button  type="button" style="margin-right: 28px; border-radius: 3px;" class="btn btn-sm btn-danger"
+                                    id="btn-clear-search-product"><i class="fas fa-times"></i>&nbsp; Xoá tìm</button>
+                                <button type="submit" class="btn btn-sm btn-info" style="border-radius: 3px"
+                                    id="btn-search-product"><i class="fas fa-search"></i>&nbsp; Tìm kiếm</button>
                             </div>
                         </div>
                     </div>

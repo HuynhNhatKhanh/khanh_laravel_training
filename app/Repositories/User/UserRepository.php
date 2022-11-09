@@ -1,21 +1,51 @@
 <?php
-
+/**
+ * User Repository
+ *
+ * PHP version 8
+ *
+ * @category  Repositorys
+ * @package   App
+ * @author    Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @license   https://opensource.org/licenses/MIT MIT License
+ * @link      http://localhost/
+ */
 namespace App\Repositories\User;
 
 use Carbon\Carbon;
 use App\Models\User;
 use Yajra\DataTables\DataTables;
 
+/**
+ * UserRepository class
+ *
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @author Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ */
 class UserRepository implements UserRepositoryInterface
 {
     private User $user;
     protected $now;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param $user, $now
+     *
+     * @return void
+     */
     public function __construct(User $user)
     {
         $this->user = $user;
         $this->now = date_format(Carbon::now('Asia/Ho_Chi_Minh'), 'Y/m/d:H-i-s');
     }
 
+    /**
+     * Get all users that are not deleted.
+     *
+     * @return mixed
+     */
     public function getAllUser($request)
     {
         $query = $this->user;
@@ -70,6 +100,13 @@ class UserRepository implements UserRepositoryInterface
                 ->make(true);
     }
 
+    /**
+     * Create user
+     *
+     * @param $requestAll
+
+     * @return mixed
+     */
     public function store($requestAll)
     {
         $dataCreate = [
@@ -82,6 +119,13 @@ class UserRepository implements UserRepositoryInterface
         return $this->user::create($dataCreate);
     }
 
+    /**
+     * Update user
+     *
+     * @param $id, $requestAll
+
+     * @return mixed
+     */
     public function edit($id, $requestAll)
     {
         $dataUpdate = [
@@ -94,23 +138,51 @@ class UserRepository implements UserRepositoryInterface
         return $this->user::where('id', $id)->update($dataUpdate);
     }
 
+    /**
+     * Delte user
+     *
+     * @param $requestAll
+
+     * @return mixed
+     */
     public function delete($requestAll)
     {
         $requestAll['delete'] = ($requestAll['delete'] == 1) ? 0 : 1;
         return $this->user->where('id', $requestAll['id'])->update(['is_delete' => $requestAll['delete']]);
     }
 
+    /**
+     * Change status user
+     *
+     * @param $requestAll
+
+     * @return mixed
+     */
     public function status($requestAll)
     {
         $requestAll['status'] = ($requestAll['status'] == 1) ? 0 : 1;
         return $this->user->where('id', $requestAll['id'])->update(['is_active' => $requestAll['status']]);
     }
 
+    /**
+     * Get 1 user
+     *
+     * @param $requestAll
+
+     * @return mixed
+     */
     public function getUser($requestAll)
     {
         return $this->user->where('id', $requestAll['id'])->first();
     }
 
+    /**
+     * Login user
+     *
+     * @param $request
+
+     * @return mixed
+     */
     public function login($request)
     {
         $query = $this->user;

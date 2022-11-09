@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Product class
+ * Customer class
  *
  * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
  * @author Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
@@ -26,8 +26,18 @@ class Product extends Model
 {
     use HasFactory;
 
+      /**
+     * Set Primary key different default.
+     *
+     * @var array<string>
+     */
     protected $primaryKey = 'product_id';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'product_id',
         'product_name',
@@ -36,6 +46,7 @@ class Product extends Model
         'is_sales',
         'description',
     ];
+
      /**
      * Indicates if the model's ID is auto-incrementing.
      *

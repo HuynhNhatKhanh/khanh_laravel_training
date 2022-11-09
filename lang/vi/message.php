@@ -24,7 +24,7 @@ return [
     'MESSAGE_VALIDATE_REQUIRED' => ':attribute không được để trống',
     'MESSAGE_VALIDATE_EXISTS'   => ':attribute không tồn tại',
     'MESSAGE_VALIDATE_FORMAT'   => ':attribute không đúng định dạng',
-    'MESSAGE_VALIDATE_FORMAT_PASSWORD'   => ':attribute  Phải bao gồm chữ thường, in hoa, số và kí tự đặc biệt',
+    'MESSAGE_VALIDATE_FORMAT_PASSWORD'   => ':attribute Phải bao gồm chữ thường, in hoa, số và kí tự đặc biệt',
     'MESSAGE_VALIDATE_UNIQUE'   => ':attribute đã được đăng ký',
     'MESSAGE_VALIDATE_SAME'   => ':attribute không trùng khớp',
     'MESSAGE_VALIDATE_MIN5_CHAR'     => ':attribute phải lớn hơn 5 ký tự',

@@ -1,21 +1,53 @@
 <?php
-
+/**
+ * Customer Repository
+ *
+ * PHP version 8
+ *
+ * @category  Repositorys
+ * @package   App
+ * @author    Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @license   https://opensource.org/licenses/MIT MIT License
+ * @link      http://localhost/
+ */
 namespace App\Repositories\Customer;
 
 use Carbon\Carbon;
 use App\Models\Customer;
 use Yajra\DataTables\DataTables;
 
+/**
+ * CustomerRepository class
+ *
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @author Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ */
 class CustomerRepository implements CustomerRepositoryInterface
 {
     protected $customer;
     protected $now;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param $customer
+     *
+     * @return void
+     */
     public function __construct(Customer $customer)
     {
         $this->customer = $customer;
         $this->now = date_format(Carbon::now('Asia/Ho_Chi_Minh'), 'Y/m/d:H-i-s');
     }
 
+    /**
+     * Get all customer
+     *
+     * @param $request
+     *
+     * @return mixed
+     */
     public function getAllCustomer($request)
     {
         $query = $this->customer;
@@ -48,6 +80,13 @@ class CustomerRepository implements CustomerRepositoryInterface
                 ->make(true);
     }
 
+     /**
+     * Create customer
+     *
+     * @param $request
+     *
+     * @return mixed
+     */
     public function store($request)
     {
         $dataCreate = [
@@ -60,6 +99,13 @@ class CustomerRepository implements CustomerRepositoryInterface
         return $this->customer->create($dataCreate);
     }
 
+    /**
+     * Update customer
+     *
+     * @param $request
+     *
+     * @return mixed
+     */
     public function edit($request)
     {
         $dataUpdate = [];

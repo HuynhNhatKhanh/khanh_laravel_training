@@ -1,19 +1,51 @@
 <?php
-
+/**
+ * Product Repository
+ *
+ * PHP version 8
+ *
+ * @category  Repositorys
+ * @package   App
+ * @author    Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @license   https://opensource.org/licenses/MIT MIT License
+ * @link      http://localhost/
+ */
 namespace App\Repositories\Product;
 
 use Storage;
 use App\Models\Product;
 use Yajra\DataTables\DataTables;
 
+/**
+ * ProductRepository class
+ *
+ * @copyright 2022 CriverCrane! Corporation. All Rights Reserved.
+ * @author Huynh.Khanh <huynh.khanh.rcvn2012@gmail.com>
+ */
 class ProductRepository implements ProductRepositoryInterface
 {
     private Product $product;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param $product
+     *
+     * @return void
+     */
     public function __construct(Product $product)
     {
         $this->product = $product;
     }
 
+     /**
+     * Get all product
+     *
+     * @param $request
+     *
+     * @return mixed
+     */
     public function getAllProduct($request)
     {
         $query = $this->product;
@@ -80,16 +112,37 @@ class ProductRepository implements ProductRepositoryInterface
                 ->make(true);
     }
 
+    /**
+     * Get product by id
+     *
+     * @param $request
+     *
+     * @return mixed
+     */
     public function getProduct($request)
     {
         return $this->product->where('product_id', $request->id)->first();
     }
 
+    /**
+     * Delete product by id
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
     public function delete($id)
     {
         return $this->product->where('product_id', $id)->delete();
     }
 
+    /**
+     * Create product
+     *
+     * @param $request
+     *
+     * @return mixed
+     */
     public function store($request)
     {
         $product_id = $request->product_name[0].fake()->regexify('[A-Z][A-Z][A-Z][A-Z]');
@@ -109,6 +162,13 @@ class ProductRepository implements ProductRepositoryInterface
         return $this->product->create($dataCreate);
     }
 
+    /**
+     * Update product
+     *
+     * @param $id, $request
+     *
+     * @return mixed
+     */
     public function edit($id, $request)
     {
         $dataUpdate = [
@@ -118,10 +178,6 @@ class ProductRepository implements ProductRepositoryInterface
             'description' => $request->description,
             'is_sales' => $request->is_sales,
         ];
-        // $data = $this->customer->where('product_id', $request->product_id)->first();
-        // if (isset($request->dataEdit['customer_name']) && $request->dataEdit['customer_name'] != $data['customer_name']) {
-        //     $dataUpdate['customer_name'] = $request->dataEdit['customer_name'];
-        // }
         if (isset($request->product_image) && ($request->product_image) != 'image_default.jpg') {
             $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
             $fileNameImage .= $request->product_image->getClientOriginalName();

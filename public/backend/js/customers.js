@@ -10,7 +10,7 @@ $(document).ready(function () {
     var numRows = 0;
 
     // Edit inline
-    var editor = new $.fn.dataTable.Editor( {
+    editor = new $.fn.dataTable.Editor( {
         ajax: {
             edit:{
                 type: 'PUT',
@@ -128,16 +128,16 @@ $(document).ready(function () {
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', "width": "1%" },
                 { data: 'customer_name', name: 'customer_name', "width": "20%"},
                 { data: 'email', name: 'email', "width": "20%"},
-                { data: 'address', name: 'address', "width": "30%" },
+                { data: 'address', name: 'address', "width": "26%" },
                 { data: 'tel_num', name: 'tel_num', className: 'text-center', "width": "15%"},
                 {
                     data: null,
                     defaultContent: '<button type="button" class="rounded-circle btn btn-sm btn-info m-1" title="Chỉnh sửa" "><i class="fas fa-pencil-alt"/></button>',
                     className: 'row-edit dt-center',
                     orderable: false,
-                    "width": "7%"
+                    "width": "9%"
                 },
-                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false, "width": "7%" },
+                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false, "width": "9%" },
             ],
             // responsive: true,
             language: {
@@ -176,6 +176,7 @@ $(document).ready(function () {
                 submit: 'all',
             })
         });
+
     };
     getCustomer();
 
@@ -247,6 +248,7 @@ $(document).ready(function () {
                 load: 'search'
             };
             getCustomer();
+
         } else {
             Swal.fire(
                 'Hình như bạn đã quên gì đó?',

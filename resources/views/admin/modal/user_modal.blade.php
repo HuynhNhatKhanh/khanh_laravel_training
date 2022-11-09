@@ -20,41 +20,40 @@
                         <input type="hidden" name="user-id" id="user-id">
 
                          <div class="form-group row">
-                             <label for="inputEmail3" class="col-sm-2 control-label" >Tên</label>
+                             <label for="addUserName" class="col-sm-2 control-label" >Tên</label>
                              <div style="width: 75%;" class="col-sm-10">
-                                 <input type="text" class="form-control " name="addUserName" id="addUserName"
-                                     placeholder="Nhập họ tên" required>
+                                 <input type="text" class="form-control " name="addUserName" id="addUserName" onblur="checkName('#addUserName', '#name-err')" placeholder="Nhập họ tên" required  >
                                  <span id="name-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group row">
-                             <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                             <label for="addUserEmail" class="col-sm-2 control-label">Email</label>
                              <div style="width: 75%;" class="col-sm-10">
-                                 <input type="email" class="form-control " name="addUserEmail" id="addUserEmail"
+                                 <input type="email" class="form-control " name="addUserEmail" id="addUserEmail"  onblur="checkEmail('#addUserEmail', '#email-err')"
                                      placeholder="Nhập email">
                                  <span id="email-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group row">
-                             <label for="inputPassword3" class="col-sm-2 control-label">Mật khẩu</label>
+                             <label for="addUserPassword" class="col-sm-2 control-label">Mật khẩu</label>
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="password" class="form-control " name="addUserPassword"
-                                     id="addUserPassword" placeholder="Mật khẩu">
+                                     id="addUserPassword" onblur="checkPassword('#addUserPassword', '#password-err', 1)" placeholder="Mật khẩu">
                                  <span id="password-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group row">
-                             <label for="inputPassword3" class="col-sm-2 control-label">Xác nhận</label>
+                             <label for="addUserPasswordConfirm" class="col-sm-2 control-label">Xác nhận</label>
                              <div style="width: 75%;" class="col-sm-10">
                                  <input type="password" class="form-control " name="addUserPassword"
-                                     id="addUserPasswordConfirm" placeholder="Xác nhận mật khẩu">
+                                     id="addUserPasswordConfirm"  onblur="checkPassword('#addUserPasswordConfirm', '#password_confirm-err', 0)" placeholder="Xác nhận mật khẩu">
                                  <span id="password_confirm-err" class="error text-danger d-none"></span>
                              </div>
                          </div>
                          <div class="form-group row">
                              <label for="addUserRole" class="col-sm-2 control-label">Nhóm</label>
                              <div style="width: 75%;" class="col-sm-10">
-                                 <select class="form-control" id="addUserRole" name="addUserRole">
+                                 <select class="form-control" id="addUserRole" name="addUserRole" onblur="checkSelect('#addUserRole', '#group_role-err', 'Nhóm')" >
                                      <option value="default">- Nhóm -</option>
                                      <option value="admin">Admin</option>
                                      <option value="reviewer">Reviewer</option>
@@ -66,7 +65,7 @@
                          <div class="form-group row">
                              <label for="addUserStatus" class="col-sm-2 control-label">Trạng thái</label>
                              <div style="width: 75%;" class="col-sm-10">
-                                <select class="form-control" id="addUserStatus" name="addUserStatus">
+                                <select class="form-control" id="addUserStatus" name="addUserStatus" onblur="checkSelect('#addUserStatus', '#is_active-err', 'Trạng thái')">
                                     <option value="default">- Trạng thái -</option>
                                     <option value="0">Tạm khoá</option>
                                     <option value="1">Đang hoạt động</option>
