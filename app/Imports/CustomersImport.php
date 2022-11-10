@@ -32,7 +32,7 @@ class CustomersImport implements ToCollection, WithBatchInserts, WithChunkReadin
             ];
             $messages = [
                 "ten_khach_hang.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
-                "ten_khach_hang.min"      => __('message.MESSAGE_VALIDATE_MIN5', ['attribute' => 'Tên']),
+                "ten_khach_hang.min"      => __('message.MESSAGE_VALIDATE_MIN5_CHAR', ['attribute' => 'Tên']),
 
                 "email.required"          => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
                 "email.email"             => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),

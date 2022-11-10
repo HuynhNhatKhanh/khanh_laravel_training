@@ -25,7 +25,7 @@ class AddUserRequest extends FormRequest
     {
         return [
             'name'             => 'required|min:5',
-            'email'            => 'required|max:255|email:rfc,dns|unique:users',
+            'email'            => 'required|max:255|regex:/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/|unique:users',
             'password'         => 'required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'required|min:5|same:password',
             'group_role'       => 'required|in:admin,reviewer,editor',
@@ -52,7 +52,7 @@ class AddUserRequest extends FormRequest
             "is_active.in"              => __('message.MESSAGE_VALIDATE_SELECT_STATUS_DIFFERENT_DEFAULT', ['attribute' => 'Trạng thái']),
 
             "email.required"            => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
-            "email.email"               => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+            "email.regex"               => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
             "email.exists"              => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
             "email.unique"              => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
             "email.max"                 => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),

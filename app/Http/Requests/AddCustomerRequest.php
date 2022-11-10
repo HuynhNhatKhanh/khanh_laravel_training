@@ -25,7 +25,7 @@ class AddCustomerRequest extends FormRequest
     {
         return [
             'customer_name' => 'required|min:5',
-            'email'         => 'required|max:255|email:rfc,dns|unique:customers',
+            'email'         => 'required|max:255|regex:/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/|unique:customers',
             'tel_num'       => 'required|regex:/^([0-9]*)$/|min:7|max:13',
             'address'       => 'required|max:255',
             'is_active'     => 'required|in:"1","0"',
@@ -42,10 +42,10 @@ class AddCustomerRequest extends FormRequest
         return [
 
             "customer_name.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
-            "customer_name.min"      => __('message.MESSAGE_VALIDATE_MIN5', ['attribute' => 'Tên']),
+            "customer_name.min"      => __('message.MESSAGE_VALIDATE_MIN5_CHAR', ['attribute' => 'Tên']),
 
             "email.required"         => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
-            "email.email"            => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+            "email.regex"            => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
             "email.exists"           => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
             "email.unique"           => __('message.MESSAGE_VALIDATE_UNIQUE', ['attribute' => 'Email']),
             "email.max"              => __('message.MESSAGE_VALIDATE_MAX_STRING', ['attribute' => 'Email']),

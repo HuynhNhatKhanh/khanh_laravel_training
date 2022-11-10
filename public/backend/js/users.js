@@ -1,13 +1,25 @@
 // const { default: axios } = require("axios");
 
- //Login
- $('#form-login').click( function(e) {
+// Check remember
+var remember = 0;
+$('#remember').change(function () {
+    if (this.checked) {
+        remember = 1;
+    } else {
+        remember = 0;
+    }
+});
+
+//Login
+$('#form-login').click( function(e) {
     e.preventDefault();
     let email = $('#email').val();
     let password = $('#password').val();
+
     axios.post('login', {
         email: email,
-        password: password
+        password: password,
+        remember: remember
     })
     .then(function (response) {
         if (response.data.status == true) {
@@ -312,7 +324,7 @@ $(document).ready(function () {
         clearErrorsMessage();
         showButtonSubmit('addUserButton');
         $('#addUserForm').trigger("reset");
-        $('#popupUserTitle').html("Thêm User");
+        $('#popupUserTitle').html("Thêm người dùng");
         $('#popupUser').modal('show');
     });
 
@@ -381,7 +393,7 @@ $(document).ready(function () {
             $('#addUserRole').val(response.data.group_role);
             $('#addUserStatus').val(response.data.is_active);
             $('#user-id').val(response.data.id);
-            $('#popupUserTitle').html("Chỉnh sửa User");
+            $('#popupUserTitle').html("Chỉnh sửa người dùng");
             $('#popupUser').modal('show');
         })
         .catch(function (error) {

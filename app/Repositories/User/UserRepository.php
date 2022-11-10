@@ -112,7 +112,7 @@ class UserRepository implements UserRepositoryInterface
         $dataCreate = [
             'name' => $requestAll['name'],
             'email' => $requestAll['email'],
-            'password' => $requestAll['password'],
+            'password' => bcrypt($requestAll['password']),
             'group_role' => $requestAll['group_role'],
             'is_active' => $requestAll['is_active'],
         ];
@@ -131,7 +131,7 @@ class UserRepository implements UserRepositoryInterface
         $dataUpdate = [
             'name' => $requestAll['name'],
             'email' => $requestAll['email'],
-            'password' => $requestAll['password'],
+            'password' => bcrypt($requestAll['password']),
             'group_role' => $requestAll['group_role'],
             'is_active' => $requestAll['is_active'],
         ];

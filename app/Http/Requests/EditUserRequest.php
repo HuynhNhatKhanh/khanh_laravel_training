@@ -25,7 +25,7 @@ class EditUserRequest extends FormRequest
     {
         return [
             'name'             => 'required|min:5',
-            'email'            => 'required|max:255|email:rfc,dns|unique:users,email,'. $this->id,
+            'email'            => 'required|max:255|regex:/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/|unique:users,email,'. $this->id,
             'password'         => 'sometimes|required|min:5|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'sometimes|required|min:5|same:password',
             'group_role'       => 'required|in:admin,reviewer,editor',

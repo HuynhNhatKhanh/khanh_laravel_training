@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'    => 'required|email|exists:users,email',
+            'email'    => 'required|regex:/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/|exists:users,email',
             'password' => 'required|min:6'
         ];
     }
@@ -39,7 +39,7 @@ class LoginRequest extends FormRequest
         return [
 
             "email.required"    => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Email']),
-            "email.email"       => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
+            "email.regex"       => __('message.MESSAGE_VALIDATE_FORMAT', ['attribute' => 'Email']),
             "email.exists"      => __('message.MESSAGE_VALIDATE_EXISTS', ['attribute' => 'Email']),
 
             "password.required" => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Mật khẩu']),

@@ -17,7 +17,15 @@ $(document).ready(function () {
                 url:  'customer/edit',
                 data: function(data) {
                     data.customer_id = editor.ids()[0];
+
                     data.dataEdit = data.data[(editor.ids())];
+
+
+
+                    data.customer_name = data.data[(editor.ids())]['customer_name'];
+                    data.email = data.data[(editor.ids())]['email'];
+                    data.tel_num = data.data[(editor.ids())]['tel_num'];
+                    data.address = data.data[(editor.ids())]['address'];
                 },
                 success: function (response) {
                     console.log(response);
@@ -48,7 +56,7 @@ $(document).ready(function () {
                         // let mess = '<span class="error text-danger d-block">'+message+'</span>';
                         // $("#DTE_Field_"+ name ).parent("div").append(mess);
                         // $("#DTE_Field_"+ name ).parent("div").html(message);
-                        $("#DTE_Field_"+ message[0][0] ).parent("div").notify(message[0][1], {className: 'error small', position: 'bot-center',})
+                        $("#DTE_Field_"+ name ).parent("div").notify(message, {className: 'error small', position: 'bot-center',})
                     });
                 }
             }
@@ -388,6 +396,9 @@ $(document).ready(function () {
     //Click button import
     $('#buttonImport').click( function () {
         $('#import-loading').empty();
+        // $('#loading').empty();
+        $("#modalImport").css({"position": "absolute"});
+        $('.importInput input[type=file]').val('');
         $('#modalImport').modal('show');
     });
 
@@ -409,16 +420,18 @@ $(document).ready(function () {
                     headers: { "Content-Type": "multipart/form-data" },
                 })
                 .then(function (response) {
+                    off();
                     console.log(response);
                     let errors = response.data.data.errors;
                     if(response.data.data.rowsInsert != '') {
                         $('.importInput input[type=file]').val('');
+                        // $("#modalImport").css({"position": "absolute"});
                         $('#modalImport').modal('hide');
                         Swal.fire({
                             icon: 'success',
                             title: "Thêm khách hàng thành công",
-                            showConfirmButton: false,
-                            timer: 1500
+                            // showConfirmButton: false,
+                            // timer: 1500
                         }).then(() => {
                             getCustomer();
                             showErrorsImportCustomers(errors, filename);
@@ -426,13 +439,14 @@ $(document).ready(function () {
                     }
                     else {
                         $('.importInput input[type=file]').val('');
+                        // $("#modalImport").css({"position": "absolute"});
                         $('#modalImport').modal('hide');
 
                         Swal.fire({
-                            icon: 'error',
+                            icon: 'warning',
                             title: 'Không có dòng nào được IMPORT!',
-                            showConfirmButton: false,
-                            timer: 1500
+                            // showConfirmButton: false,
+                            // timer: 1500
                         }).then(() => {
                             showErrorsImportCustomers(errors, filename);
                         });
@@ -462,13 +476,6 @@ $(document).ready(function () {
             })
         }
     });
-
-    //Show icon loading
-    function showIconLoading() {
-        $('#import-loading').empty();
-        var loading = '<div class="d-flex justify-content-center mt-2"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>';
-        $('#import-loading').append(loading);
-    }
 
     //Show error import
     function showErrorsImportCustomers( errors, filename ) {
@@ -501,3 +508,16 @@ $(document).ready(function () {
 
 });
 
+//Show icon loading
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+function showIconLoading() {
+    $("#modalImport").css({"position": "relative"});
+    on();
+    var loading = '<div id="preloader"><div id="loader"></div></div>';
+    $('#import-loading').append(loading);
+}

@@ -78,7 +78,8 @@
    </div>
   </nav>
   <!-- /.navbar -->
-
+  <div id="overlay" onclick="off()"></div>
+  {{-- <div id="loading"> </div> --}}
   {{-- <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -140,7 +141,8 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{url('backend')}}/dist/js/demo.js"></script>
     <!--SweetAlert2 -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{url('backend')}}/dist/js/sweetalert2.all.min.js"></script>
+    {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
     <!--Custom js -->
     <script src="{{asset("backend/js/myScript.js")}}"></script>
     <script src="{{asset("backend/js/users.js")}}"></script>

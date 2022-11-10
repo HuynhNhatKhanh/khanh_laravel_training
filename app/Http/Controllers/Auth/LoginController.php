@@ -16,10 +16,11 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 /**
  * LoginController class
@@ -54,11 +55,15 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-                $this->userRepository->login($request);
-                return $this->successResponse('', __('MESSAGE_CHECK_LOGIN_SUCCESS'));
+            if (Auth::viaRemember()) {
+                return redirect()->route('product');
             } else {
-                return $this->errorResponse(__('MESSAGE_CHECK_LOGIN_ERROR'));
+                if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+                    $this->userRepository->login($request);
+                    return $this->successResponse('', __('MESSAGE_CHECK_LOGIN_SUCCESS'));
+                } else {
+                    return $this->errorResponse(__('MESSAGE_CHECK_LOGIN_ERROR'));
+                }
             }
         } catch (\Exception $e) {
             return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -73,9 +78,8 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+        $request->session()->flush();
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
         return redirect()->route('login');
     }
 }
