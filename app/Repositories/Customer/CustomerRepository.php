@@ -120,8 +120,8 @@ class CustomerRepository implements CustomerRepositoryInterface
         if (isset($request->address) && $request->address != $data['address']) {
             $dataUpdate['address'] = $request->address;
         }
-        if (isset($request->dtel_num) && $request->dtel_num != $data['tel_num']) {
-            $dataUpdate['tel_num'] = $request->dtel_num;
+        if (isset($request->tel_num) && $request->tel_num != $data['tel_num']) {
+            $dataUpdate['tel_num'] = $request->tel_num;
         }
 
         if (!empty($dataUpdate)) {

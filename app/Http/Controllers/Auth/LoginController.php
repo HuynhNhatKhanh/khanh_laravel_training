@@ -66,6 +66,7 @@ class LoginController extends Controller
                 }
             }
         } catch (\Exception $e) {
+            Log::error($e);
             return $this->errorResponse(__('MESSAGE_ERROR'), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

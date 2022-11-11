@@ -155,6 +155,7 @@
     <!--datatables -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.12.1/datatables.min.js"></script>
     <script src="{{asset("backend/editor/js/dataTables.editor.min.js")}}"></script>
+    <script src="{{asset("backend/editor/js/editable.js")}}"></script>
 
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> --}}

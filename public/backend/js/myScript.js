@@ -97,9 +97,10 @@ function checkPhoneNumber(id, id_error) {
     $(id_error).empty();
 
     let phoneNumber = $(id).val();
+    vPhone = /^[0-9]{7,13}$/
     if( phoneNumber.trim() === '') {
         $(id_error).html('Điện thoại không được để trống');
-    } else if( (phoneNumber.trim()).length < 7 || (phoneNumber.trim()).length > 13 ) {
+    } else if ( (vPhone.test(phoneNumber.trim()) === false) ) {
         $(id_error).html('Điện thoại không đúng định dạng');
     }
     $(id_error).removeClass('d-none');

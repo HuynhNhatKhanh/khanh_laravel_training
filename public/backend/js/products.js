@@ -27,23 +27,10 @@ $(document).ready(function () {
                 var $api = this.api();
                 var pages = $api.page.info().pages;
                 var rows = $api.data().length;
-
-                if (rows <= page_min) {
-                    $dataTable
-                        .next('.dataTables_info').css('display', 'none')
-                        .next('.dataTables_paginate').css('display', 'none');
-
-                    $dataTable
-                        .prev('.dataTables_filter').css('display', 'none')
-                        .prev('.dataTables_length').css('display', 'none')
-                } else if (pages === 1) {
-                    $dataTable
-                        .next('.dataTables_info').css('display', 'none')
-                        .next('.dataTables_paginate').css('display', 'none');
+                if (pages <= page_min) {
+                    $('.dataTables_paginate ').hide();
                 } else {
-                    $dataTable
-                        .next('.dataTables_info').css('display', 'block')
-                        .next('.dataTables_paginate').css('display', 'block');
+                    $('.dataTables_paginate ').show();
                 }
             },
             ajax: {
@@ -78,7 +65,7 @@ $(document).ready(function () {
             serverSide: true,
             scrollY: false,
             destroy: true,
-            dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
+            dom: '<"d-flex justify-content-between align-items-center info-datatables"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center info-datatables"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
 
         });
     };
@@ -94,7 +81,6 @@ $(document).ready(function () {
             data: {
                 id: id
             },
-            //dataType: "json",
             success: function (response) {
                 product = response;
             }
@@ -207,7 +193,6 @@ $(document).ready(function () {
     $('#addNewProduct').click(function () {
         $('#product-id').val('');
         clearErrorsMessage();
-        // showButtonSubmit('addProductButton');
         $("#imgPreview").attr("src", defaultImage);
         $('#file-info').text('Chưa chọn file');
         $('#addProductForm').trigger("reset");
@@ -218,7 +203,6 @@ $(document).ready(function () {
     //Click add image product
     $("#addProductImage").change(function () {
         let file = this.files[0];
-        // console.log(file);
         getFile(file);
         // $("#addProductImage").val() = file;
         $('#file-info').text($(this).val().split('\\').pop());
@@ -256,12 +240,9 @@ $(document).ready(function () {
             id: id,
         })
         .then(function (response) {
-            // console.log(response.data.product_image);
-            // console.log($('#addProductImage')[0].files);
             if (response.data.product_image != undefined) {
                 $('#file-info').text(response.data.product_image);
                 $("#imgPreview").attr("src", base_url + '/storage/backend/images/product/' + response.data.product_image)
-                // $('#addProductImage').
             } else {
                 $("#imgPreview").attr("src", defaultImage);
                 $('#file-info').text('Chưa chọn file');
@@ -329,15 +310,12 @@ $(document).ready(function () {
         }
         else {
             e.preventDefault();
-            // console.log($('#addProductImage')[0].files[0]);
             let id = $('#product-id').val();
             var formData = new FormData();
-            // formData.append('product_image', $('#addProductImage')[0].files[0] );
             formData.append('product_name', $('#addProductName').val() );
             formData.append('product_price', $('#addProductPrice').val() );
             formData.append('description', $('#addProductDescription').val() );
             formData.append('is_sales', $('#addProductStatus').val());
-            // console.log($('#addProductImage')[0].files[0] );
             if ($('#addProductImage')[0].files[0] || $("#imgPreview").attr("src") == defaultImage) {
                 formData.append('product_image', $('#addProductImage')[0].files[0] );
                 axios.post( "product/edit/"+id,formData,{

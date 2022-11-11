@@ -67,23 +67,10 @@ $(document).ready(function () {
                 var $api = this.api();
                 var pages = $api.page.info().pages;
                 var rows = $api.data().length;
-
-                if (rows <= page_min) {
-                    $dataTable
-                        .next('.dataTables_info').css('display', 'none')
-                        .next('.dataTables_paginate').css('display', 'none');
-
-                    $dataTable
-                        .prev('.dataTables_filter').css('display', 'none')
-                        .prev('.dataTables_length').css('display', 'none')
-                } else if (pages === 1) {
-                    $dataTable
-                        .next('.dataTables_info').css('display', 'none')
-                        .next('.dataTables_paginate').css('display', 'none');
+                if (pages <= page_min) {
+                    $('.dataTables_paginate ').hide();
                 } else {
-                    $dataTable
-                        .next('.dataTables_info').css('display', 'block')
-                        .next('.dataTables_paginate').css('display', 'block');
+                    $('.dataTables_paginate ').show();
                 }
             },
             ajax: {
@@ -117,24 +104,12 @@ $(document).ready(function () {
             searching: false,
             scrollY: false,
             destroy: true,
-            dom: '<"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
+            dom: '<"d-flex justify-content-between align-items-center info-datatables"<"col-3"l><"col-6 text-center"p><"col-3"i>><t><"d-flex justify-content-between align-items-center info-datatables"<"col-3"l><"col-6 text-center"p><"col-3"i>>',
         });
     };
     getUser();
+
     // Get 1 user
-    // async function getUserById1(id){
-    //     var user = null;
-    //     await axios.post('user/getdata', {
-    //             id: id
-    //         })
-    //         .then(function (response) {
-    //             user = response;
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    //         return Promise.resolve(user);
-    //     }
     function getUserById(id){
         let user = null;
         $.ajax({
@@ -208,7 +183,7 @@ $(document).ready(function () {
     $('#users-table').on('click', '.btn-block-user', function (e) {
         e.preventDefault();
         let id = $(this).data('id');
-
+        let userData = getUserById(id);
         let status = getUserById(id).is_active;
         let nameStatus = 'Mở khoá';
         if (status === 1){
@@ -216,7 +191,7 @@ $(document).ready(function () {
         }
         Swal.fire({
             title: 'Nhắc nhở!',
-            text: "Bạn có muốn "+ nameStatus +" người dùng không?",
+            text: "Bạn có muốn "+ nameStatus + " người dùng " + "[ "+ userData.name +" ]" + " không?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -232,7 +207,7 @@ $(document).ready(function () {
                     if(response.data.data === 1) {
                         Swal.fire({
                             icon: 'success',
-                            title: nameStatus +" người dùng thành công",
+                            title: nameStatus +" người dùng " + "[ "+ userData.name +" ]" + " thành công",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
@@ -251,7 +226,6 @@ $(document).ready(function () {
                 .catch(function (error) {
                     Swal.fire({
                         title: 'Lỗi!',
-                        // text: "Hành động không thành công?",
                         icon: 'warning',
                         confirmButtonColor: '#d33',
                         confirmButtonText: 'OK!'
@@ -320,7 +294,6 @@ $(document).ready(function () {
 
     //Click button Thêm mới
     $('#addNewUser').click(function () {
-        // $('#user-id').val('');
         clearErrorsMessage();
         showButtonSubmit('addUserButton');
         $('#addUserForm').trigger("reset");

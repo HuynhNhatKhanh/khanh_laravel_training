@@ -37,7 +37,8 @@ Auth::routes();
 // Admin middleware auth
 Route::group(['middleware' => ['auth']], function () {
     //Route Home
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    // Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     // Route Logout
     Route::get('/logout', [LoginController::class, 'logout'])->name('logoutUser');
     // Route Product
