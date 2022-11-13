@@ -38,13 +38,31 @@ $(document).ready(function () {
                 type: "GET",
                 data: dataSearch,
             },
+            // autoWidth: false, // might need this
+            columnDefs: [
+                { "width": "2%" },
+                { "width": "20%" },
+                { "width": "30%" },
+                { "width": "14%" },
+                { "width": "20%" },
+                { "width": "14%" },
+              ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center' },
-                { data: 'product_name', name: 'product_name', orderable: false, searchable: false, "width": "20%" },
-                { data: 'description', name: 'description', "width": "30%" },
-                { data: 'product_price', name: 'product_price', className: 'text-center text-success', "width": "14%" },
-                { data: 'is_sales', name: 'is_sales', className: 'text-center', "width": "15%" },
-                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false, "width": "20%" },
+                { data: 'product_name', name: 'product_name', orderable: false, searchable: false },
+                { data: 'description', name: 'description',
+                    render: function ( data, type, row ) {
+                        let dataShow = '';
+                        if( data !== null ) {
+                            dataShow = data;
+                        }
+                        return '<span class="ellipsis">'
+                            + dataShow + '</span>';
+                    }
+                },
+                { data: 'product_price', name: 'product_price', className: ' text-success' },
+                { data: 'is_sales', name: 'is_sales', className: 'text-center' },
+                { data: 'action', name: 'action', className: 'text-center', orderable: false, searchable: false },
             ],
             language: {
                 processing: "Đang tải dữ liệu, chờ tí",
@@ -154,14 +172,8 @@ $(document).ready(function () {
                 priceTo: priceTo,
                 load: 'search'
             };
-            getProduct();
-        } else {
-            Swal.fire(
-                'Hình như bạn đã quên gì đó?',
-                'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
-                'warning'
-            );
         }
+        getProduct();
     }
 
     // Click search

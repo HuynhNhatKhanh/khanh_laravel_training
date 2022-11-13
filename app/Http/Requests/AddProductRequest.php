@@ -23,6 +23,7 @@ class AddProductRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'product_name'  => 'required|min:5',
             'product_price' => 'required|min:0|numeric',
@@ -37,6 +38,7 @@ class AddProductRequest extends FormRequest
 
             "product_name.required"    => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Tên']),
             "product_name.min"         => __('message.MESSAGE_VALIDATE_MIN5_CHAR', ['attribute' => 'Tên']),
+            // "product_price.max"         => 'toi da',
 
             "product_price.required"   => __('message.MESSAGE_VALIDATE_REQUIRED', ['attribute' => 'Giá']),
             "product_price.numeric"    => __('message.MESSAGE_VALIDATE_NUMBER', ['attribute' => 'Giá']),
@@ -50,5 +52,20 @@ class AddProductRequest extends FormRequest
             "product_image.dimensions" => __('message.MESSAGE_VALIDATE_IMAGE_MAX_LENGTH', ['attribute' => 'Ảnh']),
 
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->product_price >= 100000000) {
+                $validator->messages()->add('product_price', __('message.MESSAGE_VALIDATE_MAX_PRICE', ['attribute' => 'Giá']));
+            }
+        });
     }
 }

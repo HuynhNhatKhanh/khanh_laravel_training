@@ -16,6 +16,7 @@ namespace App\Repositories\Customer;
 use Carbon\Carbon;
 use App\Models\Customer;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 /**
  * CustomerRepository class
@@ -109,18 +110,17 @@ class CustomerRepository implements CustomerRepositoryInterface
     public function edit($request)
     {
         $dataUpdate = [];
-        $data = $this->customer->where('customer_id', $request->customer_id)->first();
 
-        if (isset($request->customer_name) && $request->customer_name != $data['customer_name']) {
+        if (isset($request->customer_name)) {
             $dataUpdate['customer_name'] = $request->customer_name;
         }
-        if (isset($request->email) && $request->email != $data['email']) {
+        if (isset($request->email)) {
             $dataUpdate['email'] = $request->email;
         }
-        if (isset($request->address) && $request->address != $data['address']) {
+        if (isset($request->address)) {
             $dataUpdate['address'] = $request->address;
         }
-        if (isset($request->tel_num) && $request->tel_num != $data['tel_num']) {
+        if (isset($request->tel_num)) {
             $dataUpdate['tel_num'] = $request->tel_num;
         }
 

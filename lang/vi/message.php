@@ -30,6 +30,7 @@ return [
     'MESSAGE_VALIDATE_MIN5_CHAR'     => ':attribute phải lớn hơn 5 ký tự',
     'MESSAGE_VALIDATE_MIN6_CHAR'     => ':attribute phải lớn hơn 6 ký tự',
     'MESSAGE_VALIDATE_MIN0_NUM'     => ':attribute phải lớn hơn 0',
+    'MESSAGE_VALIDATE_MAX_PRICE'     => ':attribute phải nhỏ hơn 100.000.000',
     'MESSAGE_VALIDATE_MAX_STRING'   => ':attribute quá dài',
     'MESSAGE_VALIDATE_SELECT_STATUS'   => 'Vui lòng chọn :attribute',
     'MESSAGE_VALIDATE_SELECT_STATUS_DIFFERENT_DEFAULT'   => 'Vui lòng chọn :attribute khác mặc định',

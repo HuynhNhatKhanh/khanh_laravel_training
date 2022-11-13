@@ -249,14 +249,8 @@ $(document).ready(function () {
                 status: status,
                 load: 'search'
             };
-            getUser();
-        } else {
-            Swal.fire(
-                'Hình như bạn đã quên gì đó?',
-                'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
-                'warning'
-            );
         }
+        getUser();
     }
 
     // Click search
@@ -464,7 +458,6 @@ $(document).ready(function () {
             $('.products-body').append(xhtml);
         })
     }
-
 
  });
 

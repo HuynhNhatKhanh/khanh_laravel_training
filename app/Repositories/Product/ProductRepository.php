@@ -13,9 +13,12 @@
  */
 namespace App\Repositories\Product;
 
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use Illuminate\Http\Request;
+// use Intervention\Image\Image;
 use Yajra\DataTables\DataTables;
+use Intervention\Image\Facades\Image;
 
 /**
  * ProductRepository class
@@ -60,17 +63,13 @@ class ProductRepository implements ProductRepositoryInterface
             if (isset($request->status) && $request->status != 'default') {
                 $query = $query->where("is_sales", '=', $request['status']);
             }
-            if (isset($request->priceFrom) || isset($request->priceTo)) {
-                if (empty($request->priceFrom)) {
-                    $query = $query->where('product_price', '>=', 0);
-                    $query = $query->where('product_price', '<=', $request->priceTo);
-                } elseif (empty($request->priceTo)) {
-                    $query = $query->where('product_price', '>=', $request->priceFrom);
-                } else {
-                    $query = $query->where('product_price', '>=', $request->priceFrom);
-                    $query = $query->where('product_price', '<=', $request->priceTo);
-                }
+            if (isset($request->priceFrom)) {
+                $query = $query->where('product_price', '>=', $request->priceFrom);
             }
+            if (isset($request->priceTo)) {
+                $query = $query->where('product_price', '<=', $request->priceTo);
+            }
+
             $query = $query->orderBy('updated_at', 'desc')->get();
             $results = $query;
         }
@@ -143,7 +142,7 @@ class ProductRepository implements ProductRepositoryInterface
      *
      * @return mixed
      */
-    public function store($request)
+    public function store(Request $request)
     {
         $product_id = $request->product_name[0].fake()->regexify('[A-Z][A-Z][A-Z][A-Z]');
         $dataCreate = [
@@ -154,9 +153,19 @@ class ProductRepository implements ProductRepositoryInterface
             'is_sales' => $request->is_sales,
         ];
         if (isset($request->product_image) && ($request->product_image) != 'image_default.jpg') {
-            $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") . '_';
-            $fileNameImage .= $request->product_image->getClientOriginalName();
+            $fileNameImage = date_format(\Carbon\Carbon::now('Asia/Ho_Chi_Minh'), "YmdHis") .  $request->product_image->getClientOriginalName();
+
             $path = $request->file('product_image')->storeAs('public/backend/images/product', $fileNameImage);
+
+            // Resize image
+
+            // $image = $request->file('product_image');
+            // $imgFile = Image::make($image)->resize(300, 300, function ($constraint) {
+            //     $constraint->aspectRatio();
+            // });
+            // $imgFile->stream();
+            // $store  = Storage::put('public/backend/images/product/' . $fileNameImage, $imgFile);
+
             $dataCreate['product_image']  =  $fileNameImage;
         };
         return $this->product->create($dataCreate);

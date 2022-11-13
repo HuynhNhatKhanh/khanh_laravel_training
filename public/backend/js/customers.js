@@ -9,16 +9,8 @@ $(document).ready(function () {
     $.fn.DataTable.ext.pager.numbers_length = 10;
     var numRows = 0;
 
-
-
     // Get all customer
-    var $dataTable = $('#customers-table');
     function getCustomer(){
-
-        // $('#customers-table').DataTable().destroy();
-        // $('#customers-table tbody').empty();
-        // $('#customers-table').DataTable().clear();
-
         // Edit inline
         var editor = new $.fn.dataTable.Editor( {
             ajax: {
@@ -158,15 +150,6 @@ $(document).ready(function () {
                 { extend: "edit",   editor: editor },
             ]
         });
-        //
-        // editor
-        // .field('edit')
-        // .input()
-        // .on( 'click', 'customers-table tbody td.row-ed', function () {
-        //     nestedEditor.edit( this, {
-        //         nest: true
-        //     } );
-        // } );
 
         $('#customers-table tbody ').on( 'click', 'td.row-edit', function (e) {
                 editor.inline(table.cells(this.parentNode, '*').nodes(), {
@@ -246,24 +229,8 @@ $(document).ready(function () {
                 address: address,
                 load: 'search'
             };
-
-            // $dataTable.DataTable().destroy();
-            // $dataTable.empty();
-            // $dataTable.DataTable().clear();
-            // $('#customers-table').DataTable().destroy();
-            // $('#customers-table tbody').empty();
-            // $('#customers-table').DataTable().clear();
-
-            getCustomer();
-
-
-        } else {
-            Swal.fire(
-                'Hình như bạn đã quên gì đó?',
-                'Vui lòng nhập hoặc chọn thông tin để tìm kiếm!',
-                'warning'
-            );
         }
+        getCustomer();
     }
 
     // Click search

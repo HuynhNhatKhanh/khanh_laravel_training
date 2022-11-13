@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Exports\CustomersExport;
 use App\Imports\CustomersImport;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\AddCustomerRequest;
@@ -51,6 +52,8 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+
+        DB::connection()->enableQueryLog();
         try {
             if ($request->ajax()) {
                 return $this->customerRepository->getAllCustomer($request);

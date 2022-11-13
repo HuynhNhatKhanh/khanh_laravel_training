@@ -244,3 +244,34 @@ label.required:after  {
 .info-datatables {
     min-height: 50px;
 }
+
+.btn--nowrap {
+    white-space: nowrap;
+}
+
+.ml-25 {
+    margin-left: 25px;
+}
+
+.ellipsis {
+    /* display: block;
+    display: -webkit-box;
+    white-space: nowrap;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    /* max-width: 100px!important; */
+
+    text-overflow:ellipsis;
+    overflow:hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+
+table#products-table{
+    table-layout:fixed;
+}

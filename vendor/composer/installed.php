@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ec9ea5991167c4cfa71af1b3dfc17d13b5b233ce',
+        'reference' => '2e3b4eb9e4bb8e319786bdb22bb370149724d587',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -376,6 +376,15 @@
                 0 => 'v9.38.0',
             ),
         ),
+        'intervention/image' => array(
+            'pretty_version' => '2.7.2',
+            'version' => '2.7.2.0',
+            'reference' => '04be355f8d6734c826045d02a1079ad658322dad',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../intervention/image',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'jenssegers/model' => array(
             'pretty_version' => 'v1.5.0',
             'version' => '1.5.0.0',
@@ -403,7 +412,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ec9ea5991167c4cfa71af1b3dfc17d13b5b233ce',
+            'reference' => '2e3b4eb9e4bb8e319786bdb22bb370149724d587',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
